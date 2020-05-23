@@ -18,13 +18,16 @@ namespace iCal_File_Generator
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                string sql = "INSERT INTO event (summary, description) VALUES (@summary, @description)";
                 Event newEvent = new Event { summary = summary, description = description };
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.Add("@summary", SqlDbType.NVarChar).Value = newEvent.summary;
-                cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = newEvent.description;
-                cmd.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand("spEvent_InsertEvent", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@summary", SqlDbType.NVarChar).Value = newEvent.summary;
+                    cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = newEvent.description;
+                    cmd.ExecuteNonQuery();
+                }   
             }
         }
     }
