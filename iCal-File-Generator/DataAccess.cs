@@ -19,6 +19,8 @@ namespace iCal_File_Generator
             {
                 conn.Open();
                 Event newEvent = new Event { summary = summary, description = description };
+                FileGenerator fg= new FileGenerator();
+                fg.FormatInput(newEvent);
 
                 using (SqlCommand cmd = new SqlCommand("spEvent_InsertEvent", conn))
                 {
