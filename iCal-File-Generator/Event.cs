@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace iCal_File_Generator
 {
-    class Event
+    public class Event
     {
         public int eventID { get; set; }
         public string summary { get; set; }

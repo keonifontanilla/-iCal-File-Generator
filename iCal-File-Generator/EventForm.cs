@@ -16,5 +16,15 @@ namespace iCal_File_Generator
         {
             InitializeComponent();
         }
+
+        private void submitButton_Click(object sender, EventArgs e)
+        {
+            DataAccess db = new DataAccess();
+
+            db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text);
+
+            titleTextBox.Text = "";
+            descriptionTextBox.Text = "";
+        }
     }
 }
