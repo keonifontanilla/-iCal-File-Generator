@@ -14,7 +14,7 @@ namespace iCal_File_Generator
         private static string path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\test.txt";
 
         /***********************************************************************************************
-         * Write input from form to text file
+         * Write input and generate an ics file
         ***********************************************************************************************/
         private void GenerateFile(List<string> formatedInputs)
         {
@@ -28,20 +28,16 @@ namespace iCal_File_Generator
         }
 
         /***********************************************************************************************
-         * Format input
+         * Format input from user
         ***********************************************************************************************/
         public void FormatInput(Event newEvent)
         {
-            Dictionary<string, string> inputs = new Dictionary<string, string>();
             List<string> newInputs = new List<string>();
             string formatedStr = "";
 
-            inputs.Add("TITLE", newEvent.summary);
-            inputs.Add("DESCRIPTION", newEvent.description);
-
             newInputs.Add("BEGIN:VCALENDAR");
             newInputs.Add("BEGIN:VEVENT");
-            foreach (KeyValuePair<string, string> str in inputs)
+            foreach (KeyValuePair<string, string> str in newEvent.GetInputs())
             {
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);
