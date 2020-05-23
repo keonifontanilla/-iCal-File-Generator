@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace iCal_File_Generator
 {
-    public partial class Form1 : Form
+    public partial class EventForm : Form
     {
-        public Form1()
+        public EventForm()
         {
             InitializeComponent();
         }
