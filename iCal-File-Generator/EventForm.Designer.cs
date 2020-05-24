@@ -35,7 +35,6 @@
             this.submitButton = new System.Windows.Forms.Button();
             this.startDatePicker = new System.Windows.Forms.DateTimePicker();
             this.startTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
             this.startDateLabel = new System.Windows.Forms.Label();
             this.endDateLabel = new System.Windows.Forms.Label();
             this.endTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -95,6 +94,7 @@
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 5;
             this.startDatePicker.Value = new System.DateTime(2020, 5, 23, 14, 18, 50, 0);
+            this.startDatePicker.ValueChanged += new System.EventHandler(this.startDatePicker_ValueChanged);
             // 
             // startTimePicker
             // 
@@ -103,15 +103,7 @@
             this.startTimePicker.Name = "startTimePicker";
             this.startTimePicker.Size = new System.Drawing.Size(98, 20);
             this.startTimePicker.TabIndex = 6;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
+            this.startTimePicker.ValueChanged += new System.EventHandler(this.startTimePicker_ValueChanged);
             // 
             // startDateLabel
             // 
@@ -157,7 +149,6 @@
             this.Controls.Add(this.endTimePicker);
             this.Controls.Add(this.endDatePicker);
             this.Controls.Add(this.startDateLabel);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.startTimePicker);
             this.Controls.Add(this.startDatePicker);
             this.Controls.Add(this.submitButton);
@@ -181,7 +172,6 @@
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.DateTimePicker startDatePicker;
         private System.Windows.Forms.DateTimePicker startTimePicker;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label startDateLabel;
         private System.Windows.Forms.Label endDateLabel;
         private System.Windows.Forms.DateTimePicker endTimePicker;

@@ -43,6 +43,7 @@ namespace iCal_File_Generator
                 switch(str.Key)
                 {
                     case "DTSTART":
+                    case "DTEND":
                         formatedStr = Foldline($"{str.Key}:{FormatTime(str.Value)}");
                         newInputs.Add(formatedStr);
                         continue;

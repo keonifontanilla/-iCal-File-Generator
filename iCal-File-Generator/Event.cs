@@ -14,12 +14,14 @@ namespace iCal_File_Generator
         public string summary { get; set; }
         public string description { get; set; }
         public string startTime { get; set; }
+        public string endTime { get; set; }
 
         public Dictionary<string, string> GetInputs()
         {
             inputs.Add("TITLE", summary);
             inputs.Add("DESCRIPTION", description);
             inputs.Add("DTSTART", startTime);
+            inputs.Add("DTEND", endTime);
             return inputs;
         }
     }

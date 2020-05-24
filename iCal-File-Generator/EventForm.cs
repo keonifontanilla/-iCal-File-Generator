@@ -22,8 +22,9 @@ namespace iCal_File_Generator
         {
             DataAccess db = new DataAccess();
             string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
+            string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
 
-            db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime);
+            db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime);
 
             titleTextBox.Text = "";
             descriptionTextBox.Text = "";
@@ -34,6 +35,24 @@ namespace iCal_File_Generator
             startDatePicker.MinDate = DateTime.Today;
             startTimePicker.Format = DateTimePickerFormat.Time;
             startTimePicker.ShowUpDown = true;
+
+            endDatePicker.MinDate = startDatePicker.Value;
+            endTimePicker.Format = DateTimePickerFormat.Time;
+            endTimePicker.ShowUpDown = true;
+        }
+
+        private void startDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            endDatePicker.MinDate = startDatePicker.Value;
+        }
+
+        private void startTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            if (startTimePicker.Value.TimeOfDay < DateTime.Now.TimeOfDay)
+            {
+                MessageBox.Show("ILLEGAL");
+                startTimePicker.MinDate = DateTime.Now;
+            }
         }
     }
 }
