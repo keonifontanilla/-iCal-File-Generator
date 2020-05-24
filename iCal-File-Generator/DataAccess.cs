@@ -13,12 +13,12 @@ namespace iCal_File_Generator
     {
         static string connStr = ConfigurationManager.ConnectionStrings["EventsDB"].ConnectionString;
         
-        public void InsertEvent(string summary, string description)
+        public void InsertEvent(string summary, string description, string startTime)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                Event newEvent = new Event { summary = summary, description = description };
+                Event newEvent = new Event { summary = summary, description = description, startTime = startTime };
                 FileGenerator fg= new FileGenerator();
                 fg.FormatInput(newEvent);
 
@@ -28,6 +28,7 @@ namespace iCal_File_Generator
 
                     cmd.Parameters.Add("@summary", SqlDbType.NVarChar).Value = newEvent.summary;
                     cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = newEvent.description;
+                    cmd.Parameters.Add("@startTime", SqlDbType.DateTime).Value = newEvent.startTime;
                     cmd.ExecuteNonQuery();
                 }   
             }

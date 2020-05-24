@@ -15,16 +15,25 @@ namespace iCal_File_Generator
         public EventForm()
         {
             InitializeComponent();
+            InitializeDateTime();
         }
 
         private void submitButton_Click(object sender, EventArgs e)
         {
             DataAccess db = new DataAccess();
+            string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
 
-            db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text);
+            db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime);
 
             titleTextBox.Text = "";
             descriptionTextBox.Text = "";
+        }
+
+        private void InitializeDateTime()
+        {
+            startDatePicker.MinDate = DateTime.Today;
+            startTimePicker.Format = DateTimePickerFormat.Time;
+            startTimePicker.ShowUpDown = true;
         }
     }
 }

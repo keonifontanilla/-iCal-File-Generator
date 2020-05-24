@@ -2,6 +2,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -39,12 +40,30 @@ namespace iCal_File_Generator
             newInputs.Add("BEGIN:VEVENT");
             foreach (KeyValuePair<string, string> str in newEvent.GetInputs())
             {
+                switch(str.Key)
+                {
+                    case "DTSTART":
+                        formatedStr = Foldline($"{str.Key}:{FormatTime(str.Value)}");
+                        newInputs.Add(formatedStr);
+                        continue;
+                }
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);
             }
             newInputs.Add("END:VCALENDAR");
             newInputs.Add("END:VEVENT");
             GenerateFile(newInputs);
+        }
+
+        /***********************************************************************************************
+         * Format time to the proper ics file format
+        ***********************************************************************************************/
+        private string FormatTime(string dateTime)
+        {
+            dateTime = dateTime.Replace("/","");
+            dateTime = dateTime.Replace(" ", "");
+            dateTime = dateTime.Replace(":", "");
+            return dateTime.Contains(".") ? dateTime.Insert(8, "T").Substring(0, dateTime.LastIndexOf(".") + 1) : dateTime.Insert(8, "T");
         }
 
         /***********************************************************************************************
