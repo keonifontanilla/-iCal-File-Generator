@@ -37,11 +37,17 @@ namespace iCal_File_Generator
             string formatedStr = "";
 
             newInputs.Add("BEGIN:VCALENDAR");
+            newInputs.Add("VERSION:2.0");
+            newInputs.Add("PRODID:-//ics-file-generator//iCal File Generator");
             newInputs.Add("BEGIN:VEVENT");
             foreach (KeyValuePair<string, string> str in newEvent.GetInputs())
             {
                 switch(str.Key)
                 {
+                    case "DESCRIPTION":
+                        formatedStr = Foldline($"{str.Key}:{str.Value}").Replace("\r\n", "\\n");
+                        newInputs.Add(formatedStr);
+                        continue;
                     case "DTSTART":
                     case "DTEND":
                         formatedStr = Foldline($"{str.Key}:{FormatTime(str.Value)}");
@@ -51,8 +57,8 @@ namespace iCal_File_Generator
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);
             }
-            newInputs.Add("END:VCALENDAR");
             newInputs.Add("END:VEVENT");
+            newInputs.Add("END:VCALENDAR");
             GenerateFile(newInputs);
         }
 
