@@ -18,18 +18,23 @@ namespace iCal_File_Generator
         {
             InitializeComponent();
             InitializeDateTime();
+            eventsListBox.DrawMode = DrawMode.OwnerDrawVariable;
+            eventsListBox.MeasureItem += new MeasureItemEventHandler(eventsListBox_MeasureItem);
+            eventsListBox.DrawItem += new DrawItemEventHandler(eventsListBox_DrawItem);
+            this.Controls.Add(this.eventsListBox);
         }
 
         private void submitButton_Click(object sender, EventArgs e)
         {
             string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
+            string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
 
             HandleErrors.HandleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg)) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime);
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp);
                 GetData();
             }
             else
@@ -63,6 +68,21 @@ namespace iCal_File_Generator
         {
             dbEvents = db.ListEvents();
             eventsListBox.DataSource = dbEvents;
+        }
+
+        private void eventsListBox_MeasureItem(object sender, MeasureItemEventArgs e)
+        {
+            foreach (string item in eventsListBox.Items)
+            {
+                //Set the Height of the item at index 2 to 50
+                if (e.Index == eventsListBox.Items.IndexOf(item)) { e.ItemHeight = 100; }
+            }
+        }
+
+        private void eventsListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds);
         }
     }
 }

@@ -142,10 +142,12 @@
             // 
             // eventsListBox
             // 
+            this.eventsListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.eventsListBox.FormattingEnabled = true;
+            this.eventsListBox.ItemHeight = 24;
             this.eventsListBox.Location = new System.Drawing.Point(518, 106);
             this.eventsListBox.Name = "eventsListBox";
-            this.eventsListBox.Size = new System.Drawing.Size(402, 381);
+            this.eventsListBox.Size = new System.Drawing.Size(402, 364);
             this.eventsListBox.TabIndex = 12;
             // 
             // EventForm
