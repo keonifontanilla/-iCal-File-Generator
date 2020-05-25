@@ -9,10 +9,11 @@ namespace iCal_File_Generator
 {
     public static class HandleErrors
     {
-        private static string errMsg = "";
-
         public static string ErrorMsg { get; private set; }
 
+        /***********************************************************************************************
+         * Display error messages
+        ***********************************************************************************************/
         public static void DisplayErrorMsg()
         {
             MessageBox.Show(ErrorMsg);
@@ -24,31 +25,28 @@ namespace iCal_File_Generator
         ***********************************************************************************************/
         public static void HandleError(string input)
         {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                errMsg = "Cannot leave title blank!\n";
-            }
-            else
-            {
-                errMsg = "";
-            }
-            ErrorMsg += errMsg;
+            ErrorMsg += string.IsNullOrWhiteSpace(input) ? "Cannot leave title blank!\n" : "";
         }
 
         /***********************************************************************************************
          * Handles empty required inputs
         ***********************************************************************************************/
-        public static void HandleTimeError(DateTimePicker startDatePicker, DateTimePicker startTimePicker)
+        public static void HandleTimeError(DateTimePicker startDatePicker, DateTimePicker startTimePicker, DateTimePicker endTimePicker, DateTimePicker endDatePicker)
         {
-            if (startTimePicker.Value.TimeOfDay < startDatePicker.Value.TimeOfDay && startTimePicker.Value.Date == startDatePicker.Value.Date)
-            {
-                errMsg = "Cannot pick time in the past!\n";
-            }
-            else
-            {
-                errMsg = "";
-            }
-            ErrorMsg += errMsg;
+            // Check start time errors
+            ErrorMsg += (startTimePicker.Value.TimeOfDay < startDatePicker.Value.TimeOfDay) && (startTimePicker.Value.Date == startDatePicker.Value.Date)
+                ? "Cannot pick time in the past!\n" : "";
+            // Check end time errors
+            ErrorMsg += (TrimTime(endTimePicker.Value).TimeOfDay < TrimTime(startTimePicker.Value).TimeOfDay) && (endDatePicker.Value.Date == startDatePicker.Value.Date)
+                ? "Cannot have end time before start time!\n" : "";
+        }
+
+        /***********************************************************************************************
+         * Trims off milliseconds from date time
+        ***********************************************************************************************/
+        private static DateTime TrimTime(DateTime dt)
+        {
+            return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, 0, dt.Kind);
         }
     }
 }

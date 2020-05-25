@@ -25,7 +25,7 @@ namespace iCal_File_Generator
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
 
             HandleErrors.HandleError(titleTextBox.Text);
-            HandleErrors.HandleTimeError(startDatePicker, startTimePicker);
+            HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg)) 
             {
                 db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime);
@@ -41,7 +41,7 @@ namespace iCal_File_Generator
 
         private void InitializeDateTime()
         {
-            startDatePicker.MinDate = DateTime.Now;
+            startDatePicker.MinDate = DateTime.Now.AddSeconds(-DateTime.Now.Second);
             startTimePicker.Format = DateTimePickerFormat.Time;
             startTimePicker.ShowUpDown = true;
 

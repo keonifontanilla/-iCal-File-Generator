@@ -18,7 +18,7 @@ namespace iCal_File_Generator
 
         public Dictionary<string, string> GetInputs()
         {
-            inputs.Add("TITLE", summary);
+            inputs.Add("SUMMARY", summary);
             inputs.Add("DESCRIPTION", description);
             inputs.Add("DTSTART", startTime);
             inputs.Add("DTEND", endTime);
