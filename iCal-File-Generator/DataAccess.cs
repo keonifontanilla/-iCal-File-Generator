@@ -34,5 +34,23 @@ namespace iCal_File_Generator
                 }   
             }
         }
+
+        public List<string> ListEvents()
+        {
+            List<string> data = new List<string>();
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                using(SqlCommand cmd = new SqlCommand("spEvent_SelectEvent", conn))
+                {
+                    SqlDataReader dataReader = cmd.ExecuteReader();
+                    while(dataReader.Read())
+                    {
+                        data.Add((string)dataReader["summary"]);                  
+                    }
+                }
+            }
+            return data;
+        }
     }
 }

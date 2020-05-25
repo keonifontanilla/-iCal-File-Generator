@@ -39,12 +39,13 @@
             this.endDateLabel = new System.Windows.Forms.Label();
             this.endTimePicker = new System.Windows.Forms.DateTimePicker();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.eventsListBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
-            this.titleLabel.Location = new System.Drawing.Point(211, 87);
+            this.titleLabel.Location = new System.Drawing.Point(22, 65);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(33, 13);
             this.titleLabel.TabIndex = 0;
@@ -52,7 +53,7 @@
             // 
             // titleTextBox
             // 
-            this.titleTextBox.Location = new System.Drawing.Point(311, 80);
+            this.titleTextBox.Location = new System.Drawing.Point(122, 65);
             this.titleTextBox.MaxLength = 255;
             this.titleTextBox.Name = "titleTextBox";
             this.titleTextBox.Size = new System.Drawing.Size(244, 20);
@@ -60,7 +61,7 @@
             // 
             // descriptionTextBox
             // 
-            this.descriptionTextBox.Location = new System.Drawing.Point(311, 121);
+            this.descriptionTextBox.Location = new System.Drawing.Point(122, 106);
             this.descriptionTextBox.MaxLength = 500;
             this.descriptionTextBox.Multiline = true;
             this.descriptionTextBox.Name = "descriptionTextBox";
@@ -70,7 +71,7 @@
             // descriptionLabel
             // 
             this.descriptionLabel.AutoSize = true;
-            this.descriptionLabel.Location = new System.Drawing.Point(211, 128);
+            this.descriptionLabel.Location = new System.Drawing.Point(22, 106);
             this.descriptionLabel.Name = "descriptionLabel";
             this.descriptionLabel.Size = new System.Drawing.Size(66, 13);
             this.descriptionLabel.TabIndex = 2;
@@ -78,7 +79,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(375, 322);
+            this.submitButton.Location = new System.Drawing.Point(186, 307);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -89,7 +90,7 @@
             // startDatePicker
             // 
             this.startDatePicker.CustomFormat = "";
-            this.startDatePicker.Location = new System.Drawing.Point(311, 250);
+            this.startDatePicker.Location = new System.Drawing.Point(122, 235);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 5;
@@ -99,7 +100,7 @@
             // startTimePicker
             // 
             this.startTimePicker.CustomFormat = "";
-            this.startTimePicker.Location = new System.Drawing.Point(531, 250);
+            this.startTimePicker.Location = new System.Drawing.Point(342, 235);
             this.startTimePicker.Name = "startTimePicker";
             this.startTimePicker.Size = new System.Drawing.Size(98, 20);
             this.startTimePicker.TabIndex = 6;
@@ -107,7 +108,7 @@
             // startDateLabel
             // 
             this.startDateLabel.AutoSize = true;
-            this.startDateLabel.Location = new System.Drawing.Point(211, 256);
+            this.startDateLabel.Location = new System.Drawing.Point(22, 235);
             this.startDateLabel.Name = "startDateLabel";
             this.startDateLabel.Size = new System.Drawing.Size(58, 13);
             this.startDateLabel.TabIndex = 8;
@@ -116,7 +117,7 @@
             // endDateLabel
             // 
             this.endDateLabel.AutoSize = true;
-            this.endDateLabel.Location = new System.Drawing.Point(211, 282);
+            this.endDateLabel.Location = new System.Drawing.Point(22, 261);
             this.endDateLabel.Name = "endDateLabel";
             this.endDateLabel.Size = new System.Drawing.Size(55, 13);
             this.endDateLabel.TabIndex = 11;
@@ -125,7 +126,7 @@
             // endTimePicker
             // 
             this.endTimePicker.CustomFormat = "";
-            this.endTimePicker.Location = new System.Drawing.Point(531, 276);
+            this.endTimePicker.Location = new System.Drawing.Point(342, 261);
             this.endTimePicker.Name = "endTimePicker";
             this.endTimePicker.Size = new System.Drawing.Size(98, 20);
             this.endTimePicker.TabIndex = 10;
@@ -133,17 +134,26 @@
             // endDatePicker
             // 
             this.endDatePicker.CustomFormat = "";
-            this.endDatePicker.Location = new System.Drawing.Point(311, 276);
+            this.endDatePicker.Location = new System.Drawing.Point(122, 261);
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(200, 20);
             this.endDatePicker.TabIndex = 9;
             this.endDatePicker.Value = new System.DateTime(2020, 5, 23, 14, 18, 50, 0);
             // 
+            // eventsListBox
+            // 
+            this.eventsListBox.FormattingEnabled = true;
+            this.eventsListBox.Location = new System.Drawing.Point(518, 106);
+            this.eventsListBox.Name = "eventsListBox";
+            this.eventsListBox.Size = new System.Drawing.Size(402, 381);
+            this.eventsListBox.TabIndex = 12;
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.eventsListBox);
             this.Controls.Add(this.endDateLabel);
             this.Controls.Add(this.endTimePicker);
             this.Controls.Add(this.endDatePicker);
@@ -175,6 +185,7 @@
         private System.Windows.Forms.Label endDateLabel;
         private System.Windows.Forms.DateTimePicker endTimePicker;
         private System.Windows.Forms.DateTimePicker endDatePicker;
+        private System.Windows.Forms.ListBox eventsListBox;
     }
 }
 
