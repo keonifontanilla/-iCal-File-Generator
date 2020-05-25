@@ -103,7 +103,6 @@
             this.startTimePicker.Name = "startTimePicker";
             this.startTimePicker.Size = new System.Drawing.Size(98, 20);
             this.startTimePicker.TabIndex = 6;
-            this.startTimePicker.ValueChanged += new System.EventHandler(this.startTimePicker_ValueChanged);
             // 
             // startDateLabel
             // 

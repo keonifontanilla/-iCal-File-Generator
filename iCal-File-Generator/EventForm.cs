@@ -54,10 +54,5 @@ namespace iCal_File_Generator
         {
             endDatePicker.MinDate = startDatePicker.Value;
         }
-
-        private void startTimePicker_ValueChanged(object sender, EventArgs e)
-        {
-            HandleErrors.HandleTimeError(startDatePicker, startTimePicker);
-        }
     }
 }

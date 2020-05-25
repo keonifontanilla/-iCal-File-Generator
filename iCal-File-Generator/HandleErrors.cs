@@ -26,7 +26,7 @@ namespace iCal_File_Generator
         {
             if (string.IsNullOrWhiteSpace(input))
             {
-                errMsg = "Cannot leave title blank!";
+                errMsg = "Cannot leave title blank!\n";
             }
             else
             {
@@ -42,7 +42,7 @@ namespace iCal_File_Generator
         {
             if (startTimePicker.Value.TimeOfDay < startDatePicker.Value.TimeOfDay && startTimePicker.Value.Date == startDatePicker.Value.Date)
             {
-                errMsg = "Cannot pick time in the past!";
+                errMsg = "Cannot pick time in the past!\n";
             }
             else
             {
