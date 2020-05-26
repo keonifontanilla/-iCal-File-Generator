@@ -31,7 +31,7 @@ namespace iCal_File_Generator
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg)) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp);
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, CreateUID());
                 GetData();
                 titleTextBox.Text = "";
                 descriptionTextBox.Text = "";
@@ -87,6 +87,14 @@ namespace iCal_File_Generator
         {
             e.DrawBackground();
             if (e.Index != -1) { e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds); }
+        }
+
+        private string CreateUID()
+        {
+            string randomNum = "";
+            Random random = new Random();
+            randomNum = random.Next().ToString() + random.Next().ToString();
+            return randomNum + "@kmf";
         }
     }
 }

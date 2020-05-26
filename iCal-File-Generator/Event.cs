@@ -16,6 +16,7 @@ namespace iCal_File_Generator
         public string startTime { get; set; }
         public string endTime { get; set; }
         public string dtstamp { get; set; }
+        public string uniqueIdentifier { get; set; }
 
         public Dictionary<string, string> GetInputs()
         {
@@ -24,6 +25,7 @@ namespace iCal_File_Generator
             inputs.Add("DTSTART", startTime);
             inputs.Add("DTEND", endTime);
             inputs.Add("DTSTAMP", dtstamp);
+            inputs.Add("UID:", uniqueIdentifier);
             return inputs;
         }
     }
