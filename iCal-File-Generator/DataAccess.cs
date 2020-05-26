@@ -54,6 +54,7 @@ namespace iCal_File_Generator
                     {
                         data.Add(ReadSingleRow((IDataRecord)dataReader));
                     }
+                    dataReader.Close();
                 }
             }
             return data;
@@ -61,11 +62,10 @@ namespace iCal_File_Generator
 
         private string ReadSingleRow(IDataRecord dataReader)
         {
-            string title = dataReader["summary"].ToString();
-            string description = dataReader["description"].ToString();
-            //string formatedStr = $@"{TrimString(title, 6)} {TrimString(description, 10)}";
-            //string formatedStr = String.Format("{0, 0}{1, 20}", TrimString(title, 6) + "\n", TrimString(description, 10)); //turned on multi column for listBox
-            string formatedStr = title + "\n" + description;
+            string title = dataReader["summary"].ToString().Trim();
+            string description = dataReader["description"].ToString().Trim();
+            string dtstamp = dataReader["dtstamp"].ToString().Trim();
+            string formatedStr = "Title: " + TrimString(title, 16) + "\n" + "Description: " + TrimString(description, 20) + "\n" + "Created: " + dtstamp;
             return formatedStr;
         }
 

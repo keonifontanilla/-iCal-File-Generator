@@ -18,10 +18,7 @@ namespace iCal_File_Generator
         {
             InitializeComponent();
             InitializeDateTime();
-            eventsListBox.DrawMode = DrawMode.OwnerDrawVariable;
-            eventsListBox.MeasureItem += new MeasureItemEventHandler(eventsListBox_MeasureItem);
-            eventsListBox.DrawItem += new DrawItemEventHandler(eventsListBox_DrawItem);
-            this.Controls.Add(this.eventsListBox);
+            InitializeListbox();
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -36,14 +33,13 @@ namespace iCal_File_Generator
             {
                 db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp);
                 GetData();
+                titleTextBox.Text = "";
+                descriptionTextBox.Text = "";
             }
             else
             {
                 HandleErrors.DisplayErrorMsg();
             }
-
-            titleTextBox.Text = "";
-            descriptionTextBox.Text = "";
         }
 
         private void InitializeDateTime()
@@ -70,6 +66,14 @@ namespace iCal_File_Generator
             eventsListBox.DataSource = dbEvents;
         }
 
+        private void InitializeListbox()
+        {
+            eventsListBox.DrawMode = DrawMode.OwnerDrawVariable;
+            eventsListBox.MeasureItem += new MeasureItemEventHandler(eventsListBox_MeasureItem);
+            eventsListBox.DrawItem += new DrawItemEventHandler(eventsListBox_DrawItem);
+            this.Controls.Add(this.eventsListBox);
+        }
+
         private void eventsListBox_MeasureItem(object sender, MeasureItemEventArgs e)
         {
             foreach (string item in eventsListBox.Items)
@@ -82,7 +86,7 @@ namespace iCal_File_Generator
         private void eventsListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
-            e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds);
+            if (e.Index != -1) { e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds); }
         }
     }
 }
