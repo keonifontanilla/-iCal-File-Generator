@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace iCal_File_Generator
@@ -29,9 +23,7 @@ namespace iCal_File_Generator
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
-            // string timezone = timezoneComboBox.Text;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
-            //string tzOffset = tz.BaseUtcOffset.ToString();
 
             HandleErrors.HandleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
@@ -100,6 +92,7 @@ namespace iCal_File_Generator
             string randomNum = "";
             Random random = new Random();
             randomNum = random.Next().ToString() + random.Next().ToString();
+
             return randomNum + "@kmf";
         }
 
@@ -114,6 +107,7 @@ namespace iCal_File_Generator
                 TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
                 TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
             };
+
             timezoneComboBox.DataSource = zone;
         }
     }

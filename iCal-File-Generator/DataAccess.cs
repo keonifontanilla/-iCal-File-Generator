@@ -21,7 +21,7 @@ namespace iCal_File_Generator
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid, timezone = timezone };
+                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone };
                 FileGenerator fg= new FileGenerator();
                 fg.FormatInput(newEvent);
 
@@ -35,7 +35,7 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = newEvent.endTime;
                     cmd.Parameters.Add("@dtstamp", SqlDbType.DateTime).Value = newEvent.dtstamp;
                     cmd.Parameters.Add("@uniqueIdentifier", SqlDbType.NVarChar).Value = newEvent.uniqueIdentifier;
-                    cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timezone.ToString();
+                    cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timeZone.ToString();
                     cmd.ExecuteNonQuery();
                 }   
             }

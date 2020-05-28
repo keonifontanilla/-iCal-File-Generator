@@ -1,12 +1,6 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
-using System.CodeDom.Compiler;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iCal_File_Generator
 {
@@ -35,13 +29,13 @@ namespace iCal_File_Generator
         {
             List<string> newInputs = new List<string>();            
             string formatedStr = "";
-            newEvent.GetTimezoneOffset();
+            newEvent.GetTimeZoneOffset();
 
             newInputs.Add("BEGIN:VCALENDAR");
             newInputs.Add("VERSION:2.0");
             newInputs.Add("PRODID:-//ics-file-generator//iCal File Generator");
             newInputs.Add("BEGIN:VTIMEZONE");
-            newInputs.Add($"TZID:{newEvent.GetTZID()}");
+            newInputs.Add($"TZID:{newEvent.tzid}");
             newInputs.Add("BEGIN:STANDARD");
             newInputs.Add("DTSTART:19981025T020000");
             newInputs.Add($"TZOFFSETFROM:{newEvent.tzOffSetFrom}");
@@ -54,6 +48,7 @@ namespace iCal_File_Generator
             newInputs.Add("END:DAYLIGHT");
             newInputs.Add("END:VTIMEZONE");
             newInputs.Add("BEGIN:VEVENT");
+
             foreach (KeyValuePair<string, string> str in newEvent.GetInputs())
             {
                 switch(str.Key)
@@ -64,6 +59,9 @@ namespace iCal_File_Generator
                         continue;
                     case "DTSTART":
                     case "DTEND":
+                        formatedStr = Foldline($"{str.Key};TZID={newEvent.tzid}:{FormatTime(str.Value)}");
+                        newInputs.Add(formatedStr);
+                        continue;
                     case "DTSTAMP":
                         formatedStr = Foldline($"{str.Key}:{FormatTime(str.Value)}");
                         newInputs.Add(formatedStr);
@@ -72,6 +70,7 @@ namespace iCal_File_Generator
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);
             }
+
             newInputs.Add("END:VEVENT");
             newInputs.Add("END:VCALENDAR");
             GenerateFile(newInputs);
@@ -85,6 +84,7 @@ namespace iCal_File_Generator
             dateTime = dateTime.Replace("/","");
             dateTime = dateTime.Replace(" ", "");
             dateTime = dateTime.Replace(":", "");
+
             return dateTime.Contains(".") ? dateTime.Insert(8, "T").Substring(0, dateTime.LastIndexOf(".") + 1) : dateTime.Insert(8, "T");
         }
 
@@ -104,6 +104,7 @@ namespace iCal_File_Generator
                 length = 74;
             }
             lines.Add(line);
+
             return string.Join("\r\n ", lines);
         }
     }

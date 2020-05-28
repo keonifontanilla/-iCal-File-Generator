@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iCal_File_Generator
 {
@@ -18,47 +14,44 @@ namespace iCal_File_Generator
         public string endTime { get; set; }
         public string dtstamp { get; set; }
         public string uniqueIdentifier { get; set; }
-        public TimeZoneInfo timezone { get; set; }
-
-        public string GetTZID()
-        {
-            string tzid = "";
-            int indexOfNextSpace = 0;
-            int indexOfSpace = timezone.DisplayName.IndexOf(" ") + 1;
-            if (timezone.DisplayName.Substring(indexOfSpace).IndexOf(" ") >= 0)
-            {
-                indexOfNextSpace = timezone.DisplayName.Substring(indexOfSpace).IndexOf(" ");
-                tzid = "US-" + timezone.DisplayName.Substring(indexOfSpace, indexOfNextSpace);
-                return tzid;
-            }
-            tzid = "US-" + timezone.DisplayName.Substring(indexOfSpace);
-            return tzid;
-        }
-
+        public TimeZoneInfo timeZone { get; set; }
+        public string tzid { get; private set; }
         public string tzOffSetFrom { get; private set; }
         public string tzOffSetTo { get; private set; }
 
-        public void GetTimezoneOffset()
+        public void GetTimeZoneOffset()
         {
-            switch (GetTZID())
+            switch (timeZone.StandardName)
             {
-                case "US-Hawaii":
+                case "Hawaiian Standard Time":
+                    tzid = "Pacific/Honolulu";
                     tzOffSetFrom = "-1000";
                     tzOffSetTo = "-1000";
                     break;
-                case "US-Mountain":
+                case "Pacific Standard Time":
+                    tzid = "America/Los_Angeles";
+                    tzOffSetFrom = "-0700";
+                    tzOffSetTo = "-0800";
+                    break;
+                case "Mountain Standard Time":
+                    tzid = "America/Phoenix";
                     tzOffSetFrom = "-0600";
                     tzOffSetTo = "-0700";
                     break;
-                case "US-Central":
+                case "Central Standard Time":
+                    tzid = "America/Chicago";
                     tzOffSetFrom = "-0500";
                     tzOffSetTo = "-0600";
                     break;
-                case "US-Eastern":
+                case "Eastern Standard Time":
+                    tzid = "America/New_York";
                     tzOffSetFrom = "-0400";
                     tzOffSetTo = "-0500";
                     break;
-                case "US-Alaskan":
+                case "Alaskan Standard Time":
+                    tzid = "America/Anchorage";
+                    tzOffSetFrom = "-0800";
+                    tzOffSetTo = "-0900";
                     break;
             }
         }
@@ -71,6 +64,7 @@ namespace iCal_File_Generator
             inputs.Add("DTEND", endTime);
             inputs.Add("DTSTAMP", dtstamp);
             inputs.Add("UID", uniqueIdentifier);
+
             return inputs;
         }
     }
