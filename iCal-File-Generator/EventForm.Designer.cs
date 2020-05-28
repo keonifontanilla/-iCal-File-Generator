@@ -40,6 +40,8 @@
             this.endTimePicker = new System.Windows.Forms.DateTimePicker();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
             this.eventsListBox = new System.Windows.Forms.ListBox();
+            this.timezoneComboBox = new System.Windows.Forms.ComboBox();
+            this.timezoneLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -79,7 +81,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(186, 307);
+            this.submitButton.Location = new System.Drawing.Point(186, 342);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -90,7 +92,7 @@
             // startDatePicker
             // 
             this.startDatePicker.CustomFormat = "";
-            this.startDatePicker.Location = new System.Drawing.Point(122, 235);
+            this.startDatePicker.Location = new System.Drawing.Point(122, 270);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 5;
@@ -100,7 +102,7 @@
             // startTimePicker
             // 
             this.startTimePicker.CustomFormat = "";
-            this.startTimePicker.Location = new System.Drawing.Point(342, 235);
+            this.startTimePicker.Location = new System.Drawing.Point(342, 270);
             this.startTimePicker.Name = "startTimePicker";
             this.startTimePicker.Size = new System.Drawing.Size(98, 20);
             this.startTimePicker.TabIndex = 6;
@@ -108,7 +110,7 @@
             // startDateLabel
             // 
             this.startDateLabel.AutoSize = true;
-            this.startDateLabel.Location = new System.Drawing.Point(22, 235);
+            this.startDateLabel.Location = new System.Drawing.Point(22, 270);
             this.startDateLabel.Name = "startDateLabel";
             this.startDateLabel.Size = new System.Drawing.Size(58, 13);
             this.startDateLabel.TabIndex = 8;
@@ -117,7 +119,7 @@
             // endDateLabel
             // 
             this.endDateLabel.AutoSize = true;
-            this.endDateLabel.Location = new System.Drawing.Point(22, 261);
+            this.endDateLabel.Location = new System.Drawing.Point(22, 296);
             this.endDateLabel.Name = "endDateLabel";
             this.endDateLabel.Size = new System.Drawing.Size(55, 13);
             this.endDateLabel.TabIndex = 11;
@@ -126,7 +128,7 @@
             // endTimePicker
             // 
             this.endTimePicker.CustomFormat = "";
-            this.endTimePicker.Location = new System.Drawing.Point(342, 261);
+            this.endTimePicker.Location = new System.Drawing.Point(342, 296);
             this.endTimePicker.Name = "endTimePicker";
             this.endTimePicker.Size = new System.Drawing.Size(98, 20);
             this.endTimePicker.TabIndex = 10;
@@ -134,7 +136,7 @@
             // endDatePicker
             // 
             this.endDatePicker.CustomFormat = "";
-            this.endDatePicker.Location = new System.Drawing.Point(122, 261);
+            this.endDatePicker.Location = new System.Drawing.Point(122, 296);
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(200, 20);
             this.endDatePicker.TabIndex = 9;
@@ -150,11 +152,30 @@
             this.eventsListBox.Size = new System.Drawing.Size(402, 364);
             this.eventsListBox.TabIndex = 12;
             // 
+            // timezoneComboBox
+            // 
+            this.timezoneComboBox.FormattingEnabled = true;
+            this.timezoneComboBox.Location = new System.Drawing.Point(122, 228);
+            this.timezoneComboBox.Name = "timezoneComboBox";
+            this.timezoneComboBox.Size = new System.Drawing.Size(244, 21);
+            this.timezoneComboBox.TabIndex = 13;
+            // 
+            // timezoneLabel
+            // 
+            this.timezoneLabel.AutoSize = true;
+            this.timezoneLabel.Location = new System.Drawing.Point(22, 228);
+            this.timezoneLabel.Name = "timezoneLabel";
+            this.timezoneLabel.Size = new System.Drawing.Size(56, 13);
+            this.timezoneLabel.TabIndex = 14;
+            this.timezoneLabel.Text = "Timezone:";
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.timezoneLabel);
+            this.Controls.Add(this.timezoneComboBox);
             this.Controls.Add(this.eventsListBox);
             this.Controls.Add(this.endDateLabel);
             this.Controls.Add(this.endTimePicker);
@@ -188,6 +209,8 @@
         private System.Windows.Forms.DateTimePicker endTimePicker;
         private System.Windows.Forms.DateTimePicker endDatePicker;
         private System.Windows.Forms.ListBox eventsListBox;
+        private System.Windows.Forms.ComboBox timezoneComboBox;
+        private System.Windows.Forms.Label timezoneLabel;
     }
 }
 

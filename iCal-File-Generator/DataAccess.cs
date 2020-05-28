@@ -16,12 +16,12 @@ namespace iCal_File_Generator
     {
         static string connStr = ConfigurationManager.ConnectionStrings["EventsDB"].ConnectionString;
         
-        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid)
+        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid };
+                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid, timezone = timezone };
                 FileGenerator fg= new FileGenerator();
                 fg.FormatInput(newEvent);
 
@@ -35,6 +35,7 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = newEvent.endTime;
                     cmd.Parameters.Add("@dtstamp", SqlDbType.DateTime).Value = newEvent.dtstamp;
                     cmd.Parameters.Add("@uniqueIdentifier", SqlDbType.NVarChar).Value = newEvent.uniqueIdentifier;
+                    cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timezone.ToString();
                     cmd.ExecuteNonQuery();
                 }   
             }

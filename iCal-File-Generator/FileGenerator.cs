@@ -33,12 +33,26 @@ namespace iCal_File_Generator
         ***********************************************************************************************/
         public void FormatInput(Event newEvent)
         {
-            List<string> newInputs = new List<string>();
+            List<string> newInputs = new List<string>();            
             string formatedStr = "";
+            newEvent.GetTimezoneOffset();
 
             newInputs.Add("BEGIN:VCALENDAR");
             newInputs.Add("VERSION:2.0");
             newInputs.Add("PRODID:-//ics-file-generator//iCal File Generator");
+            newInputs.Add("BEGIN:VTIMEZONE");
+            newInputs.Add($"TZID:{newEvent.GetTZID()}");
+            newInputs.Add("BEGIN:STANDARD");
+            newInputs.Add("DTSTART:19981025T020000");
+            newInputs.Add($"TZOFFSETFROM:{newEvent.tzOffSetFrom}");
+            newInputs.Add($"TZOFFSETTO:{newEvent.tzOffSetTo}");
+            newInputs.Add("END:STANDARD");
+            newInputs.Add("BEGIN:DAYLIGHT");
+            newInputs.Add("DTSTART:19981025T020000");
+            newInputs.Add($"TZOFFSETFROM:{newEvent.tzOffSetTo}");
+            newInputs.Add($"TZOFFSETTO:{newEvent.tzOffSetFrom}");
+            newInputs.Add("END:DAYLIGHT");
+            newInputs.Add("END:VTIMEZONE");
             newInputs.Add("BEGIN:VEVENT");
             foreach (KeyValuePair<string, string> str in newEvent.GetInputs())
             {

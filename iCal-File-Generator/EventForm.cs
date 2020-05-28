@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -19,6 +20,7 @@ namespace iCal_File_Generator
             InitializeComponent();
             InitializeDateTime();
             InitializeListbox();
+            InitializeTimezone();
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -26,12 +28,16 @@ namespace iCal_File_Generator
             string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
+            string uid = CreateUID();
+            // string timezone = timezoneComboBox.Text;
+            TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
+            //string tzOffset = tz.BaseUtcOffset.ToString();
 
             HandleErrors.HandleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg)) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, CreateUID());
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone);
                 GetData();
                 titleTextBox.Text = "";
                 descriptionTextBox.Text = "";
@@ -95,6 +101,20 @@ namespace iCal_File_Generator
             Random random = new Random();
             randomNum = random.Next().ToString() + random.Next().ToString();
             return randomNum + "@kmf";
+        }
+
+        private void InitializeTimezone()
+        {
+            List<TimeZoneInfo> zone = new List<TimeZoneInfo>
+            {
+                TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time"),
+                TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
+                TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time"),
+                TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
+                TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
+            };
+            timezoneComboBox.DataSource = zone;
         }
     }
 }
