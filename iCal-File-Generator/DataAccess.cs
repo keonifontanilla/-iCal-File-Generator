@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace iCal_File_Generator
 {
@@ -16,12 +10,12 @@ namespace iCal_File_Generator
     {
         static string connStr = ConfigurationManager.ConnectionStrings["EventsDB"].ConnectionString;
         
-        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone)
+        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid, timezone = timezone };
+                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid, timezone = timezone, classification = classification };
                 FileGenerator fg= new FileGenerator();
                 fg.FormatInput(newEvent);
 
@@ -36,6 +30,7 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@dtstamp", SqlDbType.DateTime).Value = newEvent.dtstamp;
                     cmd.Parameters.Add("@uniqueIdentifier", SqlDbType.NVarChar).Value = newEvent.uniqueIdentifier;
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timezone.ToString();
+                    cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = newEvent.classification;
                     cmd.ExecuteNonQuery();
                 }   
             }
@@ -45,7 +40,6 @@ namespace iCal_File_Generator
         {
             List<string> data = new List<string>();
             
-
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();

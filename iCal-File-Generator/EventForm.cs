@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace iCal_File_Generator
@@ -21,6 +15,7 @@ namespace iCal_File_Generator
             InitializeDateTime();
             InitializeListbox();
             InitializeTimezone();
+            InitializeClassification();
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -29,15 +24,13 @@ namespace iCal_File_Generator
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
-            // string timezone = timezoneComboBox.Text;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
-            //string tzOffset = tz.BaseUtcOffset.ToString();
 
             HandleErrors.HandleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg)) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone);
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text);
                 GetData();
                 titleTextBox.Text = "";
                 descriptionTextBox.Text = "";
@@ -115,6 +108,15 @@ namespace iCal_File_Generator
                 TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
             };
             timezoneComboBox.DataSource = zone;
+        }
+
+        private void InitializeClassification()
+        {
+            List<string> classification = new List<string>()
+            {
+                "PUBLIC", "PRIVATE", "CONFIDENTIAL"
+            };
+            classificationComboBox.DataSource = classification;
         }
     }
 }

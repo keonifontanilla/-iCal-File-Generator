@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iCal_File_Generator
 {
@@ -19,6 +15,7 @@ namespace iCal_File_Generator
         public string dtstamp { get; set; }
         public string uniqueIdentifier { get; set; }
         public TimeZoneInfo timezone { get; set; }
+        public string classification { get; set; }
 
         public string GetTZID()
         {
@@ -71,6 +68,7 @@ namespace iCal_File_Generator
             inputs.Add("DTEND", endTime);
             inputs.Add("DTSTAMP", dtstamp);
             inputs.Add("UID", uniqueIdentifier);
+            inputs.Add("CLASS", classification);
             return inputs;
         }
     }

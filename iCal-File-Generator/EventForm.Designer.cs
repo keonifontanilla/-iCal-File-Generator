@@ -42,6 +42,8 @@
             this.eventsListBox = new System.Windows.Forms.ListBox();
             this.timezoneComboBox = new System.Windows.Forms.ComboBox();
             this.timezoneLabel = new System.Windows.Forms.Label();
+            this.classificationComboBox = new System.Windows.Forms.ComboBox();
+            this.classificationLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -81,7 +83,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(186, 342);
+            this.submitButton.Location = new System.Drawing.Point(186, 377);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -92,7 +94,7 @@
             // startDatePicker
             // 
             this.startDatePicker.CustomFormat = "";
-            this.startDatePicker.Location = new System.Drawing.Point(122, 270);
+            this.startDatePicker.Location = new System.Drawing.Point(122, 305);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 5;
@@ -102,7 +104,7 @@
             // startTimePicker
             // 
             this.startTimePicker.CustomFormat = "";
-            this.startTimePicker.Location = new System.Drawing.Point(342, 270);
+            this.startTimePicker.Location = new System.Drawing.Point(342, 305);
             this.startTimePicker.Name = "startTimePicker";
             this.startTimePicker.Size = new System.Drawing.Size(98, 20);
             this.startTimePicker.TabIndex = 6;
@@ -110,7 +112,7 @@
             // startDateLabel
             // 
             this.startDateLabel.AutoSize = true;
-            this.startDateLabel.Location = new System.Drawing.Point(22, 270);
+            this.startDateLabel.Location = new System.Drawing.Point(22, 305);
             this.startDateLabel.Name = "startDateLabel";
             this.startDateLabel.Size = new System.Drawing.Size(58, 13);
             this.startDateLabel.TabIndex = 8;
@@ -119,7 +121,7 @@
             // endDateLabel
             // 
             this.endDateLabel.AutoSize = true;
-            this.endDateLabel.Location = new System.Drawing.Point(22, 296);
+            this.endDateLabel.Location = new System.Drawing.Point(22, 331);
             this.endDateLabel.Name = "endDateLabel";
             this.endDateLabel.Size = new System.Drawing.Size(55, 13);
             this.endDateLabel.TabIndex = 11;
@@ -128,7 +130,7 @@
             // endTimePicker
             // 
             this.endTimePicker.CustomFormat = "";
-            this.endTimePicker.Location = new System.Drawing.Point(342, 296);
+            this.endTimePicker.Location = new System.Drawing.Point(342, 331);
             this.endTimePicker.Name = "endTimePicker";
             this.endTimePicker.Size = new System.Drawing.Size(98, 20);
             this.endTimePicker.TabIndex = 10;
@@ -136,7 +138,7 @@
             // endDatePicker
             // 
             this.endDatePicker.CustomFormat = "";
-            this.endDatePicker.Location = new System.Drawing.Point(122, 296);
+            this.endDatePicker.Location = new System.Drawing.Point(122, 331);
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(200, 20);
             this.endDatePicker.TabIndex = 9;
@@ -169,11 +171,30 @@
             this.timezoneLabel.TabIndex = 14;
             this.timezoneLabel.Text = "Timezone:";
             // 
+            // classificationComboBox
+            // 
+            this.classificationComboBox.FormattingEnabled = true;
+            this.classificationComboBox.Location = new System.Drawing.Point(122, 266);
+            this.classificationComboBox.Name = "classificationComboBox";
+            this.classificationComboBox.Size = new System.Drawing.Size(121, 21);
+            this.classificationComboBox.TabIndex = 15;
+            // 
+            // classificationLabel
+            // 
+            this.classificationLabel.AutoSize = true;
+            this.classificationLabel.Location = new System.Drawing.Point(24, 266);
+            this.classificationLabel.Name = "classificationLabel";
+            this.classificationLabel.Size = new System.Drawing.Size(71, 13);
+            this.classificationLabel.TabIndex = 16;
+            this.classificationLabel.Text = "Classification:";
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.classificationLabel);
+            this.Controls.Add(this.classificationComboBox);
             this.Controls.Add(this.timezoneLabel);
             this.Controls.Add(this.timezoneComboBox);
             this.Controls.Add(this.eventsListBox);
@@ -211,6 +232,8 @@
         private System.Windows.Forms.ListBox eventsListBox;
         private System.Windows.Forms.ComboBox timezoneComboBox;
         private System.Windows.Forms.Label timezoneLabel;
+        private System.Windows.Forms.ComboBox classificationComboBox;
+        private System.Windows.Forms.Label classificationLabel;
     }
 }
 
