@@ -118,5 +118,10 @@ namespace iCal_File_Generator
             };
             classificationComboBox.DataSource = classification;
         }
+
+        private void viewButton_Click(object sender, EventArgs e)
+        {
+            eventInfoTextBox.Text = db.GetEvents()[eventsListBox.SelectedIndex];
+        }
     }
 }

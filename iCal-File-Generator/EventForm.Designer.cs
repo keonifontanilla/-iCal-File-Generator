@@ -44,6 +44,8 @@
             this.timezoneLabel = new System.Windows.Forms.Label();
             this.classificationComboBox = new System.Windows.Forms.ComboBox();
             this.classificationLabel = new System.Windows.Forms.Label();
+            this.viewButton = new System.Windows.Forms.Button();
+            this.eventInfoTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -149,7 +151,7 @@
             this.eventsListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.eventsListBox.FormattingEnabled = true;
             this.eventsListBox.ItemHeight = 24;
-            this.eventsListBox.Location = new System.Drawing.Point(518, 106);
+            this.eventsListBox.Location = new System.Drawing.Point(527, 65);
             this.eventsListBox.Name = "eventsListBox";
             this.eventsListBox.Size = new System.Drawing.Size(402, 364);
             this.eventsListBox.TabIndex = 12;
@@ -188,11 +190,34 @@
             this.classificationLabel.TabIndex = 16;
             this.classificationLabel.Text = "Classification:";
             // 
+            // viewButton
+            // 
+            this.viewButton.Location = new System.Drawing.Point(527, 447);
+            this.viewButton.Name = "viewButton";
+            this.viewButton.Size = new System.Drawing.Size(75, 23);
+            this.viewButton.TabIndex = 17;
+            this.viewButton.Text = "View";
+            this.viewButton.UseVisualStyleBackColor = true;
+            this.viewButton.Click += new System.EventHandler(this.viewButton_Click);
+            // 
+            // eventInfoTextBox
+            // 
+            this.eventInfoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.eventInfoTextBox.Location = new System.Drawing.Point(27, 419);
+            this.eventInfoTextBox.Multiline = true;
+            this.eventInfoTextBox.Name = "eventInfoTextBox";
+            this.eventInfoTextBox.ReadOnly = true;
+            this.eventInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.eventInfoTextBox.Size = new System.Drawing.Size(413, 169);
+            this.eventInfoTextBox.TabIndex = 18;
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.eventInfoTextBox);
+            this.Controls.Add(this.viewButton);
             this.Controls.Add(this.classificationLabel);
             this.Controls.Add(this.classificationComboBox);
             this.Controls.Add(this.timezoneLabel);
@@ -234,6 +259,8 @@
         private System.Windows.Forms.Label timezoneLabel;
         private System.Windows.Forms.ComboBox classificationComboBox;
         private System.Windows.Forms.Label classificationLabel;
+        private System.Windows.Forms.Button viewButton;
+        private System.Windows.Forms.TextBox eventInfoTextBox;
     }
 }
 
