@@ -93,6 +93,7 @@ namespace iCal_File_Generator
             string randomNum = "";
             Random random = new Random();
             randomNum = random.Next().ToString() + random.Next().ToString();
+
             return randomNum + "@kmf";
         }
 
@@ -107,6 +108,7 @@ namespace iCal_File_Generator
                 TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
                 TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time"),
             };
+
             timezoneComboBox.DataSource = zone;
         }
 
