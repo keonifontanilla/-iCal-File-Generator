@@ -15,14 +15,15 @@ namespace iCal_File_Generator
         public string dtstamp { get; set; }
         public string uniqueIdentifier { get; set; }
         public string classification { get; set; }
-        public TimeZoneInfo timeZone { get; set; }
+        public string timeZoneStandardName { get; set; }
+        public string timeZone { get; set; }
         public string tzid { get; private set; }
         public string tzOffSetFrom { get; private set; }
         public string tzOffSetTo { get; private set; }
 
         public void GetTimeZoneOffset()
         {
-            switch (timeZone.StandardName)
+            switch (timeZoneStandardName)
             {
                 case "Hawaiian Standard Time":
                     tzid = "Pacific/Honolulu";

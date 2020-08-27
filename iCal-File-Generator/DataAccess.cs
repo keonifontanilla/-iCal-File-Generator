@@ -10,13 +10,20 @@ namespace iCal_File_Generator
     {
         static string connStr = ConfigurationManager.ConnectionStrings["EventsDB"].ConnectionString;
 
-        List<string> records;
+        List<Event> records;
+
         public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                Event newEvent = new Event { summary = summary, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone, classification = classification };
+                string timeZoneStandardName = timezone.StandardName;
+                Event newEvent = new Event 
+                { 
+                    summary = summary, description = description, startTime = startTime, endTime = endTime, 
+                    dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone.DisplayName, 
+                    timeZoneStandardName = timeZoneStandardName, classification = classification 
+                };
                 FileGenerator fg = new FileGenerator();
                 fg.FormatInput(newEvent);
 
@@ -40,7 +47,7 @@ namespace iCal_File_Generator
         public List<string> ListEvents()
         {
             List<string> data = new List<string>();
-            records = new List<string>();
+            records = new List<Event>();
             
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -58,7 +65,7 @@ namespace iCal_File_Generator
             return data;
         }
 
-        private string ReadSingleRow(IDataRecord dataReader, List<string> records)
+        private string ReadSingleRow(IDataRecord dataReader, List<Event> events)
         {
             string title = dataReader["summary"].ToString().Trim();
             string description = dataReader["description"].ToString().Trim();
@@ -69,22 +76,18 @@ namespace iCal_File_Generator
             string dtstamp = dataReader["dtstamp"].ToString().Trim();
             string newLine = Environment.NewLine;
             string formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp;
-            string expandedRowStr = "Title: " + title + newLine 
-                                  + "Description: " + description + newLine 
-                                  + "Start time: " + startTime + newLine 
-                                  + "End time: " + endTime + newLine
-                                  + "Timezone: " + timezone + newLine
-                                  + "Classification: " + classification + newLine
-                                  + "Created: " + dtstamp;
-            records.Add(expandedRowStr);
+
+            Event oneEvent = new Event { summary = title, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, timeZone = timezone, classification = classification };
+            events.Add(oneEvent);
+
             return formatedStr;
         }
 
-        public List<string> GetEvents()
+        public List<Event> GetEvents()
         {
             return records;
         }
-
+      
         private string TrimString(string str, int maxChars)
         {
             return str.Length <= maxChars ? str : str.Substring(0, maxChars) + "...";

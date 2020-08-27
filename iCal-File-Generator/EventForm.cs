@@ -112,6 +112,24 @@ namespace iCal_File_Generator
             timezoneComboBox.DataSource = zone;
         }
 
+        private TimeZoneInfo GetTimeZone(string tzDayName)
+        {
+            switch(tzDayName)
+            {
+                case string tz when tz.Contains("Hawaii"):
+                    return TimeZoneInfo.FindSystemTimeZoneById("Hawaiian Standard Time");
+                case string tz when tz.Contains("Pacific"):
+                    return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                case string tz when tz.Contains("Mountain"):
+                    return TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time");
+                case string tz when tz.Contains("Central"):
+                    return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                case string tz when tz.Contains("Eastern"):
+                    return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            }
+            return TimeZoneInfo.FindSystemTimeZoneById("Alaskan Standard Time");
+        }   
+
         private void InitializeClassification()
         {
             List<string> classification = new List<string>()
@@ -123,7 +141,39 @@ namespace iCal_File_Generator
 
         private void viewButton_Click(object sender, EventArgs e)
         {
-            eventInfoTextBox.Text = db.GetEvents()[eventsListBox.SelectedIndex];
+            int index = eventsListBox.SelectedIndex;
+            string newLine = Environment.NewLine;
+           
+            if (index != -1)
+            {
+                string expandedRowStr = "Title: " + db.GetEvents()[index].summary + newLine
+                                      + "Description: " + db.GetEvents()[index].description + newLine
+                                      + "Start time: " + db.GetEvents()[index].startTime + newLine
+                                      + "End time: " + db.GetEvents()[index].endTime + newLine
+                                      + "Timezone: " + db.GetEvents()[index].timeZone + newLine
+                                      + "Classification: " + db.GetEvents()[index].classification + newLine
+                                      + "Created: " + db.GetEvents()[index].dtstamp;
+
+                var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
+                var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
+
+                eventInfoTextBox.Text = expandedRowStr;
+
+                titleTextBox.Text = db.GetEvents()[index].summary;
+                descriptionTextBox.Text = db.GetEvents()[index].description;
+
+                startDatePicker.MinDate = startTime;
+                startDatePicker.Value = startTime;
+                startTimePicker.Value = startTime;
+
+                endDatePicker.Value = endTime;
+                endTimePicker.Value = endTime;
+
+                timezoneComboBox.SelectedItem = GetTimeZone(db.GetEvents()[index].timeZone);
+
+                classificationComboBox.SelectedItem = db.GetEvents()[index].classification;
+
+            }
         }
     }
 }
