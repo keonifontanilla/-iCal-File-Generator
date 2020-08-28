@@ -153,12 +153,26 @@ namespace iCal_File_Generator
                                       + "Timezone: " + db.GetEvents()[index].timeZone + newLine
                                       + "Classification: " + db.GetEvents()[index].classification + newLine
                                       + "Created: " + db.GetEvents()[index].dtstamp;
+                
+                viewPanel.Visible = true;
 
-                var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
-                var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
+                eventInfoTextBox.Text = expandedRowStr;                
+            }
+        }
 
-                eventInfoTextBox.Text = expandedRowStr;
+        private void panelCloseButton_Click(object sender, EventArgs e)
+        {
+            viewPanel.Visible = false;
+        }
 
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            int index = eventsListBox.SelectedIndex;
+            var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
+            var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
+
+            if (index != -1)
+            {
                 titleTextBox.Text = db.GetEvents()[index].summary;
                 descriptionTextBox.Text = db.GetEvents()[index].description;
 
@@ -170,9 +184,7 @@ namespace iCal_File_Generator
                 endTimePicker.Value = endTime;
 
                 timezoneComboBox.SelectedItem = GetTimeZone(db.GetEvents()[index].timeZone);
-
                 classificationComboBox.SelectedItem = db.GetEvents()[index].classification;
-
             }
         }
     }

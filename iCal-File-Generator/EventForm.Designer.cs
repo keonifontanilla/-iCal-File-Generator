@@ -46,6 +46,10 @@
             this.classificationLabel = new System.Windows.Forms.Label();
             this.viewButton = new System.Windows.Forms.Button();
             this.eventInfoTextBox = new System.Windows.Forms.TextBox();
+            this.viewPanel = new System.Windows.Forms.Panel();
+            this.panelCloseButton = new System.Windows.Forms.Button();
+            this.updateButton = new System.Windows.Forms.Button();
+            this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -203,20 +207,51 @@
             // eventInfoTextBox
             // 
             this.eventInfoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eventInfoTextBox.Location = new System.Drawing.Point(27, 419);
+            this.eventInfoTextBox.Location = new System.Drawing.Point(3, 0);
             this.eventInfoTextBox.Multiline = true;
             this.eventInfoTextBox.Name = "eventInfoTextBox";
             this.eventInfoTextBox.ReadOnly = true;
             this.eventInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.eventInfoTextBox.Size = new System.Drawing.Size(413, 169);
+            this.eventInfoTextBox.Size = new System.Drawing.Size(396, 306);
             this.eventInfoTextBox.TabIndex = 18;
+            // 
+            // viewPanel
+            // 
+            this.viewPanel.Controls.Add(this.panelCloseButton);
+            this.viewPanel.Controls.Add(this.eventInfoTextBox);
+            this.viewPanel.Location = new System.Drawing.Point(527, 65);
+            this.viewPanel.Name = "viewPanel";
+            this.viewPanel.Size = new System.Drawing.Size(402, 364);
+            this.viewPanel.TabIndex = 19;
+            this.viewPanel.Visible = false;
+            // 
+            // panelCloseButton
+            // 
+            this.panelCloseButton.Location = new System.Drawing.Point(165, 327);
+            this.panelCloseButton.Name = "panelCloseButton";
+            this.panelCloseButton.Size = new System.Drawing.Size(75, 23);
+            this.panelCloseButton.TabIndex = 19;
+            this.panelCloseButton.Text = "Close";
+            this.panelCloseButton.UseVisualStyleBackColor = true;
+            this.panelCloseButton.Click += new System.EventHandler(this.panelCloseButton_Click);
+            // 
+            // updateButton
+            // 
+            this.updateButton.Location = new System.Drawing.Point(608, 447);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(75, 23);
+            this.updateButton.TabIndex = 20;
+            this.updateButton.Text = "Update";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
-            this.Controls.Add(this.eventInfoTextBox);
+            this.Controls.Add(this.updateButton);
+            this.Controls.Add(this.viewPanel);
             this.Controls.Add(this.viewButton);
             this.Controls.Add(this.classificationLabel);
             this.Controls.Add(this.classificationComboBox);
@@ -236,6 +271,8 @@
             this.Controls.Add(this.titleLabel);
             this.Name = "EventForm";
             this.Text = "Event File Generator";
+            this.viewPanel.ResumeLayout(false);
+            this.viewPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,6 +298,9 @@
         private System.Windows.Forms.Label classificationLabel;
         private System.Windows.Forms.Button viewButton;
         private System.Windows.Forms.TextBox eventInfoTextBox;
+        private System.Windows.Forms.Panel viewPanel;
+        private System.Windows.Forms.Button panelCloseButton;
+        private System.Windows.Forms.Button updateButton;
     }
 }
 
