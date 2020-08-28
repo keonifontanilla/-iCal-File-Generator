@@ -66,6 +66,22 @@ namespace iCal_File_Generator
             }
         }
 
+        public void DeleteEvent(int eventID)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand("spEvent_DeleteEvent", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@eventID", SqlDbType.NVarChar).Value = eventID;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public List<string> ListEvents()
         {
             List<string> data = new List<string>();

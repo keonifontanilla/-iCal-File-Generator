@@ -56,6 +56,10 @@ namespace iCal_File_Generator
         {
             titleTextBox.Text = "";
             descriptionTextBox.Text = "";
+            startDatePicker.Value = DateTime.Now;
+            startTimePicker.Value = DateTime.Now;
+            endDatePicker.Value = DateTime.Now;
+            endTimePicker.Value = DateTime.Now;
             InitializeDateTime();
             InitializeTimezone();
             InitializeClassification();
@@ -188,13 +192,14 @@ namespace iCal_File_Generator
         private void updateButton_Click(object sender, EventArgs e)
         {
             int index = eventsListBox.SelectedIndex;
-            var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
-            var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
-
-            updateClicked = true;
 
             if (index != -1)
             {
+                var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
+                var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
+
+                updateClicked = true;
+
                 titleTextBox.Text = db.GetEvents()[index].summary;
                 descriptionTextBox.Text = db.GetEvents()[index].description;
 
@@ -215,6 +220,18 @@ namespace iCal_File_Generator
         {
             ClearInputs();
             updateClicked = false;
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            int index = eventsListBox.SelectedIndex;
+            if (index != -1)
+            {
+                db.DeleteEvent(db.GetEvents()[index].eventID);
+            }
+            
+            GetData();
+            ClearInputs();
         }
     }
 }

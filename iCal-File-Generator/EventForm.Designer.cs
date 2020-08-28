@@ -50,6 +50,7 @@
             this.panelCloseButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.clearInputsButton = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -256,11 +257,22 @@
             this.clearInputsButton.UseVisualStyleBackColor = true;
             this.clearInputsButton.Click += new System.EventHandler(this.clearInputsButton_Click);
             // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(692, 447);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 22;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.clearInputsButton);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.viewPanel);
@@ -314,6 +326,7 @@
         private System.Windows.Forms.Button panelCloseButton;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button clearInputsButton;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
 
