@@ -44,6 +44,28 @@ namespace iCal_File_Generator
             }
         }
 
+        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, int eventID)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                
+                using (SqlCommand cmd = new SqlCommand("spEvent_UpdateEvent", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@eventID", SqlDbType.NVarChar).Value = eventID;
+                    cmd.Parameters.Add("@summary", SqlDbType.NVarChar).Value = summary;
+                    cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = description;
+                    cmd.Parameters.Add("@startTime", SqlDbType.DateTime).Value = startTime;
+                    cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = endTime;
+                    cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = timezone.ToString();
+                    cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = classification;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public List<string> ListEvents()
         {
             List<string> data = new List<string>();
@@ -67,6 +89,7 @@ namespace iCal_File_Generator
 
         private string ReadSingleRow(IDataRecord dataReader, List<Event> events)
         {
+            int eventID = (int) dataReader["eventID"];
             string title = dataReader["summary"].ToString().Trim();
             string description = dataReader["description"].ToString().Trim();
             string startTime = dataReader["startTime"].ToString().Trim();
@@ -75,9 +98,9 @@ namespace iCal_File_Generator
             string classification = dataReader["classification"].ToString().Trim();
             string dtstamp = dataReader["dtstamp"].ToString().Trim();
             string newLine = Environment.NewLine;
-            string formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp;
+            string formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp + newLine;
 
-            Event oneEvent = new Event { summary = title, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, timeZone = timezone, classification = classification };
+            Event oneEvent = new Event { eventID = eventID, summary = title, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, timeZone = timezone, classification = classification };
             events.Add(oneEvent);
 
             return formatedStr;

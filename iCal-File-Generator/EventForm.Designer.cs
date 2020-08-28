@@ -49,6 +49,7 @@
             this.viewPanel = new System.Windows.Forms.Panel();
             this.panelCloseButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
+            this.clearInputsButton = new System.Windows.Forms.Button();
             this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,7 +90,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(186, 377);
+            this.submitButton.Location = new System.Drawing.Point(122, 377);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -245,11 +246,22 @@
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
             // 
+            // clearInputsButton
+            // 
+            this.clearInputsButton.Location = new System.Drawing.Point(291, 377);
+            this.clearInputsButton.Name = "clearInputsButton";
+            this.clearInputsButton.Size = new System.Drawing.Size(75, 23);
+            this.clearInputsButton.TabIndex = 21;
+            this.clearInputsButton.Text = "Clear";
+            this.clearInputsButton.UseVisualStyleBackColor = true;
+            this.clearInputsButton.Click += new System.EventHandler(this.clearInputsButton_Click);
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.clearInputsButton);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.viewPanel);
             this.Controls.Add(this.viewButton);
@@ -301,6 +313,7 @@
         private System.Windows.Forms.Panel viewPanel;
         private System.Windows.Forms.Button panelCloseButton;
         private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.Button clearInputsButton;
     }
 }
 
