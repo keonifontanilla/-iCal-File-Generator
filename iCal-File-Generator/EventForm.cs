@@ -38,7 +38,7 @@ namespace iCal_File_Generator
                 GetData();
                 ClearInputs();
             }
-            else if (updateClicked)
+            else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
                 db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, eventID);
                 GetData();
@@ -54,15 +54,16 @@ namespace iCal_File_Generator
 
         private void ClearInputs()
         {
+            InitializeDateTime();
+            InitializeTimezone();
+            InitializeClassification();
+
             titleTextBox.Text = "";
             descriptionTextBox.Text = "";
             startDatePicker.Value = DateTime.Now;
             startTimePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now;
             endTimePicker.Value = DateTime.Now;
-            InitializeDateTime();
-            InitializeTimezone();
-            InitializeClassification();
         }
 
         private void InitializeDateTime()
@@ -195,20 +196,12 @@ namespace iCal_File_Generator
 
             if (index != -1)
             {
-                var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
-                var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
-
                 updateClicked = true;
 
                 titleTextBox.Text = db.GetEvents()[index].summary;
                 descriptionTextBox.Text = db.GetEvents()[index].description;
 
-                startDatePicker.MinDate = startTime;
-                startDatePicker.Value = startTime;
-                startTimePicker.Value = startTime;
-
-                endDatePicker.Value = endTime;
-                endTimePicker.Value = endTime;
+                SetDateTime(index);
 
                 timezoneComboBox.SelectedItem = GetTimeZone(db.GetEvents()[index].timeZone);
                 classificationComboBox.SelectedItem = db.GetEvents()[index].classification;
@@ -232,6 +225,41 @@ namespace iCal_File_Generator
             
             GetData();
             ClearInputs();
+        }
+
+        private void generateButton_Click(object sender, EventArgs e)
+        {
+            int index = eventsListBox.SelectedIndex;
+
+            if (index != -1)
+            {
+                FileGenerator fg = new FileGenerator();
+                Event getEvent = db.GetEvents()[index];
+                var dtstamp = DateTime.Parse(db.GetEvents()[index].dtstamp);
+
+                SetDateTime(index);
+
+                getEvent.startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
+                getEvent.endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
+                getEvent.dtstamp = dtstamp.ToString("yyyy/MM/dd HH:mm:ss.fffff");
+
+                db.GetEvents()[index].timeZoneStandardName = GetTimeZone(db.GetEvents()[index].timeZone).StandardName;
+                fg.FormatInput(db.GetEvents()[index]);
+
+                ClearInputs();
+            }
+        }
+
+        private void SetDateTime(int index)
+        {
+            var startTime = DateTime.Parse(db.GetEvents()[index].startTime);
+            var endTime = DateTime.Parse(db.GetEvents()[index].endTime);
+
+            startDatePicker.MinDate = startTime;
+            startDatePicker.Value = startTime;
+            startTimePicker.Value = startTime;
+            endDatePicker.Value = endTime;
+            endTimePicker.Value = endTime;
         }
     }
 }

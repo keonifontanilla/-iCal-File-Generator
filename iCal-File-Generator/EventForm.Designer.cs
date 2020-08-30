@@ -51,6 +51,7 @@
             this.updateButton = new System.Windows.Forms.Button();
             this.clearInputsButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.generateButton = new System.Windows.Forms.Button();
             this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -219,6 +220,7 @@
             // 
             // viewPanel
             // 
+            this.viewPanel.Controls.Add(this.generateButton);
             this.viewPanel.Controls.Add(this.panelCloseButton);
             this.viewPanel.Controls.Add(this.eventInfoTextBox);
             this.viewPanel.Location = new System.Drawing.Point(527, 65);
@@ -229,7 +231,7 @@
             // 
             // panelCloseButton
             // 
-            this.panelCloseButton.Location = new System.Drawing.Point(165, 327);
+            this.panelCloseButton.Location = new System.Drawing.Point(110, 327);
             this.panelCloseButton.Name = "panelCloseButton";
             this.panelCloseButton.Size = new System.Drawing.Size(75, 23);
             this.panelCloseButton.TabIndex = 19;
@@ -266,6 +268,16 @@
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
+            // generateButton
+            // 
+            this.generateButton.Location = new System.Drawing.Point(227, 327);
+            this.generateButton.Name = "generateButton";
+            this.generateButton.Size = new System.Drawing.Size(75, 23);
+            this.generateButton.TabIndex = 20;
+            this.generateButton.Text = "Generate";
+            this.generateButton.UseVisualStyleBackColor = true;
+            this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
             // 
             // EventForm
             // 
@@ -327,6 +339,7 @@
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button clearInputsButton;
         private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.Button generateButton;
     }
 }
 

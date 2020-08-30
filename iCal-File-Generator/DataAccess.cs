@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 
 namespace iCal_File_Generator
 {
@@ -113,10 +114,12 @@ namespace iCal_File_Generator
             string timezone = dataReader["timezone"].ToString().Trim();
             string classification = dataReader["classification"].ToString().Trim();
             string dtstamp = dataReader["dtstamp"].ToString().Trim();
+            string uniqueID = dataReader["uniqueIdentifier"].ToString();
             string newLine = Environment.NewLine;
             string formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp + newLine;
 
-            Event oneEvent = new Event { eventID = eventID, summary = title, description = description, startTime = startTime, endTime = endTime, dtstamp = dtstamp, timeZone = timezone, classification = classification };
+            Event oneEvent = new Event { eventID = eventID, summary = title, description = description, 
+                                         startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uniqueID, timeZone = timezone, classification = classification };
             events.Add(oneEvent);
 
             return formatedStr;
