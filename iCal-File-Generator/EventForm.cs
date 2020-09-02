@@ -8,10 +8,15 @@ namespace iCal_File_Generator
     public partial class EventForm : Form
     {
         List<string> dbEvents = new List<string>();
+        List<TextBox> attendees = new List<TextBox>();
         DataAccess db = new DataAccess();
+
+        Panel attendeePanel;
+        Button addAttendeeButton = new Button();
 
         private int eventID = 0;
         private bool updateClicked = false;
+        private int numOfAttendees = 1;
 
         public EventForm()
         {
@@ -20,6 +25,9 @@ namespace iCal_File_Generator
             InitializeListbox();
             InitializeTimezone();
             InitializeClassification();
+
+            attendeePanel = new Panel();
+            attendeePanel.Visible = false;
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -34,7 +42,7 @@ namespace iCal_File_Generator
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text);
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput());
                 GetData();
                 ClearInputs();
             }
@@ -260,6 +268,69 @@ namespace iCal_File_Generator
             startTimePicker.Value = startTime;
             endDatePicker.Value = endTime;
             endTimePicker.Value = endTime;
+        }
+
+        private void attendeesButton_Click(object sender, EventArgs e)
+        {
+            TextBox attendeeEmailTextbox = new TextBox();
+            
+            // Dynamically added button click event handler
+            addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
+
+            if (attendeePanel.Visible == false) 
+            { 
+                attendeePanel.Visible = true;
+                eventsListBox.Visible = false;
+            } 
+            else
+            {
+                attendeePanel.Visible = false;
+                eventsListBox.Visible = true;
+            }
+
+            attendeePanel.Size = new Size(402, 364);
+            attendeePanel.Location = new Point(527, 50);
+            attendeePanel.BackColor = Color.White;
+            this.Controls.Add(attendeePanel);
+
+            addAttendeeButton.Text = "Add Attendee";
+            addAttendeeButton.Name = "addAttendeeButton";
+            addAttendeeButton.AutoSize = true;
+
+            attendeePanel.Controls.Add(addAttendeeButton);
+        }
+
+        // Click handler for dynamically generated button in attendee panel
+        private void addAttendeeButton_Click(object send, EventArgs e)
+        {
+            TextBox attendeeEmailTextBox = new TextBox();
+            Label attendeeLabel = new Label();
+
+            attendeeLabel.Location = new Point(25, numOfAttendees * 25);
+            attendeeLabel.Text = "Email: ";
+            attendeeLabel.AutoSize = true;
+
+            attendeeEmailTextBox.Location = new Point(100, numOfAttendees * 25);
+            attendeeEmailTextBox.Name = "attendeeEmailTextbox" + numOfAttendees.ToString();
+
+            attendees.Add(attendeeEmailTextBox);
+
+            numOfAttendees++;
+
+            attendeePanel.Controls.Add(attendeeLabel);
+            attendeePanel.Controls.Add(attendeeEmailTextBox);
+        }
+
+        private List<string> GetAttendeesInput()
+        {
+            List<string> attendees = new List<string>();
+
+            foreach(TextBox attendee in this.attendees)
+            {
+                attendees.Add(attendee.Text);
+            }
+
+            return attendees; 
         }
     }
 }

@@ -47,11 +47,14 @@
             this.viewButton = new System.Windows.Forms.Button();
             this.eventInfoTextBox = new System.Windows.Forms.TextBox();
             this.viewPanel = new System.Windows.Forms.Panel();
+            this.generateButton = new System.Windows.Forms.Button();
             this.panelCloseButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.clearInputsButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
-            this.generateButton = new System.Windows.Forms.Button();
+            this.organizerLabel = new System.Windows.Forms.Label();
+            this.organizerTextBox = new System.Windows.Forms.TextBox();
+            this.attendeesButton = new System.Windows.Forms.Button();
             this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,7 +95,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(122, 377);
+            this.submitButton.Location = new System.Drawing.Point(122, 423);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -103,7 +106,7 @@
             // startDatePicker
             // 
             this.startDatePicker.CustomFormat = "";
-            this.startDatePicker.Location = new System.Drawing.Point(122, 305);
+            this.startDatePicker.Location = new System.Drawing.Point(122, 351);
             this.startDatePicker.Name = "startDatePicker";
             this.startDatePicker.Size = new System.Drawing.Size(200, 20);
             this.startDatePicker.TabIndex = 5;
@@ -113,7 +116,7 @@
             // startTimePicker
             // 
             this.startTimePicker.CustomFormat = "";
-            this.startTimePicker.Location = new System.Drawing.Point(342, 305);
+            this.startTimePicker.Location = new System.Drawing.Point(342, 351);
             this.startTimePicker.Name = "startTimePicker";
             this.startTimePicker.Size = new System.Drawing.Size(98, 20);
             this.startTimePicker.TabIndex = 6;
@@ -121,7 +124,7 @@
             // startDateLabel
             // 
             this.startDateLabel.AutoSize = true;
-            this.startDateLabel.Location = new System.Drawing.Point(22, 305);
+            this.startDateLabel.Location = new System.Drawing.Point(22, 351);
             this.startDateLabel.Name = "startDateLabel";
             this.startDateLabel.Size = new System.Drawing.Size(58, 13);
             this.startDateLabel.TabIndex = 8;
@@ -130,7 +133,7 @@
             // endDateLabel
             // 
             this.endDateLabel.AutoSize = true;
-            this.endDateLabel.Location = new System.Drawing.Point(22, 331);
+            this.endDateLabel.Location = new System.Drawing.Point(22, 377);
             this.endDateLabel.Name = "endDateLabel";
             this.endDateLabel.Size = new System.Drawing.Size(55, 13);
             this.endDateLabel.TabIndex = 11;
@@ -139,7 +142,7 @@
             // endTimePicker
             // 
             this.endTimePicker.CustomFormat = "";
-            this.endTimePicker.Location = new System.Drawing.Point(342, 331);
+            this.endTimePicker.Location = new System.Drawing.Point(342, 377);
             this.endTimePicker.Name = "endTimePicker";
             this.endTimePicker.Size = new System.Drawing.Size(98, 20);
             this.endTimePicker.TabIndex = 10;
@@ -147,7 +150,7 @@
             // endDatePicker
             // 
             this.endDatePicker.CustomFormat = "";
-            this.endDatePicker.Location = new System.Drawing.Point(122, 331);
+            this.endDatePicker.Location = new System.Drawing.Point(122, 377);
             this.endDatePicker.Name = "endDatePicker";
             this.endDatePicker.Size = new System.Drawing.Size(200, 20);
             this.endDatePicker.TabIndex = 9;
@@ -229,6 +232,16 @@
             this.viewPanel.TabIndex = 19;
             this.viewPanel.Visible = false;
             // 
+            // generateButton
+            // 
+            this.generateButton.Location = new System.Drawing.Point(227, 327);
+            this.generateButton.Name = "generateButton";
+            this.generateButton.Size = new System.Drawing.Size(75, 23);
+            this.generateButton.TabIndex = 20;
+            this.generateButton.Text = "Generate";
+            this.generateButton.UseVisualStyleBackColor = true;
+            this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
+            // 
             // panelCloseButton
             // 
             this.panelCloseButton.Location = new System.Drawing.Point(110, 327);
@@ -251,7 +264,7 @@
             // 
             // clearInputsButton
             // 
-            this.clearInputsButton.Location = new System.Drawing.Point(291, 377);
+            this.clearInputsButton.Location = new System.Drawing.Point(291, 423);
             this.clearInputsButton.Name = "clearInputsButton";
             this.clearInputsButton.Size = new System.Drawing.Size(75, 23);
             this.clearInputsButton.TabIndex = 21;
@@ -269,21 +282,41 @@
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
-            // generateButton
+            // organizerLabel
             // 
-            this.generateButton.Location = new System.Drawing.Point(227, 327);
-            this.generateButton.Name = "generateButton";
-            this.generateButton.Size = new System.Drawing.Size(75, 23);
-            this.generateButton.TabIndex = 20;
-            this.generateButton.Text = "Generate";
-            this.generateButton.UseVisualStyleBackColor = true;
-            this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
+            this.organizerLabel.AutoSize = true;
+            this.organizerLabel.Location = new System.Drawing.Point(22, 305);
+            this.organizerLabel.Name = "organizerLabel";
+            this.organizerLabel.Size = new System.Drawing.Size(55, 13);
+            this.organizerLabel.TabIndex = 23;
+            this.organizerLabel.Text = "Organizer:";
+            // 
+            // organizerTextBox
+            // 
+            this.organizerTextBox.Location = new System.Drawing.Point(122, 305);
+            this.organizerTextBox.MaxLength = 255;
+            this.organizerTextBox.Name = "organizerTextBox";
+            this.organizerTextBox.Size = new System.Drawing.Size(244, 20);
+            this.organizerTextBox.TabIndex = 24;
+            // 
+            // attendeesButton
+            // 
+            this.attendeesButton.Location = new System.Drawing.Point(373, 305);
+            this.attendeesButton.Name = "attendeesButton";
+            this.attendeesButton.Size = new System.Drawing.Size(67, 23);
+            this.attendeesButton.TabIndex = 25;
+            this.attendeesButton.Text = "Attendees";
+            this.attendeesButton.UseVisualStyleBackColor = true;
+            this.attendeesButton.Click += new System.EventHandler(this.attendeesButton_Click);
             // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.attendeesButton);
+            this.Controls.Add(this.organizerTextBox);
+            this.Controls.Add(this.organizerLabel);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.clearInputsButton);
             this.Controls.Add(this.updateButton);
@@ -340,6 +373,9 @@
         private System.Windows.Forms.Button clearInputsButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button generateButton;
+        private System.Windows.Forms.Label organizerLabel;
+        private System.Windows.Forms.TextBox organizerTextBox;
+        private System.Windows.Forms.Button attendeesButton;
     }
 }
 

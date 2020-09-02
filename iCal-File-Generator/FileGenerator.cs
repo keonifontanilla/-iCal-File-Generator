@@ -66,6 +66,11 @@ namespace iCal_File_Generator
                         formatedStr = Foldline($"{str.Key}:{FormatTime(str.Value)}");
                         newInputs.Add(formatedStr);
                         continue;
+                    case "ORGANIZER":
+                        if (str.Value == "") { continue; }
+                        formatedStr = Foldline($"{str.Key};SENT-BY=\"mailto:{str.Value}\":mailto:{str.Value}");
+                        newInputs.Add(formatedStr);
+                        continue;
                 }
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);

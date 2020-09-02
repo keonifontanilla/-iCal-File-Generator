@@ -20,6 +20,8 @@ namespace iCal_File_Generator
         public string tzid { get; private set; }
         public string tzOffSetFrom { get; private set; }
         public string tzOffSetTo { get; private set; }
+        public string organizer { get; set; }
+        public List<string> attendees { get; set; }
 
         public void GetTimeZoneOffset()
         {
@@ -67,6 +69,7 @@ namespace iCal_File_Generator
             inputs.Add("DTSTAMP", dtstamp);
             inputs.Add("UID", uniqueIdentifier);
             inputs.Add("CLASS", classification);
+            inputs.Add("ORGANIZER", organizer);
 
             return inputs;
         }

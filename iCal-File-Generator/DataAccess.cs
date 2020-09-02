@@ -13,17 +13,18 @@ namespace iCal_File_Generator
 
         List<Event> records;
 
-        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification)
+        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
                 string timeZoneStandardName = timezone.StandardName;
-                Event newEvent = new Event 
-                { 
-                    summary = summary, description = description, startTime = startTime, endTime = endTime, 
-                    dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone.DisplayName, 
-                    timeZoneStandardName = timeZoneStandardName, classification = classification 
+                Event newEvent = new Event
+                {
+                    summary = summary, description = description, startTime = startTime, endTime = endTime,
+                    dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone.DisplayName,
+                    timeZoneStandardName = timeZoneStandardName, classification = classification,
+                    organizer = organizer, attendees = attendees 
                 };
                 FileGenerator fg = new FileGenerator();
                 fg.FormatInput(newEvent);
@@ -40,7 +41,21 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@uniqueIdentifier", SqlDbType.NVarChar).Value = newEvent.uniqueIdentifier;
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timeZone.ToString();
                     cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = newEvent.classification;
+                    cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = newEvent.organizer;
                     cmd.ExecuteNonQuery();
+
+                    // Inserting multiple recoreds of attendees to the same eventID in attendees table
+                    using (SqlCommand cmd2 = new SqlCommand("spAttendees_Insert", conn))
+                    {
+                        cmd2.CommandType = CommandType.StoredProcedure;
+
+                        cmd2.Parameters.Add("@email", SqlDbType.NVarChar);
+                        foreach (string attendee in attendees)
+                        {
+                            cmd2.Parameters["@email"].Value = attendee;
+                            cmd2.ExecuteNonQuery();
+                        }
+                    }
                 }   
             }
         }
