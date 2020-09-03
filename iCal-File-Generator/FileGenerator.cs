@@ -76,6 +76,14 @@ namespace iCal_File_Generator
                 newInputs.Add(formatedStr);
             }
 
+            if (newEvent.attendees != null)
+            {
+                for (int i = 0; i < newEvent.attendees.Count; i++)
+                {
+                    newInputs.Add(Foldline($"ATTENDEE;PARTSTAT=NEEDS-ACTION;ROLE=REQ-PARTICIPANT;RSVP={newEvent.attendeesRsvp[i]}:mailto:{newEvent.attendees[i]}"));
+                }
+            }
+
             newInputs.Add("END:VEVENT");
             newInputs.Add("END:VCALENDAR");
             GenerateFile(newInputs);
