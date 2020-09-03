@@ -9,6 +9,7 @@ namespace iCal_File_Generator
     {
         List<string> dbEvents = new List<string>();
         List<TextBox> attendees = new List<TextBox>();
+        List<ComboBox> attendeesRsvp = new List<ComboBox>();
         DataAccess db = new DataAccess();
 
         Panel attendeePanel;
@@ -42,7 +43,7 @@ namespace iCal_File_Generator
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput());
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp());
                 GetData();
                 ClearInputs();
             }
@@ -62,6 +63,11 @@ namespace iCal_File_Generator
 
         private void ClearInputs()
         {
+            EventForm newEventForm = new EventForm();
+            newEventForm.Show();
+            this.Dispose(false);
+
+            /*
             InitializeDateTime();
             InitializeTimezone();
             InitializeClassification();
@@ -72,6 +78,7 @@ namespace iCal_File_Generator
             startTimePicker.Value = DateTime.Now;
             endDatePicker.Value = DateTime.Now;
             endTimePicker.Value = DateTime.Now;
+            */
         }
 
         private void InitializeDateTime()
@@ -305,6 +312,7 @@ namespace iCal_File_Generator
         {
             TextBox attendeeEmailTextBox = new TextBox();
             Label attendeeLabel = new Label();
+            ComboBox rsvpComboBox = new ComboBox();
 
             attendeeLabel.Location = new Point(25, numOfAttendees * 25);
             attendeeLabel.Text = "Email: ";
@@ -313,12 +321,23 @@ namespace iCal_File_Generator
             attendeeEmailTextBox.Location = new Point(100, numOfAttendees * 25);
             attendeeEmailTextBox.Name = "attendeeEmailTextbox" + numOfAttendees.ToString();
 
+            List<string> rsvp = new List<string>()
+            {
+                "False", "True"
+            };
+            rsvpComboBox.DataSource = rsvp;
+            rsvpComboBox.Location = new Point(attendeeEmailTextBox.Location.X + 105, numOfAttendees * 25);
+            rsvpComboBox.Name = "rsvpComboBox" + numOfAttendees.ToString();
+            rsvpComboBox.Size = new Size(60, 21);
+
             attendees.Add(attendeeEmailTextBox);
+            attendeesRsvp.Add(rsvpComboBox);
 
             numOfAttendees++;
 
             attendeePanel.Controls.Add(attendeeLabel);
             attendeePanel.Controls.Add(attendeeEmailTextBox);
+            attendeePanel.Controls.Add(rsvpComboBox);
         }
 
         private List<string> GetAttendeesInput()
@@ -331,6 +350,18 @@ namespace iCal_File_Generator
             }
 
             return attendees; 
+        }
+
+        private List<string> GetAttendeesRsvp()
+        {
+            List<string> attendeesRsvp = new List<string>();
+
+            foreach (ComboBox rsvp in this.attendeesRsvp)
+            {
+                attendeesRsvp.Add(rsvp.SelectedItem.ToString());
+            }
+
+            return attendeesRsvp;
         }
     }
 }

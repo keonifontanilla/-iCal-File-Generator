@@ -13,7 +13,7 @@ namespace iCal_File_Generator
 
         List<Event> records;
 
-        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees)
+        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -24,7 +24,7 @@ namespace iCal_File_Generator
                     summary = summary, description = description, startTime = startTime, endTime = endTime,
                     dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone.DisplayName,
                     timeZoneStandardName = timeZoneStandardName, classification = classification,
-                    organizer = organizer, attendees = attendees 
+                    organizer = organizer, attendees = attendees, attendeesRsvp = attendeesRsvp
                 };
                 FileGenerator fg = new FileGenerator();
                 fg.FormatInput(newEvent);
@@ -47,12 +47,16 @@ namespace iCal_File_Generator
                     // Inserting multiple recoreds of attendees to the same eventID in attendees table
                     using (SqlCommand cmd2 = new SqlCommand("spAttendees_Insert", conn))
                     {
+                        int counter = 0;
                         cmd2.CommandType = CommandType.StoredProcedure;
 
                         cmd2.Parameters.Add("@email", SqlDbType.NVarChar);
+                        cmd2.Parameters.Add("@rsvp", SqlDbType.NVarChar);
                         foreach (string attendee in attendees)
                         {
                             cmd2.Parameters["@email"].Value = attendee;
+                            cmd2.Parameters["@rsvp"].Value = attendeesRsvp[counter];
+                            counter++;
                             cmd2.ExecuteNonQuery();
                         }
                     }
