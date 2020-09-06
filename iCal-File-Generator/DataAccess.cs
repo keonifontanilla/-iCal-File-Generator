@@ -12,6 +12,9 @@ namespace iCal_File_Generator
         static string connStr = ConfigurationManager.ConnectionStrings["EventsDB"].ConnectionString;
 
         List<Event> records;
+        List<string> attendees;
+        List<string> formatedRecords;
+        Event newEvent = new Event();
 
         public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp)
         {
@@ -101,10 +104,10 @@ namespace iCal_File_Generator
                 }
             }
         }
-
+        
         public List<string> ListEvents()
         {
-            List<string> data = new List<string>();
+            formatedRecords = new List<string>();
             records = new List<Event>();
             
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -115,15 +118,15 @@ namespace iCal_File_Generator
                     SqlDataReader dataReader = cmd.ExecuteReader();
                     while(dataReader.Read())
                     {
-                        data.Add(ReadSingleRow((IDataRecord)dataReader, records));
+                        ReadSingleRow((IDataRecord) dataReader, records);
                     }
                     dataReader.Close();
                 }
             }
-            return data;
+            return formatedRecords;
         }
 
-        private string ReadSingleRow(IDataRecord dataReader, List<Event> events)
+        private string ReadSingleRow(IDataRecord dataReader, List<Event> records)
         {
             int eventID = (int) dataReader["eventID"];
             string title = dataReader["summary"].ToString().Trim();
@@ -135,11 +138,30 @@ namespace iCal_File_Generator
             string dtstamp = dataReader["dtstamp"].ToString().Trim();
             string uniqueID = dataReader["uniqueIdentifier"].ToString();
             string newLine = Environment.NewLine;
-            string formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp + newLine;
+            string formatedStr = "";
 
-            Event oneEvent = new Event { eventID = eventID, summary = title, description = description, 
-                                         startTime = startTime, endTime = endTime, dtstamp = dtstamp, uniqueIdentifier = uniqueID, timeZone = timezone, classification = classification };
-            events.Add(oneEvent);
+            if (newEvent.eventID != eventID)
+            {
+                attendees = new List<string>();
+                formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp;
+                newEvent = new Event
+                {
+                    eventID = eventID,
+                    summary = title,
+                    description = description,
+                    startTime = startTime,
+                    endTime = endTime,
+                    dtstamp = dtstamp,
+                    uniqueIdentifier = uniqueID,
+                    timeZone = timezone,
+                    classification = classification
+                };
+                formatedRecords.Add(formatedStr);
+                records.Add(newEvent);
+            }
+
+            attendees.Add(dataReader["email"].ToString());
+            newEvent.attendees = attendees;
 
             return formatedStr;
         }
