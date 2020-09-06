@@ -12,8 +12,7 @@ namespace iCal_File_Generator
         static string connStr = ConfigurationManager.ConnectionStrings["EventsDB"].ConnectionString;
 
         List<Event> records;
-        List<string> attendees;
-        List<string> formatedRecords;
+        List<string> attendees, attendeesRsvp, formatedRecords;
         Event newEvent = new Event();
 
         public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp)
@@ -146,6 +145,7 @@ namespace iCal_File_Generator
             if (newEvent.eventID != eventID)
             {
                 attendees = new List<string>();
+                attendeesRsvp = new List<string>();
                 formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp;
                 newEvent = new Event
                 {
@@ -164,7 +164,9 @@ namespace iCal_File_Generator
             }
 
             attendees.Add(dataReader["email"].ToString());
+            attendeesRsvp.Add(dataReader["rsvp"].ToString());
             newEvent.attendees = attendees;
+            newEvent.attendeesRsvp = attendeesRsvp;
 
             return formatedStr;
         }

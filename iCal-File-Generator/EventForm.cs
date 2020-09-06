@@ -196,10 +196,12 @@ namespace iCal_File_Generator
                 
                 viewPanel.Visible = true;
 
+                int counter = 0;
                 foreach(string record in db.GetEvents()[index].attendees)
                 {
                     if (record == "") { continue; }
-                    expandedRowStr += "Attendee: " + record + newLine;
+                    expandedRowStr += "Attendee: " + record + ", " + "Rsvp: " + db.GetEvents()[index].attendeesRsvp[counter] + newLine;
+                    counter++;
                 }
 
                 eventInfoTextBox.Text = expandedRowStr;                
