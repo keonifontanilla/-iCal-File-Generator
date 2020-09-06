@@ -57,7 +57,10 @@ namespace iCal_File_Generator
                         cmd2.Parameters.Add("@rsvp", SqlDbType.NVarChar);
                         foreach (string attendee in attendees)
                         {
-                            cmd2.Parameters["@email"].Value = attendee;
+                            if (attendee != "")
+                            {
+                                cmd2.Parameters["@email"].Value = attendee;
+                            }
                             cmd2.Parameters["@rsvp"].Value = attendeesRsvp[counter];
                             counter++;
                             cmd2.ExecuteNonQuery();

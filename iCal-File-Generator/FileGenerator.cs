@@ -80,6 +80,7 @@ namespace iCal_File_Generator
             {
                 for (int i = 0; i < newEvent.attendees.Count; i++)
                 {
+                    if (newEvent.attendees[i] == "") { continue; }
                     newInputs.Add(Foldline($"ATTENDEE;PARTSTAT=NEEDS-ACTION;ROLE=REQ-PARTICIPANT;RSVP={newEvent.attendeesRsvp[i]}:mailto:{newEvent.attendees[i]}"));
                 }
             }
