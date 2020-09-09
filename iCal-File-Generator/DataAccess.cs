@@ -13,6 +13,7 @@ namespace iCal_File_Generator
 
         List<Event> records;
         List<string> attendees, attendeesRsvp, formatedRecords;
+        List<int> attendeesId;
         Event newEvent = new Event();
 
         public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp)
@@ -69,7 +70,7 @@ namespace iCal_File_Generator
             }
         }
 
-        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, int eventID)
+        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, int eventID, List<string> attendees, List<string> attendeesRsvp, List<int> attendeesId)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -86,7 +87,28 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = endTime;
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = timezone.ToString();
                     cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = classification;
-                    cmd.ExecuteNonQuery();
+                   
+
+                    if (attendees == null)
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        cmd.Parameters.Add("@attendeeID", SqlDbType.Int);
+                        cmd.Parameters.Add("@email", SqlDbType.NVarChar);
+                        cmd.Parameters.Add("@rsvp", SqlDbType.NVarChar);
+                        for(int i = 0; i < attendees.Count; i++)
+                        {
+                            cmd.Parameters["@attendeeID"].Value = attendeesId[i];
+                            if (attendees[i] != "")
+                            {
+                                cmd.Parameters["@email"].Value = attendees[i];
+                            }
+                            cmd.Parameters["@rsvp"].Value = attendeesRsvp[i];
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
                 }
             }
         }
@@ -131,6 +153,7 @@ namespace iCal_File_Generator
         private string ReadSingleRow(IDataRecord dataReader, List<Event> records)
         {
             int eventID = (int) dataReader["eventID"];
+            int attendeeID = dataReader["attendeeID"] != DBNull.Value ? (int) dataReader["attendeeID"] : 0; 
             string title = dataReader["summary"].ToString().Trim();
             string description = dataReader["description"].ToString().Trim();
             string startTime = dataReader["startTime"].ToString().Trim();
@@ -146,6 +169,7 @@ namespace iCal_File_Generator
             {
                 attendees = new List<string>();
                 attendeesRsvp = new List<string>();
+                attendeesId = new List<int>();
                 formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp;
                 newEvent = new Event
                 {
@@ -165,8 +189,10 @@ namespace iCal_File_Generator
 
             attendees.Add(dataReader["email"].ToString());
             attendeesRsvp.Add(dataReader["rsvp"].ToString());
+            attendeesId.Add(attendeeID);
             newEvent.attendees = attendees;
             newEvent.attendeesRsvp = attendeesRsvp;
+            newEvent.attendeesId = attendeesId;
 
             return formatedStr;
         }

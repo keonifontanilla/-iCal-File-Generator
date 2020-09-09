@@ -29,6 +29,9 @@ namespace iCal_File_Generator
 
             attendeePanel = new Panel();
             attendeePanel.Visible = false;
+
+            // Dynamically added button click event handler
+            addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -49,7 +52,7 @@ namespace iCal_File_Generator
             }
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
-                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, eventID);
+                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), db.GetEvents()[eventsListBox.SelectedIndex].attendeesId);
                 GetData();
                 ClearInputs();
                 updateClicked = false;
@@ -213,13 +216,15 @@ namespace iCal_File_Generator
             viewPanel.Visible = false;
         }
 
+        // fix updateClicked boolean to open and close update
         private void updateButton_Click(object sender, EventArgs e)
         {
             int index = eventsListBox.SelectedIndex;
 
-            if (index != -1)
+            if (index != -1 && !updateClicked)
             {
                 updateClicked = true;
+                updateButton.Text = "Cancel";
 
                 titleTextBox.Text = db.GetEvents()[index].summary;
                 descriptionTextBox.Text = db.GetEvents()[index].description;
@@ -229,6 +234,22 @@ namespace iCal_File_Generator
                 timezoneComboBox.SelectedItem = GetTimeZone(db.GetEvents()[index].timeZone);
                 classificationComboBox.SelectedItem = db.GetEvents()[index].classification;
                 eventID = db.GetEvents()[index].eventID;
+
+                // attendees panel update
+                attendeesButton_Click(sender, e);
+                if (attendeePanel.Visible)
+                {
+                    for (int i = 0; i < db.GetEvents()[index].attendees.Count; i++)
+                    {
+                        addAttendeeButton_Click(sender, e);
+                        attendees[i].Text = db.GetEvents()[index].attendees[i];
+                        attendeesRsvp[i].SelectedItem = db.GetEvents()[index].attendeesRsvp[i];
+                    }
+                }
+            }
+            else
+            {
+                ClearInputs();
             }
         }
 
@@ -288,9 +309,6 @@ namespace iCal_File_Generator
         private void attendeesButton_Click(object sender, EventArgs e)
         {
             TextBox attendeeEmailTextbox = new TextBox();
-            
-            // Dynamically added button click event handler
-            addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
 
             if (attendeePanel.Visible == false) 
             { 
@@ -299,8 +317,13 @@ namespace iCal_File_Generator
             } 
             else
             {
+                attendeePanel.Controls.Clear();
                 attendeePanel.Visible = false;
                 eventsListBox.Visible = true;
+                attendees.Clear();
+                attendeesRsvp.Clear();
+                numOfAttendees = 1;
+                // updateClicked = false;
             }
 
             attendeePanel.Size = new Size(402, 364);

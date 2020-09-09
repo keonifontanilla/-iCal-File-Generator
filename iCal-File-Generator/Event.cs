@@ -23,6 +23,7 @@ namespace iCal_File_Generator
         public string organizer { get; set; }
         public List<string> attendees { get; set; }
         public List<string> attendeesRsvp { get; set; }
+        public List<int> attendeesId { get; set; }
 
         public void GetTimeZoneOffset()
         {
