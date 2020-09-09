@@ -44,6 +44,7 @@ namespace iCal_File_Generator
 
             HandleErrors.HandleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker);
+            HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
                 db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp());

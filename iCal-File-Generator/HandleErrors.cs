@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace iCal_File_Generator
@@ -35,6 +37,30 @@ namespace iCal_File_Generator
             // Check end time errors
             ErrorMsg += (TrimTime(endTimePicker.Value).TimeOfDay < TrimTime(startTimePicker.Value).TimeOfDay) && (endDatePicker.Value.Date == startDatePicker.Value.Date)
                 ? "Cannot have end time before start time!\n" : "";
+        }
+
+        /***********************************************************************************************
+         * Handles invalid email inputs
+        ***********************************************************************************************/
+        public static void HandleEmailError(List<string> emails, string organizer)
+        {
+            Regex rx = new Regex(@"^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z{|}~])*@[a-zA-Z](-?[a-zA-Z0-9])*(\.[a-zA-Z](-?[a-zA-Z0-9])*)+$");
+
+            if (organizer != "")
+            {
+                if (!rx.IsMatch(organizer))
+                {
+                    ErrorMsg += "Invalid email format!\n ";
+                }
+            }
+
+            foreach(string email in emails)
+            {
+                if (!rx.IsMatch(email))
+                {
+                    ErrorMsg += "Invalid email format!\n ";
+                }
+            }
         }
 
         /***********************************************************************************************
