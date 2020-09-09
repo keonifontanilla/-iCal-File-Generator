@@ -162,6 +162,7 @@ namespace iCal_File_Generator
             string classification = dataReader["classification"].ToString().Trim();
             string dtstamp = dataReader["dtstamp"].ToString().Trim();
             string uniqueID = dataReader["uniqueIdentifier"].ToString();
+            string organizer = dataReader["organizer"].ToString();
             string newLine = Environment.NewLine;
             string formatedStr = "";
 
@@ -181,7 +182,8 @@ namespace iCal_File_Generator
                     dtstamp = dtstamp,
                     uniqueIdentifier = uniqueID,
                     timeZone = timezone,
-                    classification = classification
+                    classification = classification,
+                    organizer = organizer
                 };
                 formatedRecords.Add(formatedStr);
                 records.Add(newEvent);

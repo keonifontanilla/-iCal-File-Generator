@@ -195,6 +195,7 @@ namespace iCal_File_Generator
                                       + "End time: " + db.GetEvents()[index].endTime + newLine
                                       + "Timezone: " + db.GetEvents()[index].timeZone + newLine
                                       + "Classification: " + db.GetEvents()[index].classification + newLine
+                                      + "Organizer: " + db.GetEvents()[index].organizer + newLine
                                       + "Created: " + db.GetEvents()[index].dtstamp + newLine;
                 
                 viewPanel.Visible = true;
