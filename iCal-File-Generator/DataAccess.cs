@@ -47,7 +47,7 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = newEvent.organizer;
                     cmd.ExecuteNonQuery();
 
-                    // Inserting multiple recoreds of attendees to the same eventID in attendees table
+                    // Inserting multiple records of attendees to the same eventID in attendees table
                     using (SqlCommand cmd2 = new SqlCommand("spAttendees_Insert", conn))
                     {
                         int counter = 0;
@@ -70,7 +70,7 @@ namespace iCal_File_Generator
             }
         }
 
-        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, int eventID, List<string> attendees, List<string> attendeesRsvp, List<int> attendeesId)
+        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, string organizer, int eventID, List<string> attendees, List<string> attendeesRsvp, List<int> attendeesId)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -87,28 +87,30 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = endTime;
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = timezone.ToString();
                     cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = classification;
-                   
-
-                    if (attendees == null)
+                    cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = organizer;
+                                       
+                    cmd.Parameters.Add("@attendeeID", SqlDbType.Int);
+                    cmd.Parameters.Add("@email", SqlDbType.NVarChar);
+                    cmd.Parameters.Add("@rsvp", SqlDbType.NVarChar);
+                    for(int i = 0; i < attendees.Count; i++)
                     {
+                        if (attendeesId == null)
+                        {
+                            attendeesId = new List<int>();
+                        }
+                        attendeesId.Add(0);
+
+                        cmd.Parameters["@attendeeID"].Value = attendeesId[i];
+                        if (attendees[i] != "")
+                        {
+                            cmd.Parameters["@email"].Value = attendees[i];
+                        }
+                        cmd.Parameters["@rsvp"].Value = attendeesRsvp[i];
+
                         cmd.ExecuteNonQuery();
                     }
-                    else
-                    {
-                        cmd.Parameters.Add("@attendeeID", SqlDbType.Int);
-                        cmd.Parameters.Add("@email", SqlDbType.NVarChar);
-                        cmd.Parameters.Add("@rsvp", SqlDbType.NVarChar);
-                        for(int i = 0; i < attendees.Count; i++)
-                        {
-                            cmd.Parameters["@attendeeID"].Value = attendeesId[i];
-                            if (attendees[i] != "")
-                            {
-                                cmd.Parameters["@email"].Value = attendees[i];
-                            }
-                            cmd.Parameters["@rsvp"].Value = attendeesRsvp[i];
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -189,13 +191,16 @@ namespace iCal_File_Generator
                 records.Add(newEvent);
             }
 
-            attendees.Add(dataReader["email"].ToString());
-            attendeesRsvp.Add(dataReader["rsvp"].ToString());
-            attendeesId.Add(attendeeID);
-            newEvent.attendees = attendees;
-            newEvent.attendeesRsvp = attendeesRsvp;
-            newEvent.attendeesId = attendeesId;
-
+            if (dataReader["email"].ToString() != "")
+            {
+                attendees.Add(dataReader["email"].ToString());
+                attendeesRsvp.Add(dataReader["rsvp"].ToString());
+                attendeesId.Add(attendeeID);
+                newEvent.attendees = attendees;
+                newEvent.attendeesRsvp = attendeesRsvp;
+                newEvent.attendeesId = attendeesId;
+            }
+            
             return formatedStr;
         }
 

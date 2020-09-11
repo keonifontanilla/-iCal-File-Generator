@@ -40,6 +40,7 @@ namespace iCal_File_Generator
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
+            List<int> attendeesID;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
 
             HandleErrors.HandleError(titleTextBox.Text);
@@ -50,10 +51,12 @@ namespace iCal_File_Generator
                 db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp());
                 GetData();
                 ClearInputs();
+                MessageBox.Show("Insert Successful!");
             }
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
-                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), db.GetEvents()[eventsListBox.SelectedIndex].attendeesId);
+                attendeesID = db.GetEvents()[eventsListBox.SelectedIndex].attendeesId;
+                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID);
                 GetData();
                 ClearInputs();
                 updateClicked = false;
@@ -201,12 +204,13 @@ namespace iCal_File_Generator
                 
                 viewPanel.Visible = true;
 
-                int counter = 0;
-                foreach(string record in db.GetEvents()[index].attendees)
+                if (db.GetEvents()[index].attendees != null)
                 {
-                    if (record == "") { continue; }
-                    expandedRowStr += "Attendee: " + record + ", " + "Rsvp: " + db.GetEvents()[index].attendeesRsvp[counter] + newLine;
-                    counter++;
+                    for (int i = 0; i < db.GetEvents()[index].attendees.Count; i++)
+                    {
+                        if (db.GetEvents()[index].attendees[i] == "") { continue; }
+                        expandedRowStr += "Attendee: " + db.GetEvents()[index].attendees[i] + ", " + "Rsvp: " + db.GetEvents()[index].attendeesRsvp[i] + newLine;
+                    }
                 }
 
                 eventInfoTextBox.Text = expandedRowStr;                
@@ -230,6 +234,7 @@ namespace iCal_File_Generator
 
                 titleTextBox.Text = db.GetEvents()[index].summary;
                 descriptionTextBox.Text = db.GetEvents()[index].description;
+                organizerTextBox.Text = db.GetEvents()[index].organizer;
 
                 SetDateTime(index);
 
@@ -239,7 +244,7 @@ namespace iCal_File_Generator
 
                 // attendees panel update
                 attendeesButton_Click(sender, e);
-                if (attendeePanel.Visible)
+                if (attendeePanel.Visible && (db.GetEvents()[index].attendees != null))
                 {
                     for (int i = 0; i < db.GetEvents()[index].attendees.Count; i++)
                     {
