@@ -168,6 +168,7 @@
             // 
             // timezoneComboBox
             // 
+            this.timezoneComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.timezoneComboBox.FormattingEnabled = true;
             this.timezoneComboBox.Location = new System.Drawing.Point(122, 228);
             this.timezoneComboBox.Name = "timezoneComboBox";
@@ -185,6 +186,7 @@
             // 
             // classificationComboBox
             // 
+            this.classificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.classificationComboBox.FormattingEnabled = true;
             this.classificationComboBox.Location = new System.Drawing.Point(122, 266);
             this.classificationComboBox.Name = "classificationComboBox";
