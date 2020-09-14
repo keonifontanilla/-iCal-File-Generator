@@ -24,6 +24,8 @@ namespace iCal_File_Generator
         public List<string> attendees { get; set; }
         public List<string> attendeesRsvp { get; set; }
         public List<int> attendeesId { get; set; }
+        public string recurFrequency { get; set; }
+        public string recurUntil { get; set; }
 
         public void GetTimeZoneOffset()
         {
@@ -72,6 +74,7 @@ namespace iCal_File_Generator
             inputs.Add("UID", uniqueIdentifier);
             inputs.Add("CLASS", classification);
             inputs.Add("ORGANIZER", organizer);
+            inputs.Add("RRULE", recurFrequency);
 
             return inputs;
         }

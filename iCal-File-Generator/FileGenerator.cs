@@ -71,6 +71,56 @@ namespace iCal_File_Generator
                         formatedStr = Foldline($"{str.Key};SENT-BY=\"mailto:{str.Value}\":mailto:{str.Value}");
                         newInputs.Add(formatedStr);
                         continue;
+                    case "RRULE":
+                        string getMonthDay = newEvent.startTime.Substring(8, 1) == "0" ? newEvent.startTime.Substring(9, 1) : newEvent.startTime.Substring(8, 2);
+                        string getMonth = newEvent.startTime.Substring(5, 1) == "0" ? newEvent.startTime.Substring(6, 1) : newEvent.startTime.Substring(5, 2);
+                        if (newEvent.recurUntil == "")
+                        {
+                            if (str.Value == "Daily")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()}");
+                                newInputs.Add(formatedStr);
+                            }
+                            else if (str.Value == "Weekly")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()}");
+                                newInputs.Add(formatedStr);
+                            }
+                            else if (str.Value == "Monthly")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()};BYMONTHDAY={getMonthDay}");
+                                newInputs.Add(formatedStr);
+                            }
+                            else if (str.Value == "Yearly")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()};BYMONTH={getMonth};BYMONTHDAY={getMonthDay}");
+                                newInputs.Add(formatedStr);
+                            }
+                        }
+                        else
+                        {
+                            if (str.Value == "Daily")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()};UNTIL={FormatTime(newEvent.recurUntil)}Z");
+                                newInputs.Add(formatedStr);
+                            }
+                            else if (str.Value == "Weekly")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()};UNTIL={FormatTime(newEvent.recurUntil)}Z");
+                                newInputs.Add(formatedStr);
+                            }
+                            else if (str.Value == "Monthly")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()};UNTIL={FormatTime(newEvent.recurUntil)}Z;BYMONTHDAY={getMonthDay}");
+                                newInputs.Add(formatedStr);
+                            }
+                            else if (str.Value == "Yearly")
+                            {
+                                formatedStr = Foldline($"{str.Key}:FREQ={str.Value.ToUpper()};UNTIL={FormatTime(newEvent.recurUntil)}Z;BYMONTH={getMonth};BYMONTHDAY={getMonthDay}");
+                                newInputs.Add(formatedStr);
+                            }
+                        }
+                        continue;
                 }
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);

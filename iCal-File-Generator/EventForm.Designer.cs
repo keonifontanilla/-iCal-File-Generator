@@ -55,6 +55,7 @@
             this.organizerLabel = new System.Windows.Forms.Label();
             this.organizerTextBox = new System.Windows.Forms.TextBox();
             this.attendeesButton = new System.Windows.Forms.Button();
+            this.repeatsLinkLabel = new System.Windows.Forms.LinkLabel();
             this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,7 +96,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(122, 423);
+            this.submitButton.Location = new System.Drawing.Point(122, 447);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -170,7 +171,7 @@
             // 
             this.timezoneComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.timezoneComboBox.FormattingEnabled = true;
-            this.timezoneComboBox.Location = new System.Drawing.Point(122, 228);
+            this.timezoneComboBox.Location = new System.Drawing.Point(122, 269);
             this.timezoneComboBox.Name = "timezoneComboBox";
             this.timezoneComboBox.Size = new System.Drawing.Size(244, 21);
             this.timezoneComboBox.TabIndex = 13;
@@ -178,7 +179,7 @@
             // timezoneLabel
             // 
             this.timezoneLabel.AutoSize = true;
-            this.timezoneLabel.Location = new System.Drawing.Point(22, 228);
+            this.timezoneLabel.Location = new System.Drawing.Point(22, 269);
             this.timezoneLabel.Name = "timezoneLabel";
             this.timezoneLabel.Size = new System.Drawing.Size(56, 13);
             this.timezoneLabel.TabIndex = 14;
@@ -188,7 +189,7 @@
             // 
             this.classificationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.classificationComboBox.FormattingEnabled = true;
-            this.classificationComboBox.Location = new System.Drawing.Point(122, 266);
+            this.classificationComboBox.Location = new System.Drawing.Point(122, 306);
             this.classificationComboBox.Name = "classificationComboBox";
             this.classificationComboBox.Size = new System.Drawing.Size(121, 21);
             this.classificationComboBox.TabIndex = 15;
@@ -196,7 +197,7 @@
             // classificationLabel
             // 
             this.classificationLabel.AutoSize = true;
-            this.classificationLabel.Location = new System.Drawing.Point(24, 266);
+            this.classificationLabel.Location = new System.Drawing.Point(24, 306);
             this.classificationLabel.Name = "classificationLabel";
             this.classificationLabel.Size = new System.Drawing.Size(71, 13);
             this.classificationLabel.TabIndex = 16;
@@ -266,7 +267,7 @@
             // 
             // clearInputsButton
             // 
-            this.clearInputsButton.Location = new System.Drawing.Point(291, 423);
+            this.clearInputsButton.Location = new System.Drawing.Point(291, 447);
             this.clearInputsButton.Name = "clearInputsButton";
             this.clearInputsButton.Size = new System.Drawing.Size(75, 23);
             this.clearInputsButton.TabIndex = 21;
@@ -287,7 +288,7 @@
             // organizerLabel
             // 
             this.organizerLabel.AutoSize = true;
-            this.organizerLabel.Location = new System.Drawing.Point(22, 305);
+            this.organizerLabel.Location = new System.Drawing.Point(22, 232);
             this.organizerLabel.Name = "organizerLabel";
             this.organizerLabel.Size = new System.Drawing.Size(55, 13);
             this.organizerLabel.TabIndex = 23;
@@ -295,7 +296,7 @@
             // 
             // organizerTextBox
             // 
-            this.organizerTextBox.Location = new System.Drawing.Point(122, 305);
+            this.organizerTextBox.Location = new System.Drawing.Point(122, 232);
             this.organizerTextBox.MaxLength = 255;
             this.organizerTextBox.Name = "organizerTextBox";
             this.organizerTextBox.Size = new System.Drawing.Size(244, 20);
@@ -303,7 +304,7 @@
             // 
             // attendeesButton
             // 
-            this.attendeesButton.Location = new System.Drawing.Point(373, 305);
+            this.attendeesButton.Location = new System.Drawing.Point(373, 232);
             this.attendeesButton.Name = "attendeesButton";
             this.attendeesButton.Size = new System.Drawing.Size(67, 23);
             this.attendeesButton.TabIndex = 25;
@@ -311,11 +312,23 @@
             this.attendeesButton.UseVisualStyleBackColor = true;
             this.attendeesButton.Click += new System.EventHandler(this.attendeesButton_Click);
             // 
+            // repeatsLinkLabel
+            // 
+            this.repeatsLinkLabel.AutoSize = true;
+            this.repeatsLinkLabel.Location = new System.Drawing.Point(119, 402);
+            this.repeatsLinkLabel.Name = "repeatsLinkLabel";
+            this.repeatsLinkLabel.Size = new System.Drawing.Size(47, 13);
+            this.repeatsLinkLabel.TabIndex = 26;
+            this.repeatsLinkLabel.TabStop = true;
+            this.repeatsLinkLabel.Text = "Repeats";
+            this.repeatsLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.repeatsLinkLabel_LinkClicked);
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.repeatsLinkLabel);
             this.Controls.Add(this.attendeesButton);
             this.Controls.Add(this.organizerTextBox);
             this.Controls.Add(this.organizerLabel);
@@ -378,6 +391,7 @@
         private System.Windows.Forms.Label organizerLabel;
         private System.Windows.Forms.TextBox organizerTextBox;
         private System.Windows.Forms.Button attendeesButton;
+        private System.Windows.Forms.LinkLabel repeatsLinkLabel;
     }
 }
 

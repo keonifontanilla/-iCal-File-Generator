@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,8 +13,13 @@ namespace iCal_File_Generator
         List<ComboBox> attendeesRsvp = new List<ComboBox>();
         DataAccess db = new DataAccess();
 
-        Panel attendeePanel;
+        Panel attendeePanel, recurrencePanel;
         Button addAttendeeButton = new Button();
+        ComboBox frequencyComboBox;
+        RadioButton neverRecurRadioButton;
+        RadioButton untilRecurRadioButton;
+        DateTimePicker untilDate;
+        DateTimePicker untilTime;
 
         private int eventID = 0;
         private bool updateClicked = false;
@@ -30,6 +36,9 @@ namespace iCal_File_Generator
             attendeePanel = new Panel();
             attendeePanel.Visible = false;
 
+            recurrencePanel = new Panel();
+            recurrencePanel.Visible = false;
+
             // Dynamically added button click event handler
             addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
         }
@@ -40,6 +49,8 @@ namespace iCal_File_Generator
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
+            string recurFrequency = frequencyComboBox != null ? frequencyComboBox.SelectedItem.ToString() : "";
+            string recurUntil = (untilRecurRadioButton != null && untilRecurRadioButton.Checked) ? untilDate.Value.ToString("yyyy/MM/dd") + " " + untilTime.Value.TimeOfDay.ToString() : "";
             List<int> attendeesID;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
 
@@ -48,7 +59,7 @@ namespace iCal_File_Generator
             HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp());
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp(), recurFrequency, recurUntil);
                 GetData();
                 ClearInputs();
                 MessageBox.Show("Insert Successful!");
@@ -400,6 +411,71 @@ namespace iCal_File_Generator
             }
 
             return attendeesRsvp;
+        }
+
+        private void repeatsLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Label frequencyLabel = new Label();
+            Label endLabel = new Label();
+            frequencyComboBox = new ComboBox();
+            neverRecurRadioButton = new RadioButton();
+            untilRecurRadioButton = new RadioButton();
+            untilDate = new DateTimePicker();
+            untilTime = new DateTimePicker();
+
+            List<string> frequencies = new List<string>()
+            {
+                "Once", "Daily", "Weekly", "Monthly", "Yearly"
+            };
+
+            if (recurrencePanel.Visible == false)
+            {
+                recurrencePanel.Visible = true;
+                recurrencePanel.Size = new Size(318, 139);
+                recurrencePanel.Location = new Point(122, 427);
+                recurrencePanel.BackColor = Color.White;
+                submitButton.Location = new Point(submitButton.Location.X, recurrencePanel.Bottom + 5);
+                clearInputsButton.Location = new Point(clearInputsButton.Location.X, recurrencePanel.Bottom + 5);
+            }
+            else
+            {
+                submitButton.Location = new Point(submitButton.Location.X, 447);
+                clearInputsButton.Location = new Point(clearInputsButton.Location.X, 447);
+                recurrencePanel.Controls.Clear();                
+                recurrencePanel.Visible = false;
+            }
+
+            frequencyLabel.Text = "Frequency";
+            recurrencePanel.Controls.Add(frequencyLabel);
+
+            frequencyComboBox.DataSource = frequencies;
+            frequencyComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            frequencyComboBox.Location = new Point(frequencyLabel.Right, frequencyLabel.Location.Y);
+            recurrencePanel.Controls.Add(frequencyComboBox);
+
+            endLabel.Text = "End";
+            endLabel.Location = new Point(0, frequencyComboBox.Bottom + 10);
+            recurrencePanel.Controls.Add(endLabel);
+
+            neverRecurRadioButton.Text = "Never";
+            neverRecurRadioButton.Checked = true;
+            neverRecurRadioButton.Location = new Point(endLabel.Right, endLabel.Location.Y);
+            recurrencePanel.Controls.Add(neverRecurRadioButton);
+
+            untilRecurRadioButton.Text = "Until";
+            untilRecurRadioButton.Location = new Point(endLabel.Right, endLabel.Bottom);
+            recurrencePanel.Controls.Add(untilRecurRadioButton);
+
+            untilDate.Location = new Point(untilRecurRadioButton.Location.X, untilRecurRadioButton.Bottom);
+            recurrencePanel.Controls.Add(untilDate);
+
+            untilTime.Location = new Point(untilRecurRadioButton.Location.X, untilDate.Bottom);
+            untilTime.Size = new Size(98, 20);
+            untilTime.ShowUpDown = true;
+            untilTime.Format = DateTimePickerFormat.Time;
+            recurrencePanel.Controls.Add(untilTime);
+
+            this.Controls.Add(recurrencePanel);
         }
     }
 }

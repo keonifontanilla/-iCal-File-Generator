@@ -16,7 +16,7 @@ namespace iCal_File_Generator
         List<int> attendeesId;
         Event newEvent = new Event();
 
-        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp)
+        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp, string recurFrequency, string recurUntil)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -27,7 +27,8 @@ namespace iCal_File_Generator
                     summary = summary, description = description, startTime = startTime, endTime = endTime,
                     dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone.DisplayName,
                     timeZoneStandardName = timeZoneStandardName, classification = classification,
-                    organizer = organizer, attendees = attendees, attendeesRsvp = attendeesRsvp
+                    organizer = organizer, attendees = attendees, attendeesRsvp = attendeesRsvp,
+                    recurFrequency = recurFrequency, recurUntil = recurUntil
                 };
                 FileGenerator fg = new FileGenerator();
                 fg.FormatInput(newEvent);
