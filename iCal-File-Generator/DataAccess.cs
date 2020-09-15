@@ -45,7 +45,9 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@uniqueIdentifier", SqlDbType.NVarChar).Value = newEvent.uniqueIdentifier;
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timeZone.ToString();
                     cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = newEvent.classification;
-                    cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = newEvent.organizer;
+                    if (newEvent.organizer != "") { cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = newEvent.organizer; }
+                    if (newEvent.recurFrequency != "") { cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = newEvent.recurFrequency; }
+                    if (newEvent.recurUntil != "" && newEvent.recurFrequency != "Once") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = newEvent.recurUntil; }
                     cmd.ExecuteNonQuery();
 
                     // Inserting multiple records of attendees to the same eventID in attendees table
@@ -166,6 +168,8 @@ namespace iCal_File_Generator
             string dtstamp = dataReader["dtstamp"].ToString().Trim();
             string uniqueID = dataReader["uniqueIdentifier"].ToString();
             string organizer = dataReader["organizer"].ToString();
+            string recurFrequency = dataReader["recurFrequency"].ToString();
+            string recurDateTime = dataReader["recurDateTime"].ToString();
             string newLine = Environment.NewLine;
             string formatedStr = "";
 
@@ -186,7 +190,9 @@ namespace iCal_File_Generator
                     uniqueIdentifier = uniqueID,
                     timeZone = timezone,
                     classification = classification,
-                    organizer = organizer
+                    organizer = organizer,
+                    recurFrequency = recurFrequency,
+                    recurUntil = recurDateTime
                 };
                 formatedRecords.Add(formatedStr);
                 records.Add(newEvent);

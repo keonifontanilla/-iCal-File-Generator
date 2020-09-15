@@ -211,7 +211,9 @@ namespace iCal_File_Generator
                                       + "Timezone: " + db.GetEvents()[index].timeZone + newLine
                                       + "Classification: " + db.GetEvents()[index].classification + newLine
                                       + "Organizer: " + db.GetEvents()[index].organizer + newLine
-                                      + "Created: " + db.GetEvents()[index].dtstamp + newLine;
+                                      + "Created: " + db.GetEvents()[index].dtstamp + newLine
+                                      + "Repeat: " + db.GetEvents()[index].recurFrequency + newLine
+                                      + "Repeat end: " + db.GetEvents()[index].recurUntil + newLine;
                 
                 viewPanel.Visible = true;
 
@@ -236,6 +238,7 @@ namespace iCal_File_Generator
         // fix updateClicked boolean to open and close update
         private void updateButton_Click(object sender, EventArgs e)
         {
+            LinkLabelLinkClickedEventArgs ex;
             int index = eventsListBox.SelectedIndex;
 
             if (index != -1 && !updateClicked)
@@ -263,6 +266,16 @@ namespace iCal_File_Generator
                         attendees[i].Text = db.GetEvents()[index].attendees[i];
                         attendeesRsvp[i].SelectedItem = db.GetEvents()[index].attendeesRsvp[i];
                     }
+                }
+
+                // repeat panel update
+                ex = new LinkLabelLinkClickedEventArgs(repeatsLinkLabel.Links[0]);
+                repeatsLinkLabel_LinkClicked(sender, ex);
+                if (db.GetEvents()[index].recurUntil != "")
+                {
+                    untilRecurRadioButton.Checked = true;
+                    untilDate.Value = DateTime.Parse(db.GetEvents()[index].recurUntil);
+                    untilTime.Value = DateTime.Parse(db.GetEvents()[index].recurUntil);
                 }
             }
             else
