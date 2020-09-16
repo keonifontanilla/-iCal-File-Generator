@@ -67,7 +67,7 @@ namespace iCal_File_Generator
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
                 attendeesID = db.GetEvents()[eventsListBox.SelectedIndex].attendeesId;
-                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID);
+                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil);
                 GetData();
                 ClearInputs();
                 updateClicked = false;

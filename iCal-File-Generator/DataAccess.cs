@@ -73,7 +73,7 @@ namespace iCal_File_Generator
             }
         }
 
-        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, string organizer, int eventID, List<string> attendees, List<string> attendeesRsvp, List<int> attendeesId)
+        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, string organizer, int eventID, List<string> attendees, List<string> attendeesRsvp, List<int> attendeesId, string recurFrequency, string recurUntil)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -90,7 +90,9 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = endTime;
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = timezone.ToString();
                     cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = classification;
-                    cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = organizer;
+                    if (organizer != "") { cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = organizer; }
+                    if (recurUntil != "") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = recurUntil; }
+                    cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = recurFrequency;
                                        
                     cmd.Parameters.Add("@attendeeID", SqlDbType.Int);
                     cmd.Parameters.Add("@email", SqlDbType.NVarChar);
