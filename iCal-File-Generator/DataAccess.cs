@@ -91,7 +91,7 @@ namespace iCal_File_Generator
                     cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = timezone.ToString();
                     cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = classification;
                     if (organizer != "") { cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = organizer; }
-                    if (recurUntil != "") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = recurUntil; }
+                    if (recurUntil != "" && recurFrequency != "Once") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = recurUntil; }
                     cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = recurFrequency;
                                        
                     cmd.Parameters.Add("@attendeeID", SqlDbType.Int);

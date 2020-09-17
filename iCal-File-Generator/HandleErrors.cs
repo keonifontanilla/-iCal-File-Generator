@@ -21,7 +21,7 @@ namespace iCal_File_Generator
         /***********************************************************************************************
          * Handles empty required inputs
         ***********************************************************************************************/
-        public static void HandleError(string input)
+        public static void HandleTitleError(string input)
         {
             ErrorMsg += string.IsNullOrWhiteSpace(input) ? "Cannot leave title blank!\n" : "";
         }
@@ -29,7 +29,7 @@ namespace iCal_File_Generator
         /***********************************************************************************************
          * Handles empty required inputs
         ***********************************************************************************************/
-        public static void HandleTimeError(DateTimePicker startDatePicker, DateTimePicker startTimePicker, DateTimePicker endTimePicker, DateTimePicker endDatePicker)
+        public static void HandleTimeError(DateTimePicker startDatePicker, DateTimePicker startTimePicker, DateTimePicker endTimePicker, DateTimePicker endDatePicker, DateTime dateNow)
         {
             // Check start time errors
             ErrorMsg += (startTimePicker.Value.TimeOfDay < startDatePicker.Value.TimeOfDay) && (startTimePicker.Value.Date == startDatePicker.Value.Date)
@@ -37,6 +37,9 @@ namespace iCal_File_Generator
             // Check end time errors
             ErrorMsg += (TrimTime(endTimePicker.Value).TimeOfDay < TrimTime(startTimePicker.Value).TimeOfDay) && (endDatePicker.Value.Date == startDatePicker.Value.Date)
                 ? "Cannot have end time before start time!\n" : "";
+            // Check update date error
+            ErrorMsg += (startDatePicker.Value.Date < dateNow.Date) && (endDatePicker.Value.Date < dateNow.Date) 
+                ? "Update the date!\n" : "";
         }
 
         /***********************************************************************************************

@@ -54,7 +54,7 @@ namespace iCal_File_Generator
                 switch(str.Key)
                 {
                     case "DESCRIPTION":
-                        formatedStr = Foldline($"{str.Key}:{str.Value}").Replace("\r\n", "\\n");
+                        formatedStr = Foldline(($"{str.Key}:{str.Value}").Replace("\r\n", "\\n"));
                         newInputs.Add(formatedStr);
                         continue;
                     case "DTSTART":
