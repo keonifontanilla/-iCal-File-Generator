@@ -54,6 +54,7 @@ namespace iCal_File_Generator
                 switch(str.Key)
                 {
                     case "DESCRIPTION":
+                        if (str.Value == "") { continue; }
                         formatedStr = Foldline(($"{str.Key}:{str.Value}").Replace("\r\n", "\\n"));
                         newInputs.Add(formatedStr);
                         continue;
@@ -122,6 +123,7 @@ namespace iCal_File_Generator
                         }
                         continue;
                 }
+                if (str.Value == "") { continue; }
                 formatedStr = Foldline($"{str.Key}:{str.Value}");
                 newInputs.Add(formatedStr);
             }

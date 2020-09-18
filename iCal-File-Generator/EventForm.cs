@@ -60,7 +60,7 @@ namespace iCal_File_Generator
             HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text);
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp(), recurFrequency, recurUntil);
+                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp(), recurFrequency, recurUntil, locationTextBox.Text);
                 GetData();
                 ClearInputs();
                 MessageBox.Show("Insert Successful!");
@@ -68,7 +68,7 @@ namespace iCal_File_Generator
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
                 attendeesID = db.GetEvents()[eventsListBox.SelectedIndex].attendeesId;
-                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil);
+                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
                 GetData();
                 ClearInputs();
                 updateClicked = false;
@@ -207,6 +207,7 @@ namespace iCal_File_Generator
             {
                 string expandedRowStr = "Title: " + db.GetEvents()[index].summary + newLine
                                       + "Description: " + db.GetEvents()[index].description + newLine
+                                      + "Location: " + db.GetEvents()[index].location + newLine
                                       + "Start time: " + db.GetEvents()[index].startTime + newLine
                                       + "End time: " + db.GetEvents()[index].endTime + newLine
                                       + "Timezone: " + db.GetEvents()[index].timeZone + newLine
@@ -249,6 +250,7 @@ namespace iCal_File_Generator
 
                 titleTextBox.Text = db.GetEvents()[index].summary;
                 descriptionTextBox.Text = db.GetEvents()[index].description;
+                locationTextBox.Text = db.GetEvents()[index].location;
                 organizerTextBox.Text = db.GetEvents()[index].organizer;
 
                 SetDateTime(index);
