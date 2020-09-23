@@ -137,7 +137,23 @@ namespace iCal_File_Generator
                 }
             }
         }
-        
+
+        public void DeleteAttendee(int attendeeID)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand("spAttendees_Delete", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@attendeeID", SqlDbType.NVarChar).Value = attendeeID;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public List<string> ListEvents()
         {
             formatedRecords = new List<string>();
