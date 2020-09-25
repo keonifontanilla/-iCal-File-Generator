@@ -70,22 +70,18 @@ namespace iCal_File_Generator
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
                 attendeesID = db.GetEvents()[eventsListBox.SelectedIndex].attendeesId;
+                
+                // fix deleting a newly added attendee with text in the input box
+                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
 
-                if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked && deleteAttendee)
+                if (deleteAttendee)
                 {
-                    db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
-
                     foreach (int id in this.attendeesID)
                     {
                         db.DeleteAttendee(id);
                     }
                 }
-                else
-                {
-                    db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
-                }
-
-                GetData();
+                
                 ClearInputs();
                 updateClicked = false;
 
@@ -457,6 +453,7 @@ namespace iCal_File_Generator
                 }
             }
 
+            /*
             // delete unwanted inputs for insert
             if (!updateClicked)
             {
@@ -479,12 +476,21 @@ namespace iCal_File_Generator
                     }
                 }
             }
+            */
 
-            // fix deleting new and empty inputs from update panel
             // get attendee IDs to delete from database
-            if (updateClicked)
+            int attIndex = attendees.FindIndex(att => att.Name == "attendeeEmailTextbox" + index);
+            int rsvpIndex = attendeesRsvp.FindIndex(rsvp => rsvp.Name == "rsvpComboBox" + index);
+            List<int> dbAttendeesId = db.GetEvents()[dbIndex].attendeesId;
+            
+            if (updateClicked && (attIndex != -1) && (dbAttendeesId != null) && !(attIndex >= dbAttendeesId.Count))
             {
-                attendeesID.Add(db.GetEvents()[dbIndex].attendeesId[int.Parse(index) - 1]);
+                attendeesID.Add(dbAttendeesId[attIndex]);
+            }
+            else
+            {
+                attendees.RemoveAt(attIndex);
+                attendeesRsvp.RemoveAt(attIndex);
             }
         }
 
