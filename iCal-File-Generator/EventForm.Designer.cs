@@ -58,6 +58,7 @@
             this.repeatsLinkLabel = new System.Windows.Forms.LinkLabel();
             this.locationLabel = new System.Windows.Forms.Label();
             this.locationTextBox = new System.Windows.Forms.TextBox();
+            this.eventViewPanel = new System.Windows.Forms.Panel();
             this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -228,7 +229,6 @@
             // 
             // viewPanel
             // 
-            this.viewPanel.Controls.Add(this.generateButton);
             this.viewPanel.Controls.Add(this.panelCloseButton);
             this.viewPanel.Controls.Add(this.eventInfoTextBox);
             this.viewPanel.Location = new System.Drawing.Point(527, 65);
@@ -239,7 +239,7 @@
             // 
             // generateButton
             // 
-            this.generateButton.Location = new System.Drawing.Point(227, 327);
+            this.generateButton.Location = new System.Drawing.Point(773, 447);
             this.generateButton.Name = "generateButton";
             this.generateButton.Size = new System.Drawing.Size(75, 23);
             this.generateButton.TabIndex = 20;
@@ -342,11 +342,20 @@
             this.locationTextBox.Size = new System.Drawing.Size(151, 20);
             this.locationTextBox.TabIndex = 28;
             // 
+            // eventViewPanel
+            // 
+            this.eventViewPanel.Location = new System.Drawing.Point(527, 65);
+            this.eventViewPanel.Name = "eventViewPanel";
+            this.eventViewPanel.Size = new System.Drawing.Size(402, 364);
+            this.eventViewPanel.TabIndex = 29;
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.generateButton);
+            this.Controls.Add(this.eventViewPanel);
             this.Controls.Add(this.locationTextBox);
             this.Controls.Add(this.locationLabel);
             this.Controls.Add(this.repeatsLinkLabel);
@@ -415,6 +424,7 @@
         private System.Windows.Forms.LinkLabel repeatsLinkLabel;
         private System.Windows.Forms.Label locationLabel;
         private System.Windows.Forms.TextBox locationTextBox;
+        private System.Windows.Forms.Panel eventViewPanel;
     }
 }
 

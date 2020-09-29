@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iCal_File_Generator.Controls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,6 +12,8 @@ namespace iCal_File_Generator
         List<TextBox> attendees = new List<TextBox>();
         List<ComboBox> attendeesRsvp = new List<ComboBox>();
         List<int> attendeesID = new List<int>();
+        EventListView eventListView;
+        AttendeesListView attendeesListView;
         DataAccess db = new DataAccess();
 
         Panel attendeePanel, recurrencePanel;
@@ -32,18 +35,22 @@ namespace iCal_File_Generator
         {
             InitializeComponent();
             InitializeDateTime();
-            InitializeListbox();
+            // InitializeListbox();
             InitializeTimezone();
             InitializeClassification();
+            eventListView = new EventListView(db);
+            attendeesListView = new AttendeesListView();
 
-            attendeePanel = new Panel();
-            attendeePanel.Visible = false;
+            // attendeePanel = new Panel();
+            // attendeePanel.Visible = false;
 
             recurrencePanel = new Panel();
             recurrencePanel.Visible = false;
 
             // Dynamically added button click event handler
-            addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
+            // addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
+
+            eventViewPanel.Controls.Add(eventListView);
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -98,19 +105,6 @@ namespace iCal_File_Generator
             EventForm newEventForm = new EventForm();
             newEventForm.Show();
             this.Dispose(false);
-
-            /*
-            InitializeDateTime();
-            InitializeTimezone();
-            InitializeClassification();
-
-            titleTextBox.Text = "";
-            descriptionTextBox.Text = "";
-            startDatePicker.Value = DateTime.Now;
-            startTimePicker.Value = DateTime.Now;
-            endDatePicker.Value = DateTime.Now;
-            endTimePicker.Value = DateTime.Now;
-            */
         }
 
         private void InitializeDateTime()
@@ -137,6 +131,8 @@ namespace iCal_File_Generator
             eventsListBox.DataSource = dbEvents;
         }
 
+        /*
+        // DELETE LISTBOX STUFF
         private void InitializeListbox()
         {
             eventsListBox.DrawMode = DrawMode.OwnerDrawVariable;
@@ -159,6 +155,7 @@ namespace iCal_File_Generator
             e.DrawBackground();
             if (e.Index != -1) { e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds); }
         }
+        */
 
         private string CreateUID()
         {
@@ -213,6 +210,20 @@ namespace iCal_File_Generator
 
         private void viewButton_Click(object sender, EventArgs e)
         {
+            if (viewButton.Text == "View")
+            {
+                eventViewPanel.Controls[0].Visible = false;
+                eventViewPanel.Controls.Add(new FullEventView(db, eventListView.Index()));
+                viewButton.Text = "Close";
+            }
+            else
+            {
+                eventViewPanel.Controls[0].Visible = true;
+                eventViewPanel.Controls[1].Visible = false;
+                viewButton.Text = "View";
+            }
+            /*
+            // DELETE THIS
             int index = eventsListBox.SelectedIndex;
             string newLine = Environment.NewLine;
            
@@ -243,6 +254,7 @@ namespace iCal_File_Generator
 
                 eventInfoTextBox.Text = expandedRowStr;                
             }
+            */
         }
 
         private void panelCloseButton_Click(object sender, EventArgs e)
@@ -254,6 +266,7 @@ namespace iCal_File_Generator
         private void updateButton_Click(object sender, EventArgs e)
         {
             LinkLabelLinkClickedEventArgs ex;
+            attendeesListView = new AttendeesListView(db, updateClicked, deleteAttendee, attendeesID, numOfAttendees, eventListView.Index());
             int index = eventsListBox.SelectedIndex;
 
             if (index != -1 && !updateClicked)
@@ -274,6 +287,8 @@ namespace iCal_File_Generator
 
                 // attendees panel update
                 attendeesButton_Click(sender, e);
+                attendeesListView.UpdateAttendees(sender, e);
+                /*
                 if (attendeePanel.Visible && (db.GetEvents()[index].attendees != null))
                 {
                     for (int i = 0; i < db.GetEvents()[index].attendees.Count; i++)
@@ -283,6 +298,7 @@ namespace iCal_File_Generator
                         attendeesRsvp[i].SelectedItem = db.GetEvents()[index].attendeesRsvp[i];
                     }
                 }
+                */
 
                 // repeat panel update
                 ex = new LinkLabelLinkClickedEventArgs(repeatsLinkLabel.Links[0]);
@@ -309,7 +325,7 @@ namespace iCal_File_Generator
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            int index = eventsListBox.SelectedIndex;
+            int index = eventListView.Index();
             if (index != -1)
             {
                 db.DeleteEvent(db.GetEvents()[index].eventID);
@@ -321,7 +337,7 @@ namespace iCal_File_Generator
 
         private void generateButton_Click(object sender, EventArgs e)
         {
-            int index = eventsListBox.SelectedIndex;
+            int index = eventListView.Index();
 
             if (index != -1)
             {
@@ -356,8 +372,14 @@ namespace iCal_File_Generator
 
         private void attendeesButton_Click(object sender, EventArgs e)
         {
+            attendeesListView = new AttendeesListView(db, updateClicked, deleteAttendee, attendeesID, numOfAttendees, eventListView.Index());
+
+            eventViewPanel.Controls[0].Visible = false;
+            eventViewPanel.Controls.Add(attendeesListView);
+
             TextBox attendeeEmailTextbox = new TextBox();
 
+            /*
             if (attendeePanel.Visible == false) 
             { 
                 attendeePanel.Visible = true;
@@ -384,8 +406,10 @@ namespace iCal_File_Generator
             addAttendeeButton.AutoSize = true;
 
             attendeePanel.Controls.Add(addAttendeeButton);
+            */
         }
 
+        /*
         // Click handler for dynamically generated button in attendee panel
         private void addAttendeeButton_Click(object send, EventArgs e)
         {
@@ -453,31 +477,6 @@ namespace iCal_File_Generator
                 }
             }
 
-            /*
-            // delete unwanted inputs for insert
-            if (!updateClicked)
-            {
-                // delete attendeeEmailTextbox control from attendees list
-                foreach (TextBox textbox in attendees)
-                {
-                    if (textbox.Name == "attendeeEmailTextbox" + index)
-                    {
-                        attendees.Remove(textbox);
-                        break;
-                    }
-                }
-                // delete rsvpComboBox control from attendeesRsvp list
-                foreach (ComboBox combobox in attendeesRsvp)
-                {
-                    if (combobox.Name == "rsvpComboBox" + index)
-                    {
-                        attendeesRsvp.Remove(combobox);
-                        break;
-                    }
-                }
-            }
-            */
-
             // get attendee IDs to delete from database
             int attIndex = attendees.FindIndex(att => att.Name == "attendeeEmailTextbox" + index);
             int rsvpIndex = attendeesRsvp.FindIndex(rsvp => rsvp.Name == "rsvpComboBox" + index);
@@ -493,12 +492,13 @@ namespace iCal_File_Generator
                 attendeesRsvp.RemoveAt(attIndex);
             }
         }
+        */
 
         private List<string> GetAttendeesInput()
         {
             List<string> attendees = new List<string>();
 
-            foreach(TextBox attendee in this.attendees)
+            foreach(TextBox attendee in attendeesListView.Attendees)
             {
                 attendees.Add(attendee.Text);
             }
@@ -510,7 +510,7 @@ namespace iCal_File_Generator
         {
             List<string> attendeesRsvp = new List<string>();
 
-            foreach (ComboBox rsvp in this.attendeesRsvp)
+            foreach (ComboBox rsvp in attendeesListView.AttendeesRsvp)
             {
                 attendeesRsvp.Add(rsvp.SelectedItem.ToString());
             }
