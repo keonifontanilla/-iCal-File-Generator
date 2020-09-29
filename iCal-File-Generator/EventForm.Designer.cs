@@ -39,16 +39,12 @@
             this.endDateLabel = new System.Windows.Forms.Label();
             this.endTimePicker = new System.Windows.Forms.DateTimePicker();
             this.endDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.eventsListBox = new System.Windows.Forms.ListBox();
             this.timezoneComboBox = new System.Windows.Forms.ComboBox();
             this.timezoneLabel = new System.Windows.Forms.Label();
             this.classificationComboBox = new System.Windows.Forms.ComboBox();
             this.classificationLabel = new System.Windows.Forms.Label();
             this.viewButton = new System.Windows.Forms.Button();
-            this.eventInfoTextBox = new System.Windows.Forms.TextBox();
-            this.viewPanel = new System.Windows.Forms.Panel();
             this.generateButton = new System.Windows.Forms.Button();
-            this.panelCloseButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.clearInputsButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
@@ -59,7 +55,6 @@
             this.locationLabel = new System.Windows.Forms.Label();
             this.locationTextBox = new System.Windows.Forms.TextBox();
             this.eventViewPanel = new System.Windows.Forms.Panel();
-            this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -160,16 +155,6 @@
             this.endDatePicker.TabIndex = 9;
             this.endDatePicker.Value = new System.DateTime(2020, 5, 23, 14, 18, 50, 0);
             // 
-            // eventsListBox
-            // 
-            this.eventsListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eventsListBox.FormattingEnabled = true;
-            this.eventsListBox.ItemHeight = 24;
-            this.eventsListBox.Location = new System.Drawing.Point(527, 65);
-            this.eventsListBox.Name = "eventsListBox";
-            this.eventsListBox.Size = new System.Drawing.Size(402, 364);
-            this.eventsListBox.TabIndex = 12;
-            // 
             // timezoneComboBox
             // 
             this.timezoneComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -216,27 +201,6 @@
             this.viewButton.UseVisualStyleBackColor = true;
             this.viewButton.Click += new System.EventHandler(this.viewButton_Click);
             // 
-            // eventInfoTextBox
-            // 
-            this.eventInfoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eventInfoTextBox.Location = new System.Drawing.Point(3, 0);
-            this.eventInfoTextBox.Multiline = true;
-            this.eventInfoTextBox.Name = "eventInfoTextBox";
-            this.eventInfoTextBox.ReadOnly = true;
-            this.eventInfoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.eventInfoTextBox.Size = new System.Drawing.Size(396, 306);
-            this.eventInfoTextBox.TabIndex = 18;
-            // 
-            // viewPanel
-            // 
-            this.viewPanel.Controls.Add(this.panelCloseButton);
-            this.viewPanel.Controls.Add(this.eventInfoTextBox);
-            this.viewPanel.Location = new System.Drawing.Point(527, 65);
-            this.viewPanel.Name = "viewPanel";
-            this.viewPanel.Size = new System.Drawing.Size(402, 364);
-            this.viewPanel.TabIndex = 19;
-            this.viewPanel.Visible = false;
-            // 
             // generateButton
             // 
             this.generateButton.Location = new System.Drawing.Point(773, 447);
@@ -246,16 +210,6 @@
             this.generateButton.Text = "Generate";
             this.generateButton.UseVisualStyleBackColor = true;
             this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
-            // 
-            // panelCloseButton
-            // 
-            this.panelCloseButton.Location = new System.Drawing.Point(110, 327);
-            this.panelCloseButton.Name = "panelCloseButton";
-            this.panelCloseButton.Size = new System.Drawing.Size(75, 23);
-            this.panelCloseButton.TabIndex = 19;
-            this.panelCloseButton.Text = "Close";
-            this.panelCloseButton.UseVisualStyleBackColor = true;
-            this.panelCloseButton.Click += new System.EventHandler(this.panelCloseButton_Click);
             // 
             // updateButton
             // 
@@ -365,13 +319,11 @@
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.clearInputsButton);
             this.Controls.Add(this.updateButton);
-            this.Controls.Add(this.viewPanel);
             this.Controls.Add(this.viewButton);
             this.Controls.Add(this.classificationLabel);
             this.Controls.Add(this.classificationComboBox);
             this.Controls.Add(this.timezoneLabel);
             this.Controls.Add(this.timezoneComboBox);
-            this.Controls.Add(this.eventsListBox);
             this.Controls.Add(this.endDateLabel);
             this.Controls.Add(this.endTimePicker);
             this.Controls.Add(this.endDatePicker);
@@ -385,8 +337,6 @@
             this.Controls.Add(this.titleLabel);
             this.Name = "EventForm";
             this.Text = "Event File Generator";
-            this.viewPanel.ResumeLayout(false);
-            this.viewPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -405,15 +355,11 @@
         private System.Windows.Forms.Label endDateLabel;
         private System.Windows.Forms.DateTimePicker endTimePicker;
         private System.Windows.Forms.DateTimePicker endDatePicker;
-        private System.Windows.Forms.ListBox eventsListBox;
         private System.Windows.Forms.ComboBox timezoneComboBox;
         private System.Windows.Forms.Label timezoneLabel;
         private System.Windows.Forms.ComboBox classificationComboBox;
         private System.Windows.Forms.Label classificationLabel;
         private System.Windows.Forms.Button viewButton;
-        private System.Windows.Forms.TextBox eventInfoTextBox;
-        private System.Windows.Forms.Panel viewPanel;
-        private System.Windows.Forms.Button panelCloseButton;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button clearInputsButton;
         private System.Windows.Forms.Button deleteButton;

@@ -8,17 +8,13 @@ namespace iCal_File_Generator
 {
     public partial class EventForm : Form
     {
+        DataAccess db = new DataAccess();
         List<string> dbEvents = new List<string>();
-        List<TextBox> attendees = new List<TextBox>();
-        List<ComboBox> attendeesRsvp = new List<ComboBox>();
         List<int> attendeesID = new List<int>();
         EventListView eventListView;
         AttendeesListView attendeesListView;
-        DataAccess db = new DataAccess();
 
-        Panel attendeePanel, recurrencePanel;
-        Button addAttendeeButton = new Button();
-        GroupBox attendeeGroupBox;
+        Panel recurrencePanel;
         ComboBox frequencyComboBox;
         RadioButton neverRecurRadioButton;
         RadioButton untilRecurRadioButton;
@@ -35,20 +31,14 @@ namespace iCal_File_Generator
         {
             InitializeComponent();
             InitializeDateTime();
-            // InitializeListbox();
             InitializeTimezone();
             InitializeClassification();
+
             eventListView = new EventListView(db);
             attendeesListView = new AttendeesListView();
 
-            // attendeePanel = new Panel();
-            // attendeePanel.Visible = false;
-
             recurrencePanel = new Panel();
             recurrencePanel.Visible = false;
-
-            // Dynamically added button click event handler
-            // addAttendeeButton.Click += new EventHandler(addAttendeeButton_Click);
 
             eventViewPanel.Controls.Add(eventListView);
         }
@@ -70,13 +60,12 @@ namespace iCal_File_Generator
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
                 db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp(), recurFrequency, recurUntil, locationTextBox.Text);
-                GetData();
                 ClearInputs();
                 MessageBox.Show("Insert Successful!");
             }
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
-                attendeesID = db.GetEvents()[eventsListBox.SelectedIndex].attendeesId;
+                attendeesID = db.GetEvents()[eventListView.Index()].attendeesId;
                 
                 // fix deleting a newly added attendee with text in the input box
                 db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
@@ -109,8 +98,6 @@ namespace iCal_File_Generator
 
         private void InitializeDateTime()
         {
-            GetData();
-
             startDatePicker.MinDate = DateTime.Now.AddSeconds(-DateTime.Now.Second);
             startTimePicker.Format = DateTimePickerFormat.Time;
             startTimePicker.ShowUpDown = true;
@@ -124,38 +111,6 @@ namespace iCal_File_Generator
         {
             endDatePicker.MinDate = startDatePicker.Value;
         }
-
-        private void GetData()
-        {
-            dbEvents = db.ListEvents();
-            eventsListBox.DataSource = dbEvents;
-        }
-
-        /*
-        // DELETE LISTBOX STUFF
-        private void InitializeListbox()
-        {
-            eventsListBox.DrawMode = DrawMode.OwnerDrawVariable;
-            eventsListBox.MeasureItem += new MeasureItemEventHandler(eventsListBox_MeasureItem);
-            eventsListBox.DrawItem += new DrawItemEventHandler(eventsListBox_DrawItem);
-            this.Controls.Add(this.eventsListBox);
-        }
-
-        private void eventsListBox_MeasureItem(object sender, MeasureItemEventArgs e)
-        {
-            foreach (string item in eventsListBox.Items)
-            {
-                //Set the Height of the item at index 2 to 50
-                if (e.Index == eventsListBox.Items.IndexOf(item)) { e.ItemHeight = 100; }
-            }
-        }
-
-        private void eventsListBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            e.DrawBackground();
-            if (e.Index != -1) { e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds); }
-        }
-        */
 
         private string CreateUID()
         {
@@ -219,47 +174,9 @@ namespace iCal_File_Generator
             else
             {
                 eventViewPanel.Controls[0].Visible = true;
-                eventViewPanel.Controls[1].Visible = false;
+                eventViewPanel.Controls.Remove(eventViewPanel.Controls[1]);
                 viewButton.Text = "View";
             }
-            /*
-            // DELETE THIS
-            int index = eventsListBox.SelectedIndex;
-            string newLine = Environment.NewLine;
-           
-            if (index != -1)
-            {
-                string expandedRowStr = "Title: " + db.GetEvents()[index].summary + newLine
-                                      + "Description: " + db.GetEvents()[index].description + newLine
-                                      + "Location: " + db.GetEvents()[index].location + newLine
-                                      + "Start time: " + db.GetEvents()[index].startTime + newLine
-                                      + "End time: " + db.GetEvents()[index].endTime + newLine
-                                      + "Timezone: " + db.GetEvents()[index].timeZone + newLine
-                                      + "Classification: " + db.GetEvents()[index].classification + newLine
-                                      + "Organizer: " + db.GetEvents()[index].organizer + newLine
-                                      + "Created: " + db.GetEvents()[index].dtstamp + newLine
-                                      + "Repeat: " + db.GetEvents()[index].recurFrequency + newLine
-                                      + "Repeat end: " + db.GetEvents()[index].recurUntil + newLine;
-                
-                viewPanel.Visible = true;
-
-                if (db.GetEvents()[index].attendees != null)
-                {
-                    for (int i = 0; i < db.GetEvents()[index].attendees.Count; i++)
-                    {
-                        if (db.GetEvents()[index].attendees[i] == "") { continue; }
-                        expandedRowStr += "Attendee: " + db.GetEvents()[index].attendees[i] + ", " + "Rsvp: " + db.GetEvents()[index].attendeesRsvp[i] + newLine;
-                    }
-                }
-
-                eventInfoTextBox.Text = expandedRowStr;                
-            }
-            */
-        }
-
-        private void panelCloseButton_Click(object sender, EventArgs e)
-        {
-            viewPanel.Visible = false;
         }
 
         // fix updateClicked boolean to open and close update
@@ -267,7 +184,7 @@ namespace iCal_File_Generator
         {
             LinkLabelLinkClickedEventArgs ex;
             attendeesListView = new AttendeesListView(db, updateClicked, deleteAttendee, attendeesID, numOfAttendees, eventListView.Index());
-            int index = eventsListBox.SelectedIndex;
+            int index = eventListView.Index();
 
             if (index != -1 && !updateClicked)
             {
@@ -288,17 +205,6 @@ namespace iCal_File_Generator
                 // attendees panel update
                 attendeesButton_Click(sender, e);
                 attendeesListView.UpdateAttendees(sender, e);
-                /*
-                if (attendeePanel.Visible && (db.GetEvents()[index].attendees != null))
-                {
-                    for (int i = 0; i < db.GetEvents()[index].attendees.Count; i++)
-                    {
-                        addAttendeeButton_Click(sender, e);
-                        attendees[i].Text = db.GetEvents()[index].attendees[i];
-                        attendeesRsvp[i].SelectedItem = db.GetEvents()[index].attendeesRsvp[i];
-                    }
-                }
-                */
 
                 // repeat panel update
                 ex = new LinkLabelLinkClickedEventArgs(repeatsLinkLabel.Links[0]);
@@ -331,7 +237,6 @@ namespace iCal_File_Generator
                 db.DeleteEvent(db.GetEvents()[index].eventID);
             }
             
-            GetData();
             ClearInputs();
         }
 
@@ -376,123 +281,8 @@ namespace iCal_File_Generator
 
             eventViewPanel.Controls[0].Visible = false;
             eventViewPanel.Controls.Add(attendeesListView);
-
-            TextBox attendeeEmailTextbox = new TextBox();
-
-            /*
-            if (attendeePanel.Visible == false) 
-            { 
-                attendeePanel.Visible = true;
-                eventsListBox.Visible = false;
-            } 
-            else
-            {
-                attendeePanel.Controls.Clear();
-                attendeePanel.Visible = false;
-                eventsListBox.Visible = true;
-                attendees.Clear();
-                attendeesRsvp.Clear();
-                numOfAttendees = 1;
-                // updateClicked = false;
-            }
-
-            attendeePanel.Size = new Size(402, 364);
-            attendeePanel.Location = new Point(527, 50);
-            attendeePanel.BackColor = Color.White;
-            this.Controls.Add(attendeePanel);
-
-            addAttendeeButton.Text = "Add Attendee";
-            addAttendeeButton.Name = "addAttendeeButton";
-            addAttendeeButton.AutoSize = true;
-
-            attendeePanel.Controls.Add(addAttendeeButton);
-            */
         }
 
-        /*
-        // Click handler for dynamically generated button in attendee panel
-        private void addAttendeeButton_Click(object send, EventArgs e)
-        {
-            TextBox attendeeEmailTextBox = new TextBox();
-            Label attendeeLabel = new Label();
-            ComboBox rsvpComboBox = new ComboBox();
-            Button deleteAttendeeButton = new Button();
-            attendeeGroupBox = new GroupBox();
-            
-            attendeeGroupBox.Location = new Point(0, numOfAttendees * 50);
-            attendeeGroupBox.Size = new Size(attendeePanel.Location.X, 50);
-            attendeeGroupBox.Name = "attendeeGroupBox" + numOfAttendees.ToString();
-
-            attendeeLabel.Location = new Point(25, attendeeGroupBox.Size.Height / 2);
-            attendeeLabel.Text = "Email: ";
-            attendeeLabel.Name = "attendeeLabel" + numOfAttendees.ToString();
-            attendeeLabel.Size = new Size(50, 21);
-
-            attendeeEmailTextBox.Location = new Point(attendeeLabel.Right, attendeeGroupBox.Size.Height / 2);
-            attendeeEmailTextBox.Name = "attendeeEmailTextbox" + numOfAttendees.ToString();
-
-            List<string> rsvp = new List<string>()
-            {
-                "False", "True"
-            };
-            rsvpComboBox.DataSource = rsvp;
-            rsvpComboBox.Location = new Point(attendeeEmailTextBox.Location.X + 105, attendeeGroupBox.Size.Height / 2);
-            rsvpComboBox.Name = "rsvpComboBox" + numOfAttendees.ToString();
-            rsvpComboBox.Size = new Size(60, 21);
-
-            deleteAttendeeButton.Text = "Delete";
-            deleteAttendeeButton.Location = new Point(rsvpComboBox.Right + 4, attendeeGroupBox.Size.Height / 2);
-            deleteAttendeeButton.Name = "deleteAttendeeButton" + numOfAttendees.ToString();
-            deleteAttendeeButton.Size = new Size(46, 23);
-
-            attendees.Add(attendeeEmailTextBox);
-            attendeesRsvp.Add(rsvpComboBox);
-
-            numOfAttendees++;
-
-            attendeeGroupBox.Controls.Add(attendeeLabel);
-            attendeeGroupBox.Controls.Add(attendeeEmailTextBox);
-            attendeeGroupBox.Controls.Add(rsvpComboBox);
-            attendeeGroupBox.Controls.Add(deleteAttendeeButton);
-
-            attendeePanel.Controls.Add(attendeeGroupBox);
-
-            deleteAttendeeButton.Click += new EventHandler(deleteAttendeeButton_Click);
-        }
-
-        private void deleteAttendeeButton_Click(object send, EventArgs e)
-        {
-            // get # in the name of attendeeGroupBox# where # starts at 1
-            Control btn = (Control)send;
-            string index = btn.Name.Substring(btn.Name.Length - 1, 1);
-            int dbIndex = eventsListBox.SelectedIndex;
-            deleteAttendee = true;
-
-            // delete input from panel
-            foreach (Control item in attendeePanel.Controls)
-            {
-                if (item.Name == "attendeeGroupBox" + index)
-                {
-                    attendeePanel.Controls.Remove(item);
-                }
-            }
-
-            // get attendee IDs to delete from database
-            int attIndex = attendees.FindIndex(att => att.Name == "attendeeEmailTextbox" + index);
-            int rsvpIndex = attendeesRsvp.FindIndex(rsvp => rsvp.Name == "rsvpComboBox" + index);
-            List<int> dbAttendeesId = db.GetEvents()[dbIndex].attendeesId;
-            
-            if (updateClicked && (attIndex != -1) && (dbAttendeesId != null) && !(attIndex >= dbAttendeesId.Count))
-            {
-                attendeesID.Add(dbAttendeesId[attIndex]);
-            }
-            else
-            {
-                attendees.RemoveAt(attIndex);
-                attendeesRsvp.RemoveAt(attIndex);
-            }
-        }
-        */
 
         private List<string> GetAttendeesInput()
         {
