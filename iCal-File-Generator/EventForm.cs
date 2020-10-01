@@ -9,8 +9,6 @@ namespace iCal_File_Generator
     public partial class EventForm : Form
     {
         DataAccess db = new DataAccess();
-        List<string> dbEvents = new List<string>();
-        List<int> attendeesID = new List<int>();
         EventListView eventListView;
         AttendeesListView attendeesListView;
 
@@ -24,8 +22,6 @@ namespace iCal_File_Generator
 
         private int eventID = 0;
         private bool updateClicked = false;
-        private bool deleteAttendee = false;
-        private int numOfAttendees = 1;
 
         public EventForm()
         {
@@ -35,12 +31,14 @@ namespace iCal_File_Generator
             InitializeClassification();
 
             eventListView = new EventListView(db);
-            attendeesListView = new AttendeesListView();
+            attendeesListView = new AttendeesListView(db);
 
             recurrencePanel = new Panel();
             recurrencePanel.Visible = false;
 
-            eventViewPanel.Controls.Add(eventListView);
+            // eventViewPanel.Controls.Add(eventListView);
+            eventListTab.Controls.Add(eventListView);
+            attendeeListTab.Controls.Add(attendeesListView);
         }
 
         private void submitButton_Click(object sender, EventArgs e)
@@ -70,9 +68,9 @@ namespace iCal_File_Generator
                 // fix deleting a newly added attendee with text in the input box
                 db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
 
-                if (deleteAttendee)
+                if (attendeesListView.DeleteAttendee)
                 {
-                    foreach (int id in this.attendeesID)
+                    foreach (int id in attendeesListView.AttendeesID)
                     {
                         db.DeleteAttendee(id);
                     }
@@ -167,14 +165,14 @@ namespace iCal_File_Generator
         {
             if (viewButton.Text == "View")
             {
-                eventViewPanel.Controls[0].Visible = false;
-                eventViewPanel.Controls.Add(new FullEventView(db, eventListView.Index()));
+                eventListTab.Controls[0].Visible = false;
+                eventListTab.Controls.Add(new FullEventView(db, eventListView.Index()));
                 viewButton.Text = "Close";
             }
             else
             {
-                eventViewPanel.Controls[0].Visible = true;
-                eventViewPanel.Controls.Remove(eventViewPanel.Controls[1]);
+                eventListTab.Controls[0].Visible = true;
+                eventListTab.Controls.Remove(eventListTab.Controls[1]);
                 viewButton.Text = "View";
             }
         }
@@ -183,12 +181,12 @@ namespace iCal_File_Generator
         private void updateButton_Click(object sender, EventArgs e)
         {
             LinkLabelLinkClickedEventArgs ex;
-            attendeesListView = new AttendeesListView(db, updateClicked, deleteAttendee, attendeesID, numOfAttendees, eventListView.Index());
             int index = eventListView.Index();
 
             if (index != -1 && !updateClicked)
             {
                 updateClicked = true;
+                attendeesListView = new AttendeesListView(db, updateClicked, eventListView.Index());
                 updateButton.Text = "Cancel";
 
                 titleTextBox.Text = db.GetEvents()[index].summary;
@@ -203,7 +201,9 @@ namespace iCal_File_Generator
                 eventID = db.GetEvents()[index].eventID;
 
                 // attendees panel update
-                attendeesButton_Click(sender, e);
+                eventTabControl.SelectedTab = attendeeListTab;
+                attendeeListTab.Controls.Clear();
+                attendeeListTab.Controls.Add(attendeesListView);
                 attendeesListView.UpdateAttendees(sender, e);
 
                 // repeat panel update
@@ -274,15 +274,6 @@ namespace iCal_File_Generator
             endDatePicker.Value = endTime;
             endTimePicker.Value = endTime;
         }
-
-        private void attendeesButton_Click(object sender, EventArgs e)
-        {
-            attendeesListView = new AttendeesListView(db, updateClicked, deleteAttendee, attendeesID, numOfAttendees, eventListView.Index());
-
-            eventViewPanel.Controls[0].Visible = false;
-            eventViewPanel.Controls.Add(attendeesListView);
-        }
-
 
         private List<string> GetAttendeesInput()
         {

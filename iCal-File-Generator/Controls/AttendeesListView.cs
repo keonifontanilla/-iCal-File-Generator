@@ -9,26 +9,26 @@ namespace iCal_File_Generator.Controls
     {
         public List<TextBox> Attendees { get; private set; } = new List<TextBox>();
         public List<ComboBox> AttendeesRsvp { get; private set; } = new List<ComboBox>();
-        public List<int> attendeesID { get; private set; }
-        public bool deleteAttendee { get; private set; }
+        public List<int> AttendeesID { get; private set; } = new List<int>();
+        public bool DeleteAttendee { get; private set; }
 
         DataAccess db;
 
-        private int numOfAttendees, dbIndex;
+        private int numOfAttendees = 1;
+        private int dbIndex;
         private bool updateClicked;
 
-        public AttendeesListView()
-        {
-
-        }
-
-        public AttendeesListView(DataAccess db, bool updateClicked, bool deleteAttendee, List<int> attendeesID, int numofAttendees, int dbIndex)
+        public AttendeesListView(DataAccess db)
         {
             this.db = db;
-            this.numOfAttendees = numofAttendees;
-            this.attendeesID = attendeesID;
+
+            InitializeComponent();
+        }
+
+        public AttendeesListView(DataAccess db, bool updateClicked, int dbIndex)
+        {
+            this.db = db;
             this.updateClicked = updateClicked;
-            this.deleteAttendee = deleteAttendee;
             this.dbIndex = dbIndex;
 
             InitializeComponent();
@@ -91,7 +91,7 @@ namespace iCal_File_Generator.Controls
             Control btn = (Control)send;
             string index = btn.Name.Substring(btn.Name.Length - 1, 1);
             
-            deleteAttendee = true;
+            DeleteAttendee = true;
 
             // delete input from panel
             foreach (Control item in attendeePanel.Controls)
@@ -109,7 +109,7 @@ namespace iCal_File_Generator.Controls
 
             if (updateClicked && (attIndex != -1) && (dbAttendeesId != null) && !(attIndex >= dbAttendeesId.Count))
             {
-                attendeesID.Add(dbAttendeesId[attIndex]);
+                AttendeesID.Add(dbAttendeesId[attIndex]);
             }
             else
             {

@@ -50,11 +50,13 @@
             this.deleteButton = new System.Windows.Forms.Button();
             this.organizerLabel = new System.Windows.Forms.Label();
             this.organizerTextBox = new System.Windows.Forms.TextBox();
-            this.attendeesButton = new System.Windows.Forms.Button();
             this.repeatsLinkLabel = new System.Windows.Forms.LinkLabel();
             this.locationLabel = new System.Windows.Forms.Label();
             this.locationTextBox = new System.Windows.Forms.TextBox();
-            this.eventViewPanel = new System.Windows.Forms.Panel();
+            this.eventTabControl = new System.Windows.Forms.TabControl();
+            this.eventListTab = new System.Windows.Forms.TabPage();
+            this.attendeeListTab = new System.Windows.Forms.TabPage();
+            this.eventTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -258,16 +260,6 @@
             this.organizerTextBox.Size = new System.Drawing.Size(244, 20);
             this.organizerTextBox.TabIndex = 24;
             // 
-            // attendeesButton
-            // 
-            this.attendeesButton.Location = new System.Drawing.Point(373, 275);
-            this.attendeesButton.Name = "attendeesButton";
-            this.attendeesButton.Size = new System.Drawing.Size(67, 23);
-            this.attendeesButton.TabIndex = 25;
-            this.attendeesButton.Text = "Attendees";
-            this.attendeesButton.UseVisualStyleBackColor = true;
-            this.attendeesButton.Click += new System.EventHandler(this.attendeesButton_Click);
-            // 
             // repeatsLinkLabel
             // 
             this.repeatsLinkLabel.AutoSize = true;
@@ -296,24 +288,46 @@
             this.locationTextBox.Size = new System.Drawing.Size(151, 20);
             this.locationTextBox.TabIndex = 28;
             // 
-            // eventViewPanel
+            // eventTabControl
             // 
-            this.eventViewPanel.Location = new System.Drawing.Point(527, 65);
-            this.eventViewPanel.Name = "eventViewPanel";
-            this.eventViewPanel.Size = new System.Drawing.Size(402, 364);
-            this.eventViewPanel.TabIndex = 29;
+            this.eventTabControl.Controls.Add(this.eventListTab);
+            this.eventTabControl.Controls.Add(this.attendeeListTab);
+            this.eventTabControl.Location = new System.Drawing.Point(520, 25);
+            this.eventTabControl.Name = "eventTabControl";
+            this.eventTabControl.SelectedIndex = 0;
+            this.eventTabControl.Size = new System.Drawing.Size(414, 390);
+            this.eventTabControl.TabIndex = 30;
+            // 
+            // eventListTab
+            // 
+            this.eventListTab.Location = new System.Drawing.Point(4, 22);
+            this.eventListTab.Name = "eventListTab";
+            this.eventListTab.Padding = new System.Windows.Forms.Padding(3);
+            this.eventListTab.Size = new System.Drawing.Size(406, 364);
+            this.eventListTab.TabIndex = 0;
+            this.eventListTab.Text = "Events";
+            this.eventListTab.UseVisualStyleBackColor = true;
+            // 
+            // attendeeListTab
+            // 
+            this.attendeeListTab.Location = new System.Drawing.Point(4, 22);
+            this.attendeeListTab.Name = "attendeeListTab";
+            this.attendeeListTab.Padding = new System.Windows.Forms.Padding(3);
+            this.attendeeListTab.Size = new System.Drawing.Size(406, 364);
+            this.attendeeListTab.TabIndex = 1;
+            this.attendeeListTab.Text = "Attendees";
+            this.attendeeListTab.UseVisualStyleBackColor = true;
             // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.eventTabControl);
             this.Controls.Add(this.generateButton);
-            this.Controls.Add(this.eventViewPanel);
             this.Controls.Add(this.locationTextBox);
             this.Controls.Add(this.locationLabel);
             this.Controls.Add(this.repeatsLinkLabel);
-            this.Controls.Add(this.attendeesButton);
             this.Controls.Add(this.organizerTextBox);
             this.Controls.Add(this.organizerLabel);
             this.Controls.Add(this.deleteButton);
@@ -337,6 +351,7 @@
             this.Controls.Add(this.titleLabel);
             this.Name = "EventForm";
             this.Text = "Event File Generator";
+            this.eventTabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,11 +381,12 @@
         private System.Windows.Forms.Button generateButton;
         private System.Windows.Forms.Label organizerLabel;
         private System.Windows.Forms.TextBox organizerTextBox;
-        private System.Windows.Forms.Button attendeesButton;
         private System.Windows.Forms.LinkLabel repeatsLinkLabel;
         private System.Windows.Forms.Label locationLabel;
         private System.Windows.Forms.TextBox locationTextBox;
-        private System.Windows.Forms.Panel eventViewPanel;
+        private System.Windows.Forms.TabControl eventTabControl;
+        private System.Windows.Forms.TabPage eventListTab;
+        private System.Windows.Forms.TabPage attendeeListTab;
     }
 }
 
