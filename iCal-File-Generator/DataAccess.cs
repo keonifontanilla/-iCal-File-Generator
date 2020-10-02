@@ -16,20 +16,11 @@ namespace iCal_File_Generator
         List<int> attendeesId;
         Event newEvent = new Event();
 
-        public void InsertEvent(string summary, string description, string startTime, string endTime, string dtstamp, string uid, TimeZoneInfo timezone, string classification, string organizer, List<string> attendees, List<string> attendeesRsvp, string recurFrequency, string recurUntil, string location)
+        public void InsertEvent(Event newEvent)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                string timeZoneStandardName = timezone.StandardName;
-                Event newEvent = new Event
-                {
-                    summary = summary, description = description, startTime = startTime, endTime = endTime,
-                    dtstamp = dtstamp, uniqueIdentifier = uid, timeZone = timezone.DisplayName,
-                    timeZoneStandardName = timeZoneStandardName, classification = classification,
-                    organizer = organizer, attendees = attendees, attendeesRsvp = attendeesRsvp,
-                    recurFrequency = recurFrequency, recurUntil = recurUntil, location = location
-                };
                 FileGenerator fg = new FileGenerator();
                 fg.FormatInput(newEvent);
 
@@ -59,13 +50,13 @@ namespace iCal_File_Generator
 
                         cmd2.Parameters.Add("@email", SqlDbType.NVarChar);
                         cmd2.Parameters.Add("@rsvp", SqlDbType.NVarChar);
-                        foreach (string attendee in attendees)
+                        foreach (string attendee in newEvent.attendees)
                         {
                             if (attendee != "")
                             {
                                 cmd2.Parameters["@email"].Value = attendee;
                             }
-                            cmd2.Parameters["@rsvp"].Value = attendeesRsvp[counter];
+                            cmd2.Parameters["@rsvp"].Value = newEvent.attendeesRsvp[counter];
                             counter++;
                             cmd2.ExecuteNonQuery();
                         }
@@ -74,7 +65,7 @@ namespace iCal_File_Generator
             }
         }
 
-        public void UpdateEvent(string summary, string description, string startTime, string endTime, TimeZoneInfo timezone, string classification, string organizer, int eventID, List<string> attendees, List<string> attendeesRsvp, List<int> attendeesId, string recurFrequency, string recurUntil, string location)
+        public void UpdateEvent(Event newEvent)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -84,35 +75,35 @@ namespace iCal_File_Generator
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@eventID", SqlDbType.NVarChar).Value = eventID;
-                    cmd.Parameters.Add("@summary", SqlDbType.NVarChar).Value = summary;
-                    if (description != "") { cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = description; }
-                    cmd.Parameters.Add("@startTime", SqlDbType.DateTime).Value = startTime;
-                    cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = endTime;
-                    cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = timezone.ToString();
-                    cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = classification;
-                    if (location != "") { cmd.Parameters.Add("@eventLocation", SqlDbType.NVarChar).Value = location; }
-                    if (organizer != "") { cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = organizer; }
-                    if (recurUntil != "" && recurFrequency != "Once") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = recurUntil; }
-                    cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = recurFrequency;
+                    cmd.Parameters.Add("@eventID", SqlDbType.NVarChar).Value = newEvent.eventID;
+                    cmd.Parameters.Add("@summary", SqlDbType.NVarChar).Value = newEvent.summary;
+                    if (newEvent.description != "") { cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = newEvent.description; }
+                    cmd.Parameters.Add("@startTime", SqlDbType.DateTime).Value = newEvent.startTime;
+                    cmd.Parameters.Add("@endTime", SqlDbType.DateTime).Value = newEvent.endTime;
+                    cmd.Parameters.Add("@timezone", SqlDbType.NVarChar).Value = newEvent.timeZone.ToString();
+                    cmd.Parameters.Add("@classification", SqlDbType.NVarChar).Value = newEvent.classification;
+                    if (newEvent.location != "") { cmd.Parameters.Add("@eventLocation", SqlDbType.NVarChar).Value = newEvent.location; }
+                    if (newEvent.organizer != "") { cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = newEvent.organizer; }
+                    if (newEvent.recurUntil != "" && newEvent.recurFrequency != "Once") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = newEvent.recurUntil; }
+                    cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = newEvent.recurFrequency;
                                        
                     cmd.Parameters.Add("@attendeeID", SqlDbType.Int);
                     cmd.Parameters.Add("@email", SqlDbType.NVarChar);
                     cmd.Parameters.Add("@rsvp", SqlDbType.NVarChar);
-                    for(int i = 0; i < attendees.Count; i++)
+                    for(int i = 0; i < newEvent.attendees.Count; i++)
                     {
-                        if (attendeesId == null)
+                        if (newEvent.attendeesId == null)
                         {
-                            attendeesId = new List<int>();
+                            newEvent.attendeesId = new List<int>();
                         }
-                        attendeesId.Add(0);
+                        newEvent.attendeesId.Add(0);
 
-                        cmd.Parameters["@attendeeID"].Value = attendeesId[i];
-                        if (attendees[i] != "")
+                        cmd.Parameters["@attendeeID"].Value = newEvent.attendeesId[i];
+                        if (newEvent.attendees[i] != "")
                         {
-                            cmd.Parameters["@email"].Value = attendees[i];
+                            cmd.Parameters["@email"].Value = newEvent.attendees[i];
                         }
-                        cmd.Parameters["@rsvp"].Value = attendeesRsvp[i];
+                        cmd.Parameters["@rsvp"].Value = newEvent.attendeesRsvp[i];
 
                         cmd.ExecuteNonQuery();
                     }

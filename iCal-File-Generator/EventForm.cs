@@ -32,37 +32,25 @@ namespace iCal_File_Generator
             recurrencePanel = new Panel();
             recurrencePanel.Visible = false;
 
-            // eventViewPanel.Controls.Add(eventListView);
             eventListTab.Controls.Add(eventListView);
             attendeeListTab.Controls.Add(attendeesListView);
         }
 
         private void submitButton_Click(object sender, EventArgs e)
         {
-            string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
-            string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
-            string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
-            string uid = CreateUID();
-            string recurFrequency = recurrencePanel.Visible ? recurrenceInputView.RecurFrequency: "";
-            string recurUntil = recurrencePanel.Visible ? recurrenceInputView.RecurUntil : "";
-            List<int> attendeesID;
-            TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
-
             HandleErrors.HandleTitleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker, dateNow);
             // Disabled for testing purposes HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text); 
+
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
-                db.InsertEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, dtstamp, uid, timezone, classificationComboBox.Text, organizerTextBox.Text, GetAttendeesInput(), GetAttendeesRsvp(), recurFrequency, recurUntil, locationTextBox.Text);
+                db.InsertEvent(CreateEvent());
                 ClearInputs();
                 MessageBox.Show("Insert Successful!");
             }
             else if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && updateClicked)
             {
-                attendeesID = db.GetEvents()[eventListView.Index()].attendeesId;
-                
-                // fix deleting a newly added attendee with text in the input box
-                db.UpdateEvent(titleTextBox.Text, descriptionTextBox.Text, startTime, endTime, timezone, classificationComboBox.Text, organizerTextBox.Text, eventID, GetAttendeesInput(), GetAttendeesRsvp(), attendeesID, recurFrequency, recurUntil, locationTextBox.Text);
+                db.UpdateEvent(CreateEvent());
 
                 if (attendeesListView.DeleteAttendee)
                 {
@@ -73,7 +61,6 @@ namespace iCal_File_Generator
                 }
                 
                 ClearInputs();
-                updateClicked = false;
 
                 MessageBox.Show("Update Successful!");
             }
@@ -81,6 +68,42 @@ namespace iCal_File_Generator
             {
                 HandleErrors.DisplayErrorMsg();
             }
+        }
+
+        private Event CreateEvent()
+        {
+            string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
+            string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
+            string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
+            string uid = CreateUID();
+            string recurFrequency = recurrencePanel.Visible ? recurrenceInputView.RecurFrequency : "";
+            string recurUntil = recurrencePanel.Visible ? recurrenceInputView.RecurUntil : "";
+            List<int> attendeesID = db.GetEvents()[eventListView.Index()].attendeesId;
+            TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
+            string timeZoneStandardName = timezone.StandardName;
+
+            Event newEvent = new Event
+            {
+                eventID = eventID,
+                summary = titleTextBox.Text,
+                description = descriptionTextBox.Text,
+                startTime = startTime,
+                endTime = endTime,
+                dtstamp = dtstamp,
+                uniqueIdentifier = uid,
+                timeZone = timezone.DisplayName,
+                timeZoneStandardName = timeZoneStandardName,
+                classification = classificationComboBox.Text,
+                organizer = organizerTextBox.Text,
+                attendees = GetAttendeesInput(),
+                attendeesRsvp = GetAttendeesRsvp(),
+                attendeesId = attendeesID,
+                recurFrequency = recurFrequency,
+                recurUntil = recurUntil,
+                location = locationTextBox.Text
+            };
+
+            return newEvent;
         }
 
         private void ClearInputs()
@@ -228,7 +251,6 @@ namespace iCal_File_Generator
             ClearInputs();
         }
 
-        // FIX DATE FORMAT IN FILE
         private void generateButton_Click(object sender, EventArgs e)
         {
             int index = eventListView.Index();
@@ -238,18 +260,22 @@ namespace iCal_File_Generator
                 FileGenerator fg = new FileGenerator();
                 Event getEvent = db.GetEvents()[index];
                 var dtstamp = DateTime.Parse(db.GetEvents()[index].dtstamp);
+                var recurUntil = DateTime.Parse(db.GetEvents()[index].recurUntil);
 
                 SetDateTime(index);
 
                 getEvent.startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
                 getEvent.endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
                 getEvent.dtstamp = dtstamp.ToString("yyyy/MM/dd HH:mm:ss.fffff");
+                getEvent.recurUntil = recurUntil.ToString("yyyy/MM/dd HH:mm:ss.fffff");
 
                 db.GetEvents()[index].timeZoneStandardName = GetTimeZone(db.GetEvents()[index].timeZone).StandardName;
                 fg.FormatInput(db.GetEvents()[index]);
 
                 ClearInputs();
             }
+
+            MessageBox.Show("File Generated!");
         }
 
         private void SetDateTime(int index)
