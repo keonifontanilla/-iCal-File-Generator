@@ -11,13 +11,9 @@ namespace iCal_File_Generator
         DataAccess db = new DataAccess();
         EventListView eventListView;
         AttendeesListView attendeesListView;
+        RecurrenceInputView recurrenceInputView;
 
         Panel recurrencePanel;
-        ComboBox frequencyComboBox;
-        RadioButton neverRecurRadioButton;
-        RadioButton untilRecurRadioButton;
-        DateTimePicker untilDate;
-        DateTimePicker untilTime;
         DateTime dateNow = DateTime.Now;
 
         private int eventID = 0;
@@ -47,8 +43,8 @@ namespace iCal_File_Generator
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
-            string recurFrequency = frequencyComboBox != null ? frequencyComboBox.SelectedItem.ToString() : "";
-            string recurUntil = (untilRecurRadioButton != null && untilRecurRadioButton.Checked) ? untilDate.Value.ToString("yyyy/MM/dd") + " " + untilTime.Value.TimeOfDay.ToString() : "";
+            string recurFrequency = recurrencePanel.Visible ? recurrenceInputView.RecurFrequency: "";
+            string recurUntil = recurrencePanel.Visible ? recurrenceInputView.RecurUntil : "";
             List<int> attendeesID;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
 
@@ -177,7 +173,6 @@ namespace iCal_File_Generator
             }
         }
 
-        // fix updateClicked boolean to open and close update
         private void updateButton_Click(object sender, EventArgs e)
         {
             LinkLabelLinkClickedEventArgs ex;
@@ -186,7 +181,7 @@ namespace iCal_File_Generator
             if (index != -1 && !updateClicked)
             {
                 updateClicked = true;
-                attendeesListView = new AttendeesListView(db, updateClicked, eventListView.Index());
+                attendeesListView = new AttendeesListView(db, updateClicked, index);
                 updateButton.Text = "Cancel";
 
                 titleTextBox.Text = db.GetEvents()[index].summary;
@@ -209,13 +204,7 @@ namespace iCal_File_Generator
                 // repeat panel update
                 ex = new LinkLabelLinkClickedEventArgs(repeatsLinkLabel.Links[0]);
                 repeatsLinkLabel_LinkClicked(sender, ex);
-                frequencyComboBox.SelectedItem = db.GetEvents()[index].recurFrequency;
-                if (db.GetEvents()[index].recurUntil != "")
-                {
-                    untilRecurRadioButton.Checked = true;
-                    untilDate.Value = DateTime.Parse(db.GetEvents()[index].recurUntil);
-                    untilTime.Value = DateTime.Parse(db.GetEvents()[index].recurUntil);
-                }
+                recurrenceInputView.UpdateRecurrence(db, index);
             }
             else
             {
@@ -226,7 +215,6 @@ namespace iCal_File_Generator
         private void clearInputsButton_Click(object sender, EventArgs e)
         {
             ClearInputs();
-            updateClicked = false;
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -240,6 +228,7 @@ namespace iCal_File_Generator
             ClearInputs();
         }
 
+        // FIX DATE FORMAT IN FILE
         private void generateButton_Click(object sender, EventArgs e)
         {
             int index = eventListView.Index();
@@ -301,38 +290,17 @@ namespace iCal_File_Generator
 
         private void repeatsLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Label frequencyLabel = new Label();
-            frequencyComboBox = new ComboBox();
-            neverRecurRadioButton = new RadioButton();
-            untilRecurRadioButton = new RadioButton();
-            untilDate = new DateTimePicker();
-            untilTime = new DateTimePicker();
-
-            List<string> frequencies = new List<string>()
-            {
-                "Once", "Daily", "Weekly", "Monthly", "Yearly"
-            };
-
             if (recurrencePanel.Visible == false)
             {
+                recurrenceInputView = new RecurrenceInputView();
+
                 recurrencePanel.Visible = true;
                 recurrencePanel.Size = new Size(318, 139);
                 recurrencePanel.Location = new Point(122, 427);
                 recurrencePanel.BackColor = Color.White;
+                recurrencePanel.Controls.Add(recurrenceInputView);
                 submitButton.Location = new Point(submitButton.Location.X, recurrencePanel.Bottom + 5);
                 clearInputsButton.Location = new Point(clearInputsButton.Location.X, recurrencePanel.Bottom + 5);
-
-                frequencyLabel.Text = "Frequency";
-                frequencyLabel.Name = "frequencyLabel";
-                frequencyComboBox.Name = "frequencyComboBox";
-                recurrencePanel.Controls.Add(frequencyLabel);
-                frequencyComboBox.DataSource = frequencies;
-                frequencyComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-                frequencyComboBox.Location = new Point(frequencyLabel.Right, frequencyLabel.Location.Y);
-                recurrencePanel.Controls.Add(frequencyComboBox);
-
-                frequencyComboBox.SelectedIndexChanged += new EventHandler(frequencyComboBox_OnChange);
-
             }
             else
             {
@@ -343,48 +311,6 @@ namespace iCal_File_Generator
             }
 
             this.Controls.Add(recurrencePanel);
-        }
-
-        private void frequencyComboBox_OnChange(object send, EventArgs e)
-        {
-            Label endLabel = new Label();
-
-            if (frequencyComboBox.SelectedItem.ToString() != "Once")
-            {
-                endLabel.Text = "End";
-                endLabel.Location = new Point(0, frequencyComboBox.Bottom + 10);
-                endLabel.Visible = true;
-                recurrencePanel.Controls.Add(endLabel);
-
-                neverRecurRadioButton.Text = "Never";
-                neverRecurRadioButton.Checked = true;
-                neverRecurRadioButton.Visible = true;
-                neverRecurRadioButton.Location = new Point(endLabel.Right, endLabel.Location.Y);
-                recurrencePanel.Controls.Add(neverRecurRadioButton);
-
-                untilRecurRadioButton.Text = "Until";
-                untilRecurRadioButton.Visible = true;
-                untilRecurRadioButton.Location = new Point(endLabel.Right, endLabel.Bottom);
-                recurrencePanel.Controls.Add(untilRecurRadioButton);
-
-                untilDate.Visible = true;
-                untilDate.Location = new Point(untilRecurRadioButton.Location.X, untilRecurRadioButton.Bottom);
-                recurrencePanel.Controls.Add(untilDate);
-
-                untilTime.Visible = true;
-                untilTime.Location = new Point(untilRecurRadioButton.Location.X, untilDate.Bottom);
-                untilTime.Size = new Size(98, 20);
-                untilTime.ShowUpDown = true;
-                untilTime.Format = DateTimePickerFormat.Time;
-                recurrencePanel.Controls.Add(untilTime);
-            }
-            else
-            {
-                foreach(Control item in recurrencePanel.Controls)
-                {
-                    if (item.Name != "frequencyComboBox" && item.Name != "frequencyLabel") { item.Visible = false; }
-                }
-            }
         }
     }
 }

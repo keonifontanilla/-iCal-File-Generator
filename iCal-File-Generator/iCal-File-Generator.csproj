@@ -65,6 +65,12 @@
     <Compile Include="Controls\FullEventView.Designer.cs">
       <DependentUpon>FullEventView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RecurrenceInputView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RecurrenceInputView.Designer.cs">
+      <DependentUpon>RecurrenceInputView.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventForm.cs">
@@ -85,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\FullEventView.resx">
       <DependentUpon>FullEventView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RecurrenceInputView.resx">
+      <DependentUpon>RecurrenceInputView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EventForm.resx">
       <DependentUpon>EventForm.cs</DependentUpon>
