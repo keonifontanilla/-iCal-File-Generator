@@ -44,8 +44,7 @@ namespace iCal_File_Generator.Controls
             Button deleteAttendeeButton = new Button();
             GroupBox attendeeGroupBox = new GroupBox();
 
-            attendeeGroupBox.Location = new Point(0, numOfAttendees * 50);
-            attendeeGroupBox.Size = new Size(402, 50);
+            attendeeGroupBox.Size = new Size(attendeePanel.Width, 50);
             attendeeGroupBox.Name = "attendeeGroupBox" + numOfAttendees.ToString();
 
             attendeeLabel.Location = new Point(25, attendeeGroupBox.Size.Height / 2);
@@ -82,12 +81,14 @@ namespace iCal_File_Generator.Controls
 
             attendeePanel.Controls.Add(attendeeGroupBox);
 
+            RepositionAttendees();
+
             deleteAttendeeButton.Click += new EventHandler(deleteAttendeeButton_Click);
         }
 
         private void deleteAttendeeButton_Click(object send, EventArgs e)
         {
-            // get # in the name of attendeeGroupBox# where # starts at 1
+            // get # in attendeeGroupBox# where # starts at 1
             Control btn = (Control)send;
             string index = btn.Name.Substring(btn.Name.Length - 1, 1);
             
@@ -102,6 +103,10 @@ namespace iCal_File_Generator.Controls
                 }
             }
 
+            // reposition groupboxes
+            RepositionAttendees();
+
+            // FIX deleting then adding the same attendee, probably a stored procedure problem
             // get attendee IDs to delete from database
             int attIndex = Attendees.FindIndex(att => att.Name == "attendeeEmailTextbox" + index);
             int rsvpIndex = AttendeesRsvp.FindIndex(rsvp => rsvp.Name == "rsvpComboBox" + index);
@@ -115,6 +120,17 @@ namespace iCal_File_Generator.Controls
             {
                 Attendees.RemoveAt(attIndex);
                 AttendeesRsvp.RemoveAt(attIndex);
+            }
+        }
+
+        private void RepositionAttendees()
+        {
+            for (int i = 0; i < attendeePanel.Controls.Count; i++)
+            {
+                if (attendeePanel.Controls[i].Name != "addAttendeeButton")
+                {
+                    attendeePanel.Controls[i].Location = new Point(0, i * 50);
+                }
             }
         }
 

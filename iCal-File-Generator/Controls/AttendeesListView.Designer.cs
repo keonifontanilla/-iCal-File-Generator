@@ -35,6 +35,7 @@
             // 
             // attendeePanel
             // 
+            this.attendeePanel.AutoScroll = true;
             this.attendeePanel.Controls.Add(this.addAttendeeButton);
             this.attendeePanel.Location = new System.Drawing.Point(3, 3);
             this.attendeePanel.Name = "attendeePanel";
