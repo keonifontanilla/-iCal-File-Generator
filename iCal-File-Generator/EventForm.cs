@@ -39,7 +39,7 @@ namespace iCal_File_Generator
         private void submitButton_Click(object sender, EventArgs e)
         {
             HandleErrors.HandleTitleError(titleTextBox.Text);
-            HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker, dateNow);
+            HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker, dateNow, recurrenceInputView.RecurDate);
             // Disabled for testing purposes HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text); 
 
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
@@ -77,7 +77,7 @@ namespace iCal_File_Generator
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
             string recurFrequency = recurrencePanel.Visible ? recurrenceInputView.RecurFrequency : "";
-            string recurUntil = recurrencePanel.Visible ? recurrenceInputView.RecurUntil : "";
+            string recurUntil = (recurrencePanel.Visible && recurrenceInputView.RecurUntil) ? FormatRecurrenceDate() : "";
             List<int> attendeesID = db.GetEvents()[eventListView.Index()].attendeesId;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
             string timeZoneStandardName = timezone.StandardName;
@@ -104,6 +104,13 @@ namespace iCal_File_Generator
             };
 
             return newEvent;
+        }
+
+        private string FormatRecurrenceDate()
+        {
+            TimeSpan ts = startTimePicker.Value.TimeOfDay.Add(new TimeSpan(10, 0, 0));
+
+            return recurrenceInputView.RecurDate.Date.Add(ts).ToString("yyyy/MM/dd HH:mm:ss");
         }
 
         private void ClearInputs()

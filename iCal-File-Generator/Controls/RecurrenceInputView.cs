@@ -11,7 +11,6 @@ namespace iCal_File_Generator.Controls
         RadioButton neverRecurRadioButton;
         RadioButton untilRecurRadioButton;
         DateTimePicker untilDate;
-        DateTimePicker untilTime;
 
         public RecurrenceInputView()
         {
@@ -25,7 +24,6 @@ namespace iCal_File_Generator.Controls
             neverRecurRadioButton = new RadioButton();
             untilRecurRadioButton = new RadioButton();
             untilDate = new DateTimePicker();
-            untilTime = new DateTimePicker();
 
             frequencyComboBox = new ComboBox();
 
@@ -76,13 +74,6 @@ namespace iCal_File_Generator.Controls
                 untilDate.Visible = true;
                 untilDate.Location = new Point(untilRecurRadioButton.Location.X, untilRecurRadioButton.Bottom);
                 this.Controls.Add(untilDate);
-
-                untilTime.Visible = true;
-                untilTime.Location = new Point(untilRecurRadioButton.Location.X, untilDate.Bottom);
-                untilTime.Size = new Size(98, 20);
-                untilTime.ShowUpDown = true;
-                untilTime.Format = DateTimePickerFormat.Time;
-                this.Controls.Add(untilTime);
             }
             else
             {
@@ -93,9 +84,14 @@ namespace iCal_File_Generator.Controls
             }
         }
 
-        public string RecurUntil
+        public bool RecurUntil
         {
-            get { return (untilRecurRadioButton != null && untilRecurRadioButton.Checked) ? untilDate.Value.ToString("yyyy/MM/dd") + " " + untilTime.Value.TimeOfDay.ToString() : ""; }
+            get { return untilRecurRadioButton != null && untilRecurRadioButton.Checked; }
+        }
+
+        public DateTime RecurDate
+        {
+            get { return untilDate.Value; }
         }
 
         public void UpdateRecurrence(DataAccess db, int index)
@@ -105,7 +101,6 @@ namespace iCal_File_Generator.Controls
             {
                 untilRecurRadioButton.Checked = true;
                 untilDate.Value = DateTime.Parse(db.GetEvents()[index].recurUntil);
-                untilTime.Value = DateTime.Parse(db.GetEvents()[index].recurUntil);
             }
         }
     }

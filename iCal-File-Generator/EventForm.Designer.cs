@@ -195,7 +195,7 @@
             // 
             // viewButton
             // 
-            this.viewButton.Location = new System.Drawing.Point(527, 447);
+            this.viewButton.Location = new System.Drawing.Point(564, 447);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new System.Drawing.Size(75, 23);
             this.viewButton.TabIndex = 17;
@@ -205,7 +205,7 @@
             // 
             // generateButton
             // 
-            this.generateButton.Location = new System.Drawing.Point(773, 447);
+            this.generateButton.Location = new System.Drawing.Point(810, 447);
             this.generateButton.Name = "generateButton";
             this.generateButton.Size = new System.Drawing.Size(75, 23);
             this.generateButton.TabIndex = 20;
@@ -215,7 +215,7 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(608, 447);
+            this.updateButton.Location = new System.Drawing.Point(645, 447);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(75, 23);
             this.updateButton.TabIndex = 20;
@@ -235,7 +235,7 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(692, 447);
+            this.deleteButton.Location = new System.Drawing.Point(729, 447);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 22;

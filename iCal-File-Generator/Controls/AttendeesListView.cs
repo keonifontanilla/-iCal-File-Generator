@@ -44,46 +44,49 @@ namespace iCal_File_Generator.Controls
             Button deleteAttendeeButton = new Button();
             GroupBox attendeeGroupBox = new GroupBox();
 
-            attendeeGroupBox.Size = new Size(attendeePanel.Width, 50);
-            attendeeGroupBox.Name = "attendeeGroupBox" + numOfAttendees.ToString();
+            if (attendeePanel.Controls.Count <= 5)
+            {
+                attendeeGroupBox.Size = new Size(attendeePanel.Width, 50);
+                attendeeGroupBox.Name = "attendeeGroupBox" + numOfAttendees.ToString();
 
-            attendeeLabel.Location = new Point(25, attendeeGroupBox.Size.Height / 2);
-            attendeeLabel.Text = "Email: ";
-            attendeeLabel.Name = "attendeeLabel" + numOfAttendees.ToString();
-            attendeeLabel.Size = new Size(50, 21);
+                attendeeLabel.Location = new Point(25, attendeeGroupBox.Size.Height / 2);
+                attendeeLabel.Text = "Email: ";
+                attendeeLabel.Name = "attendeeLabel" + numOfAttendees.ToString();
+                attendeeLabel.Size = new Size(50, 21);
 
-            attendeeEmailTextBox.Location = new Point(attendeeLabel.Right, attendeeGroupBox.Size.Height / 2);
-            attendeeEmailTextBox.Name = "attendeeEmailTextbox" + numOfAttendees.ToString();
+                attendeeEmailTextBox.Location = new Point(attendeeLabel.Right, attendeeGroupBox.Size.Height / 2);
+                attendeeEmailTextBox.Name = "attendeeEmailTextbox" + numOfAttendees.ToString();
 
-            List<string> rsvp = new List<string>()
+                List<string> rsvp = new List<string>()
             {
                 "False", "True"
             };
-            rsvpComboBox.DataSource = rsvp;
-            rsvpComboBox.Location = new Point(attendeeEmailTextBox.Location.X + 105, attendeeGroupBox.Size.Height / 2);
-            rsvpComboBox.Name = "rsvpComboBox" + numOfAttendees.ToString();
-            rsvpComboBox.Size = new Size(60, 21);
+                rsvpComboBox.DataSource = rsvp;
+                rsvpComboBox.Location = new Point(attendeeEmailTextBox.Location.X + 105, attendeeGroupBox.Size.Height / 2);
+                rsvpComboBox.Name = "rsvpComboBox" + numOfAttendees.ToString();
+                rsvpComboBox.Size = new Size(60, 21);
 
-            deleteAttendeeButton.Text = "Delete";
-            deleteAttendeeButton.Location = new Point(rsvpComboBox.Right + 4, attendeeGroupBox.Size.Height / 2);
-            deleteAttendeeButton.Name = "deleteAttendeeButton" + numOfAttendees.ToString();
-            deleteAttendeeButton.Size = new Size(46, 23);
+                deleteAttendeeButton.Text = "Delete";
+                deleteAttendeeButton.Location = new Point(rsvpComboBox.Right + 4, attendeeGroupBox.Size.Height / 2);
+                deleteAttendeeButton.Name = "deleteAttendeeButton" + numOfAttendees.ToString();
+                deleteAttendeeButton.Size = new Size(46, 23);
 
-            Attendees.Add(attendeeEmailTextBox);
-            AttendeesRsvp.Add(rsvpComboBox);
+                Attendees.Add(attendeeEmailTextBox);
+                AttendeesRsvp.Add(rsvpComboBox);
 
-            numOfAttendees++;
+                numOfAttendees++;
 
-            attendeeGroupBox.Controls.Add(attendeeLabel);
-            attendeeGroupBox.Controls.Add(attendeeEmailTextBox);
-            attendeeGroupBox.Controls.Add(rsvpComboBox);
-            attendeeGroupBox.Controls.Add(deleteAttendeeButton);
+                attendeeGroupBox.Controls.Add(attendeeLabel);
+                attendeeGroupBox.Controls.Add(attendeeEmailTextBox);
+                attendeeGroupBox.Controls.Add(rsvpComboBox);
+                attendeeGroupBox.Controls.Add(deleteAttendeeButton);
 
-            attendeePanel.Controls.Add(attendeeGroupBox);
+                attendeePanel.Controls.Add(attendeeGroupBox);
 
-            RepositionAttendees();
+                RepositionAttendees();
 
-            deleteAttendeeButton.Click += new EventHandler(deleteAttendeeButton_Click);
+                deleteAttendeeButton.Click += new EventHandler(deleteAttendeeButton_Click);
+            }
         }
 
         private void deleteAttendeeButton_Click(object send, EventArgs e)
@@ -93,6 +96,7 @@ namespace iCal_File_Generator.Controls
             string index = btn.Name.Substring(btn.Name.Length - 1, 1);
             
             DeleteAttendee = true;
+            numOfAttendees--;
 
             // delete input from panel
             foreach (Control item in attendeePanel.Controls)

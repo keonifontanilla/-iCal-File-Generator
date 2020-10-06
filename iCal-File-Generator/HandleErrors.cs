@@ -29,7 +29,7 @@ namespace iCal_File_Generator
         /***********************************************************************************************
          * Handles empty required inputs
         ***********************************************************************************************/
-        public static void HandleTimeError(DateTimePicker startDatePicker, DateTimePicker startTimePicker, DateTimePicker endTimePicker, DateTimePicker endDatePicker, DateTime dateNow)
+        public static void HandleTimeError(DateTimePicker startDatePicker, DateTimePicker startTimePicker, DateTimePicker endTimePicker, DateTimePicker endDatePicker, DateTime dateNow, DateTime recurTime)
         {
             // Check start time errors
             ErrorMsg += (startTimePicker.Value.TimeOfDay < startDatePicker.Value.TimeOfDay) && (startTimePicker.Value.Date == startDatePicker.Value.Date)
@@ -40,6 +40,9 @@ namespace iCal_File_Generator
             // Check update date error
             ErrorMsg += (startDatePicker.Value.Date < dateNow.Date) && (endDatePicker.Value.Date < dateNow.Date) 
                 ? "Update the date!\n" : "";
+            // Check recurrence date error
+            ErrorMsg += recurTime.Date < startDatePicker.Value.Date
+                ? "Update the recurrence date!\n" : "";
         }
 
         /***********************************************************************************************
