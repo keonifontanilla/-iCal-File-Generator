@@ -38,8 +38,10 @@ namespace iCal_File_Generator
 
         private void submitButton_Click(object sender, EventArgs e)
         {
+            DateTime recurDate = (recurrenceInputView != null && recurrenceInputView.RecurUntil) ? recurrenceInputView.RecurDate : startDatePicker.Value.Date;
+
             HandleErrors.HandleTitleError(titleTextBox.Text);
-            HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker, dateNow, recurrenceInputView.RecurDate);
+            HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker, dateNow, recurDate);
             // Disabled for testing purposes HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text); 
 
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
@@ -72,13 +74,14 @@ namespace iCal_File_Generator
 
         private Event CreateEvent()
         {
+            int index = eventListView.Index();
             string startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
             string endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
             string dtstamp = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fffff");
             string uid = CreateUID();
             string recurFrequency = recurrencePanel.Visible ? recurrenceInputView.RecurFrequency : "";
             string recurUntil = (recurrencePanel.Visible && recurrenceInputView.RecurUntil) ? FormatRecurrenceDate() : "";
-            List<int> attendeesID = db.GetEvents()[eventListView.Index()].attendeesId;
+            List<int> attendeesID = index != -1 ? db.GetEvents()[index].attendeesId : null;
             TimeZoneInfo timezone = (TimeZoneInfo)timezoneComboBox.SelectedItem;
             string timeZoneStandardName = timezone.StandardName;
 
@@ -267,14 +270,18 @@ namespace iCal_File_Generator
                 FileGenerator fg = new FileGenerator();
                 Event getEvent = db.GetEvents()[index];
                 var dtstamp = DateTime.Parse(db.GetEvents()[index].dtstamp);
-                var recurUntil = DateTime.Parse(db.GetEvents()[index].recurUntil);
+                DateTime recurUntil;
+                if (db.GetEvents()[index].recurUntil != "")
+                {
+                    recurUntil = DateTime.Parse(db.GetEvents()[index].recurUntil);
+                    getEvent.recurUntil = recurUntil.ToString("yyyy/MM/dd HH:mm:ss.fffff");
+                }
 
                 SetDateTime(index);
 
                 getEvent.startTime = startDatePicker.Value.ToString("yyyy/MM/dd") + " " + startTimePicker.Value.TimeOfDay.ToString();
                 getEvent.endTime = endDatePicker.Value.ToString("yyyy/MM/dd") + " " + endTimePicker.Value.TimeOfDay.ToString();
                 getEvent.dtstamp = dtstamp.ToString("yyyy/MM/dd HH:mm:ss.fffff");
-                getEvent.recurUntil = recurUntil.ToString("yyyy/MM/dd HH:mm:ss.fffff");
 
                 db.GetEvents()[index].timeZoneStandardName = GetTimeZone(db.GetEvents()[index].timeZone).StandardName;
                 fg.FormatInput(db.GetEvents()[index]);
@@ -292,7 +299,7 @@ namespace iCal_File_Generator
 
             startDatePicker.MinDate = startTime;
             startDatePicker.Value = startTime;
-            startTimePicker.Value = startTime;
+            startTimePicker.Value = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, startTime.Hour, startTime.Minute, startTime.Second);
             endDatePicker.Value = endTime;
             endTimePicker.Value = endTime;
         }

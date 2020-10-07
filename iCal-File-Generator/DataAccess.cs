@@ -85,7 +85,7 @@ namespace iCal_File_Generator
                     if (newEvent.location != "") { cmd.Parameters.Add("@eventLocation", SqlDbType.NVarChar).Value = newEvent.location; }
                     if (newEvent.organizer != "") { cmd.Parameters.Add("@organizer", SqlDbType.NVarChar).Value = newEvent.organizer; }
                     if (newEvent.recurUntil != "" && newEvent.recurFrequency != "Once") { cmd.Parameters.Add("@recurDateTime", SqlDbType.DateTime).Value = newEvent.recurUntil; }
-                    cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = newEvent.recurFrequency;
+                    if (newEvent.recurFrequency != "") { cmd.Parameters.Add("@recurFrequency", SqlDbType.NVarChar).Value = newEvent.recurFrequency; }
                                        
                     cmd.Parameters.Add("@attendeeID", SqlDbType.Int);
                     cmd.Parameters.Add("@email", SqlDbType.NVarChar);

@@ -56,15 +56,17 @@
             this.eventTabControl = new System.Windows.Forms.TabControl();
             this.eventListTab = new System.Windows.Forms.TabPage();
             this.attendeeListTab = new System.Windows.Forms.TabPage();
+            this.iCalLabel = new System.Windows.Forms.Label();
             this.eventTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
+            this.titleLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.Location = new System.Drawing.Point(22, 65);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(33, 13);
+            this.titleLabel.Size = new System.Drawing.Size(39, 16);
             this.titleLabel.TabIndex = 0;
             this.titleLabel.Text = "Title: ";
             // 
@@ -73,7 +75,7 @@
             this.titleTextBox.Location = new System.Drawing.Point(122, 65);
             this.titleTextBox.MaxLength = 255;
             this.titleTextBox.Name = "titleTextBox";
-            this.titleTextBox.Size = new System.Drawing.Size(244, 20);
+            this.titleTextBox.Size = new System.Drawing.Size(318, 20);
             this.titleTextBox.TabIndex = 1;
             // 
             // descriptionTextBox
@@ -82,15 +84,16 @@
             this.descriptionTextBox.MaxLength = 500;
             this.descriptionTextBox.Multiline = true;
             this.descriptionTextBox.Name = "descriptionTextBox";
-            this.descriptionTextBox.Size = new System.Drawing.Size(244, 105);
+            this.descriptionTextBox.Size = new System.Drawing.Size(318, 105);
             this.descriptionTextBox.TabIndex = 3;
             // 
             // descriptionLabel
             // 
             this.descriptionLabel.AutoSize = true;
+            this.descriptionLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.descriptionLabel.Location = new System.Drawing.Point(22, 106);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(66, 13);
+            this.descriptionLabel.Size = new System.Drawing.Size(77, 16);
             this.descriptionLabel.TabIndex = 2;
             this.descriptionLabel.Text = "Description: ";
             // 
@@ -125,18 +128,20 @@
             // startDateLabel
             // 
             this.startDateLabel.AutoSize = true;
+            this.startDateLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startDateLabel.Location = new System.Drawing.Point(22, 351);
             this.startDateLabel.Name = "startDateLabel";
-            this.startDateLabel.Size = new System.Drawing.Size(58, 13);
+            this.startDateLabel.Size = new System.Drawing.Size(64, 16);
             this.startDateLabel.TabIndex = 8;
             this.startDateLabel.Text = "Start Date:";
             // 
             // endDateLabel
             // 
             this.endDateLabel.AutoSize = true;
+            this.endDateLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.endDateLabel.Location = new System.Drawing.Point(22, 377);
             this.endDateLabel.Name = "endDateLabel";
-            this.endDateLabel.Size = new System.Drawing.Size(55, 13);
+            this.endDateLabel.Size = new System.Drawing.Size(59, 16);
             this.endDateLabel.TabIndex = 11;
             this.endDateLabel.Text = "End Date:";
             // 
@@ -163,15 +168,16 @@
             this.timezoneComboBox.FormattingEnabled = true;
             this.timezoneComboBox.Location = new System.Drawing.Point(122, 312);
             this.timezoneComboBox.Name = "timezoneComboBox";
-            this.timezoneComboBox.Size = new System.Drawing.Size(244, 21);
+            this.timezoneComboBox.Size = new System.Drawing.Size(318, 21);
             this.timezoneComboBox.TabIndex = 13;
             // 
             // timezoneLabel
             // 
             this.timezoneLabel.AutoSize = true;
+            this.timezoneLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.timezoneLabel.Location = new System.Drawing.Point(22, 312);
             this.timezoneLabel.Name = "timezoneLabel";
-            this.timezoneLabel.Size = new System.Drawing.Size(56, 13);
+            this.timezoneLabel.Size = new System.Drawing.Size(65, 16);
             this.timezoneLabel.TabIndex = 14;
             this.timezoneLabel.Text = "Timezone:";
             // 
@@ -187,15 +193,16 @@
             // classificationLabel
             // 
             this.classificationLabel.AutoSize = true;
-            this.classificationLabel.Location = new System.Drawing.Point(279, 232);
+            this.classificationLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.classificationLabel.Location = new System.Drawing.Point(298, 232);
             this.classificationLabel.Name = "classificationLabel";
-            this.classificationLabel.Size = new System.Drawing.Size(71, 13);
+            this.classificationLabel.Size = new System.Drawing.Size(52, 16);
             this.classificationLabel.TabIndex = 16;
-            this.classificationLabel.Text = "Classification:";
+            this.classificationLabel.Text = "Privacy:";
             // 
             // viewButton
             // 
-            this.viewButton.Location = new System.Drawing.Point(564, 447);
+            this.viewButton.Location = new System.Drawing.Point(556, 447);
             this.viewButton.Name = "viewButton";
             this.viewButton.Size = new System.Drawing.Size(75, 23);
             this.viewButton.TabIndex = 17;
@@ -205,7 +212,7 @@
             // 
             // generateButton
             // 
-            this.generateButton.Location = new System.Drawing.Point(810, 447);
+            this.generateButton.Location = new System.Drawing.Point(802, 447);
             this.generateButton.Name = "generateButton";
             this.generateButton.Size = new System.Drawing.Size(75, 23);
             this.generateButton.TabIndex = 20;
@@ -215,7 +222,7 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(645, 447);
+            this.updateButton.Location = new System.Drawing.Point(637, 447);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(75, 23);
             this.updateButton.TabIndex = 20;
@@ -235,7 +242,7 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(729, 447);
+            this.deleteButton.Location = new System.Drawing.Point(721, 447);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 22;
@@ -246,9 +253,10 @@
             // organizerLabel
             // 
             this.organizerLabel.AutoSize = true;
+            this.organizerLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.organizerLabel.Location = new System.Drawing.Point(22, 275);
             this.organizerLabel.Name = "organizerLabel";
-            this.organizerLabel.Size = new System.Drawing.Size(55, 13);
+            this.organizerLabel.Size = new System.Drawing.Size(65, 16);
             this.organizerLabel.TabIndex = 23;
             this.organizerLabel.Text = "Organizer:";
             // 
@@ -257,7 +265,7 @@
             this.organizerTextBox.Location = new System.Drawing.Point(122, 275);
             this.organizerTextBox.MaxLength = 255;
             this.organizerTextBox.Name = "organizerTextBox";
-            this.organizerTextBox.Size = new System.Drawing.Size(244, 20);
+            this.organizerTextBox.Size = new System.Drawing.Size(318, 20);
             this.organizerTextBox.TabIndex = 24;
             // 
             // repeatsLinkLabel
@@ -274,9 +282,10 @@
             // locationLabel
             // 
             this.locationLabel.AutoSize = true;
+            this.locationLabel.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.locationLabel.Location = new System.Drawing.Point(26, 231);
             this.locationLabel.Name = "locationLabel";
-            this.locationLabel.Size = new System.Drawing.Size(51, 13);
+            this.locationLabel.Size = new System.Drawing.Size(59, 16);
             this.locationLabel.TabIndex = 27;
             this.locationLabel.Text = "Location:";
             // 
@@ -285,7 +294,7 @@
             this.locationTextBox.Location = new System.Drawing.Point(122, 232);
             this.locationTextBox.MaxLength = 255;
             this.locationTextBox.Name = "locationTextBox";
-            this.locationTextBox.Size = new System.Drawing.Size(151, 20);
+            this.locationTextBox.Size = new System.Drawing.Size(170, 20);
             this.locationTextBox.TabIndex = 28;
             // 
             // eventTabControl
@@ -318,11 +327,22 @@
             this.attendeeListTab.Text = "Attendees";
             this.attendeeListTab.UseVisualStyleBackColor = true;
             // 
+            // iCalLabel
+            // 
+            this.iCalLabel.AutoSize = true;
+            this.iCalLabel.Font = new System.Drawing.Font("Mongolian Baiti", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.iCalLabel.Location = new System.Drawing.Point(532, 521);
+            this.iCalLabel.Name = "iCalLabel";
+            this.iCalLabel.Size = new System.Drawing.Size(382, 40);
+            this.iCalLabel.TabIndex = 31;
+            this.iCalLabel.Text = "iCalendar File Generator";
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.iCalLabel);
             this.Controls.Add(this.eventTabControl);
             this.Controls.Add(this.generateButton);
             this.Controls.Add(this.locationTextBox);
@@ -387,6 +407,7 @@
         private System.Windows.Forms.TabControl eventTabControl;
         private System.Windows.Forms.TabPage eventListTab;
         private System.Windows.Forms.TabPage attendeeListTab;
+        private System.Windows.Forms.Label iCalLabel;
     }
 }
 
