@@ -21,8 +21,6 @@ namespace iCal_File_Generator
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                FileGenerator fg = new FileGenerator();
-                fg.FormatInput(newEvent);
 
                 using (SqlCommand cmd = new SqlCommand("spEvent_InsertEvent", conn))
                 {

@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace iCal_File_Generator
 {
     public class FileGenerator
     {
-        private static string path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\test.txt";
+        SaveFileDialog saveFileDialog;
+
+        public FileGenerator(SaveFileDialog saveFileDialog)
+        {
+            this.saveFileDialog = saveFileDialog;
+        }
 
         /***********************************************************************************************
          * Write input and generate an ics file
         ***********************************************************************************************/
         private void GenerateFile(List<string> formatedInputs)
         {
-            using(StreamWriter streamWriter = new StreamWriter(path, false))
+            using(StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName, false))
             {
                 foreach(string str in formatedInputs)
                 {

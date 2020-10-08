@@ -42,10 +42,12 @@ namespace iCal_File_Generator
 
             HandleErrors.HandleTitleError(titleTextBox.Text);
             HandleErrors.HandleTimeError(startDatePicker, startTimePicker, endTimePicker, endDatePicker, dateNow, recurDate);
-            // Disabled for testing purposes HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text); 
+            HandleErrors.HandleEmailError(GetAttendeesInput(), organizerTextBox.Text); 
 
             if (string.IsNullOrWhiteSpace(HandleErrors.ErrorMsg) && !updateClicked) 
             {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                SaveFileAs(saveFileDialog, CreateEvent());
                 db.InsertEvent(CreateEvent());
                 ClearInputs();
                 MessageBox.Show("Insert Successful!");
@@ -69,6 +71,18 @@ namespace iCal_File_Generator
             else
             {
                 HandleErrors.DisplayErrorMsg();
+            }
+        }
+
+        private void SaveFileAs(SaveFileDialog saveFileDialog, Event newEvent)
+        {
+            FileGenerator fg = new FileGenerator(saveFileDialog);
+
+            saveFileDialog.Filter = "ics files (*.ics)|*.ics|All files (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fg.FormatInput(newEvent);
             }
         }
 
@@ -263,11 +277,12 @@ namespace iCal_File_Generator
 
         private void generateButton_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
             int index = eventListView.Index();
 
             if (index != -1)
             {
-                FileGenerator fg = new FileGenerator();
+                FileGenerator fg = new FileGenerator(saveFileDialog);
                 Event getEvent = db.GetEvents()[index];
                 var dtstamp = DateTime.Parse(db.GetEvents()[index].dtstamp);
                 DateTime recurUntil;
@@ -284,7 +299,8 @@ namespace iCal_File_Generator
                 getEvent.dtstamp = dtstamp.ToString("yyyy/MM/dd HH:mm:ss.fffff");
 
                 db.GetEvents()[index].timeZoneStandardName = GetTimeZone(db.GetEvents()[index].timeZone).StandardName;
-                fg.FormatInput(db.GetEvents()[index]);
+                
+                SaveFileAs(saveFileDialog, db.GetEvents()[index]);
 
                 ClearInputs();
             }

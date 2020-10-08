@@ -18,13 +18,20 @@ namespace iCal_File_Generator.Controls
         private int dbIndex;
         private bool updateClicked;
 
+        /***********************************************************************************************
+         * Constructor for new attendees
+        ***********************************************************************************************/
         public AttendeesListView(DataAccess db)
         {
             this.db = db;
+            this.dbIndex = -1;
 
             InitializeComponent();
         }
 
+        /***********************************************************************************************
+         * Constructor for updating attendees
+        ***********************************************************************************************/
         public AttendeesListView(DataAccess db, bool updateClicked, int dbIndex)
         {
             this.db = db;
@@ -110,11 +117,10 @@ namespace iCal_File_Generator.Controls
             // reposition groupboxes
             RepositionAttendees();
 
-            // FIX deleting then adding the same attendee, probably a stored procedure problem
             // get attendee IDs to delete from database
             int attIndex = Attendees.FindIndex(att => att.Name == "attendeeEmailTextbox" + index);
             int rsvpIndex = AttendeesRsvp.FindIndex(rsvp => rsvp.Name == "rsvpComboBox" + index);
-            List<int> dbAttendeesId = db.GetEvents()[dbIndex].attendeesId;
+            List<int> dbAttendeesId = dbIndex != -1 ? db.GetEvents()[dbIndex].attendeesId : null;
 
             if (updateClicked && (attIndex != -1) && (dbAttendeesId != null) && !(attIndex >= dbAttendeesId.Count))
             {
