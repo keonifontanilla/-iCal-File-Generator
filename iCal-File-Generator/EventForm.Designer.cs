@@ -99,7 +99,7 @@
             // 
             // submitButton
             // 
-            this.submitButton.Location = new System.Drawing.Point(122, 447);
+            this.submitButton.Location = new System.Drawing.Point(164, 447);
             this.submitButton.Name = "submitButton";
             this.submitButton.Size = new System.Drawing.Size(75, 23);
             this.submitButton.TabIndex = 4;
@@ -232,7 +232,7 @@
             // 
             // clearInputsButton
             // 
-            this.clearInputsButton.Location = new System.Drawing.Point(291, 447);
+            this.clearInputsButton.Location = new System.Drawing.Point(301, 447);
             this.clearInputsButton.Name = "clearInputsButton";
             this.clearInputsButton.Size = new System.Drawing.Size(75, 23);
             this.clearInputsButton.TabIndex = 21;

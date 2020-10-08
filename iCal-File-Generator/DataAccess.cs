@@ -188,7 +188,7 @@ namespace iCal_File_Generator
                 attendees = new List<string>();
                 attendeesRsvp = new List<string>();
                 attendeesId = new List<int>();
-                formatedStr = "Title: " + TrimString(title, 16) + newLine + "Description: " + TrimString(description, 20) + newLine + "Created: " + dtstamp;
+                formatedStr = "Title: " + TrimString(title, 30) + newLine + "Description: " + TrimString(description, 70) + newLine + "Created: " + dtstamp;
                 newEvent = new Event
                 {
                     eventID = eventID,
