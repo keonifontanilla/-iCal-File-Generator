@@ -368,5 +368,25 @@ namespace iCal_File_Generator
 
             this.Controls.Add(recurrencePanel);
         }
+
+        private void titleTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int limit = 200;
+            CharacterLimitCounter(titleTextBox, titleCounterLabel, limit);
+        }
+
+        private void descriptionTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int limit = 400;
+            CharacterLimitCounter(descriptionTextBox, desCounterLabel, limit);
+        }
+
+        private void CharacterLimitCounter(TextBox input, Label counterLabel, int limit)
+        {
+            if (input.TextLength <= limit)
+            {
+                counterLabel.Text = $"{input.TextLength}/{limit}";
+            }
+        }
     }
 }

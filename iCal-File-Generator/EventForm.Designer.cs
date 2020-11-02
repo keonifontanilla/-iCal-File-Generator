@@ -57,6 +57,8 @@
             this.eventListTab = new System.Windows.Forms.TabPage();
             this.attendeeListTab = new System.Windows.Forms.TabPage();
             this.iCalLabel = new System.Windows.Forms.Label();
+            this.titleCounterLabel = new System.Windows.Forms.Label();
+            this.desCounterLabel = new System.Windows.Forms.Label();
             this.eventTabControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,19 +75,21 @@
             // titleTextBox
             // 
             this.titleTextBox.Location = new System.Drawing.Point(122, 65);
-            this.titleTextBox.MaxLength = 255;
+            this.titleTextBox.MaxLength = 201;
             this.titleTextBox.Name = "titleTextBox";
             this.titleTextBox.Size = new System.Drawing.Size(318, 20);
             this.titleTextBox.TabIndex = 1;
+            this.titleTextBox.TextChanged += new System.EventHandler(this.titleTextBox_TextChanged);
             // 
             // descriptionTextBox
             // 
             this.descriptionTextBox.Location = new System.Drawing.Point(122, 106);
-            this.descriptionTextBox.MaxLength = 500;
+            this.descriptionTextBox.MaxLength = 401;
             this.descriptionTextBox.Multiline = true;
             this.descriptionTextBox.Name = "descriptionTextBox";
             this.descriptionTextBox.Size = new System.Drawing.Size(318, 105);
             this.descriptionTextBox.TabIndex = 3;
+            this.descriptionTextBox.TextChanged += new System.EventHandler(this.descriptionTextBox_TextChanged);
             // 
             // descriptionLabel
             // 
@@ -337,11 +341,34 @@
             this.iCalLabel.TabIndex = 31;
             this.iCalLabel.Text = "iCalendar File Generator";
             // 
+            // titleCounterLabel
+            // 
+            this.titleCounterLabel.AutoSize = true;
+            this.titleCounterLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.titleCounterLabel.Font = new System.Drawing.Font("Trebuchet MS", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.titleCounterLabel.Location = new System.Drawing.Point(401, 88);
+            this.titleCounterLabel.Name = "titleCounterLabel";
+            this.titleCounterLabel.Size = new System.Drawing.Size(32, 15);
+            this.titleCounterLabel.TabIndex = 32;
+            this.titleCounterLabel.Text = "0/200";
+            // 
+            // desCounterLabel
+            // 
+            this.desCounterLabel.AutoSize = true;
+            this.desCounterLabel.Font = new System.Drawing.Font("Trebuchet MS", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.desCounterLabel.Location = new System.Drawing.Point(401, 213);
+            this.desCounterLabel.Name = "desCounterLabel";
+            this.desCounterLabel.Size = new System.Drawing.Size(32, 15);
+            this.desCounterLabel.TabIndex = 33;
+            this.desCounterLabel.Text = "0/400";
+            // 
             // EventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 635);
+            this.Controls.Add(this.desCounterLabel);
+            this.Controls.Add(this.titleCounterLabel);
             this.Controls.Add(this.iCalLabel);
             this.Controls.Add(this.eventTabControl);
             this.Controls.Add(this.generateButton);
@@ -408,6 +435,8 @@
         private System.Windows.Forms.TabPage eventListTab;
         private System.Windows.Forms.TabPage attendeeListTab;
         private System.Windows.Forms.Label iCalLabel;
+        private System.Windows.Forms.Label titleCounterLabel;
+        private System.Windows.Forms.Label desCounterLabel;
     }
 }
 
