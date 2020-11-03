@@ -5,18 +5,26 @@ using System.Windows.Forms;
 
 namespace iCal_File_Generator
 {
+    /// <summary>
+    /// This class generates a properly formated .ics file.
+    /// </summary>
     public class FileGenerator
     {
         SaveFileDialog saveFileDialog;
 
+        /// <summary>
+        /// Contructor.
+        /// </summary>
+        /// <param name="saveFileDialog">The folder path to save a generated file.</param>
         public FileGenerator(SaveFileDialog saveFileDialog)
         {
             this.saveFileDialog = saveFileDialog;
         }
 
-        /***********************************************************************************************
-         * Write input and generate an ics file
-        ***********************************************************************************************/
+        /// <summary>
+        /// Write input and generate an ics file.
+        /// </summary>
+        /// <param name="formatedInputs">List of formated inputs.</param>
         private void GenerateFile(List<string> formatedInputs)
         {
             using(StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName, false))
@@ -28,9 +36,10 @@ namespace iCal_File_Generator
             }
         }
 
-        /***********************************************************************************************
-         * Format input from user
-        ***********************************************************************************************/
+        /// <summary>
+        /// Format input from user.
+        /// </summary>
+        /// <param name="newEvent">New event.</param>
         public void FormatInput(Event newEvent)
         {
             List<string> newInputs = new List<string>();            
@@ -148,9 +157,11 @@ namespace iCal_File_Generator
             GenerateFile(newInputs);
         }
 
-        /***********************************************************************************************
-         * Format time to the proper ics file format
-        ***********************************************************************************************/
+        /// <summary>
+        /// Format time to the proper ics file format.
+        /// </summary>
+        /// <param name="dateTime">Date and time to format.</param>
+        /// <returns>Returns a formated date and time.</returns>
         private string FormatTime(string dateTime)
         {
             dateTime = dateTime.Replace("/","");
@@ -160,10 +171,12 @@ namespace iCal_File_Generator
             return dateTime.Contains(".") ? dateTime.Insert(8, "T").Substring(0, dateTime.LastIndexOf(".") + 1) : dateTime.Insert(8, "T");
         }
 
-        /***********************************************************************************************
-        * Lines of text should not be longer that 75 octets. 
-        * This function splits long content lines in to multiple lines 
-        ***********************************************************************************************/
+        /// <summary>
+        /// Lines of text should not be longer that 75 octets. 
+        /// This function splits long content lines in to multiple lines.
+        /// </summary>
+        /// <param name="line">The line of text to format.</param>
+        /// <returns>Returns a formated string.</returns>
         private string Foldline(string line)
         {
             List<string> lines = new List<string>();
