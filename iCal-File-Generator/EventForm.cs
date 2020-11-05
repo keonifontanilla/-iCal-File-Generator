@@ -74,6 +74,11 @@ namespace iCal_File_Generator
             }
         }
 
+        /// <summary>
+        /// Prompts user to save the file after submit.
+        /// </summary>
+        /// <param name="saveFileDialog">Save file dialog.</param>
+        /// <param name="newEvent">The event to generate file.</param>
         private void SaveFileAs(SaveFileDialog saveFileDialog, Event newEvent)
         {
             FileGenerator fg = new FileGenerator(saveFileDialog);
@@ -153,6 +158,10 @@ namespace iCal_File_Generator
             endDatePicker.MinDate = startDatePicker.Value;
         }
 
+        /// <summary>
+        /// Randomly generates a unique identifier.
+        /// </summary>
+        /// <returns>Returns a unique identifier.</returns>
         private string CreateUID()
         {
             string randomNum = "";
@@ -381,6 +390,12 @@ namespace iCal_File_Generator
             CharacterLimitCounter(descriptionTextBox, desCounterLabel, limit);
         }
 
+        /// <summary>
+        /// Limits and counts characters.
+        /// </summary>
+        /// <param name="input">The input text box.</param>
+        /// <param name="counterLabel">The label to display the counter.</param>
+        /// <param name="limit">The maximum number of characters.</param>
         private void CharacterLimitCounter(TextBox input, Label counterLabel, int limit)
         {
             if (input.TextLength <= limit)
