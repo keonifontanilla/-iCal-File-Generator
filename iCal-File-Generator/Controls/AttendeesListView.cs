@@ -5,6 +5,9 @@ using System.Windows.Forms;
 
 namespace iCal_File_Generator.Controls
 {
+    /// <summary>
+    /// This partial class provides a user control for listing, deleting, and updating attendees.
+    /// </summary>
     public partial class AttendeesListView : UserControl
     {
         public List<TextBox> Attendees { get; private set; } = new List<TextBox>();
@@ -18,9 +21,10 @@ namespace iCal_File_Generator.Controls
         private int dbIndex;
         private bool updateClicked;
 
-        /***********************************************************************************************
-         * Constructor for new attendees
-        ***********************************************************************************************/
+        /// <summary>
+        /// Constructor for new attendees.
+        /// </summary>
+        /// <param name="db">Database access.</param>
         public AttendeesListView(DataAccess db)
         {
             this.db = db;
@@ -29,9 +33,12 @@ namespace iCal_File_Generator.Controls
             InitializeComponent();
         }
 
-        /***********************************************************************************************
-         * Constructor for updating attendees
-        ***********************************************************************************************/
+        /// <summary>
+        /// Constructor for updating attendees.
+        /// </summary>
+        /// <param name="db">Database access.</param>
+        /// <param name="updateClicked">Check for update.</param>
+        /// <param name="dbIndex">The index of the attendee to update.</param>
         public AttendeesListView(DataAccess db, bool updateClicked, int dbIndex)
         {
             this.db = db;
@@ -133,6 +140,9 @@ namespace iCal_File_Generator.Controls
             }
         }
 
+        /// <summary>
+        /// Position attendee group boxes after adding or deleting.
+        /// </summary>
         private void RepositionAttendees()
         {
             for (int i = 0; i < attendeePanel.Controls.Count; i++)
@@ -144,6 +154,11 @@ namespace iCal_File_Generator.Controls
             }
         }
 
+        /// <summary>
+        /// Fills attendee inputs with attendee data to update.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void UpdateAttendees(object sender, EventArgs e)
         {
             if (attendeePanel.Visible && (db.GetEvents()[dbIndex].attendees != null))
