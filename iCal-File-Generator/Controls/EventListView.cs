@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace iCal_File_Generator.Controls
 {
+    /// <summary>
+    /// This partial class provides a user control that adds events to a listBox and displays all events.
+    /// </summary>
     public partial class EventListView : UserControl
     {
         DataAccess db;
@@ -39,6 +42,10 @@ namespace iCal_File_Generator.Controls
             if (e.Index != -1) { e.Graphics.DrawString(eventsListBox.Items[e.Index].ToString(), e.Font, new SolidBrush(e.ForeColor), e.Bounds); }
         }
 
+        /// <summary>
+        /// Gets the index of the selected event in the listBox.
+        /// </summary>
+        /// <returns>Returns the index of the selected lisBox item.</returns>
         public int Index()
         {
             return eventsListBox.SelectedIndex;
