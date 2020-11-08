@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace iCal_File_Generator.Controls
 {
+    /// <summary>
+    /// This partial class provides a user control that displays an event.
+    /// </summary>
     public partial class FullEventView : UserControl
     {
         DataAccess db;
@@ -17,6 +20,9 @@ namespace iCal_File_Generator.Controls
             DisplayEventInfo();
         }
 
+        /// <summary>
+        /// Displays full information on the selected event.
+        /// </summary>
         private void DisplayEventInfo()
         {
             string newLine = Environment.NewLine;
