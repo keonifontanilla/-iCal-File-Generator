@@ -5,6 +5,9 @@ using System.Windows.Forms;
 
 namespace iCal_File_Generator.Controls
 {
+    /// <summary>
+    /// This partial class provides a user control that handles recurring date and time.
+    /// </summary>
     public partial class RecurrenceInputView : UserControl
     {
         ComboBox frequencyComboBox;
@@ -44,6 +47,9 @@ namespace iCal_File_Generator.Controls
             frequencyComboBox.SelectedIndexChanged += new EventHandler(frequencyComboBox_OnChange);
         }
 
+        /// <summary>
+        /// Returns recurrence frequency.
+        /// </summary>
         public string RecurFrequency
         {
             get { return frequencyComboBox.SelectedItem.ToString(); }
@@ -84,16 +90,27 @@ namespace iCal_File_Generator.Controls
             }
         }
 
+        /// <summary>
+        /// Returns a boolean to check if recurrence end date is checked.
+        /// </summary>
         public bool RecurUntil
         {
             get { return untilRecurRadioButton != null && untilRecurRadioButton.Checked; }
         }
 
+        /// <summary>
+        /// Returns the recurrence end date.
+        /// </summary>
         public DateTime RecurDate
         {
             get { return untilDate.Value; }
         }
 
+        /// <summary>
+        /// Fills recurrence inputs with database info.
+        /// </summary>
+        /// <param name="db">The database.</param>
+        /// <param name="index">The index of the selected event.</param>
         public void UpdateRecurrence(DataAccess db, int index)
         {
             frequencyComboBox.SelectedItem = db.GetEvents()[index].recurFrequency;
