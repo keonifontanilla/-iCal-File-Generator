@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace iCal_File_Generator
 {
+    /// <summary>
+    /// This class creates a new calendar event.
+    /// </summary>
     public class Event
     {
         private Dictionary<string, string> inputs = new Dictionary<string, string>();
